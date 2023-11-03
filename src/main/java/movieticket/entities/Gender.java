@@ -1,12 +1,16 @@
 package movieticket.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gender implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String name;
+	
+	private List<Movie> movies = new ArrayList<>();
 	
 	public Gender() {}
 
@@ -30,6 +34,10 @@ public class Gender implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<Movie> getMovies() {
+		return movies;
 	}
 
 	@Override

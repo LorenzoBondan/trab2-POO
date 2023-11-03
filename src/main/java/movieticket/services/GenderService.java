@@ -33,20 +33,20 @@ public class GenderService {
     }
     
     public void update(Gender updatedGender) {
-        List<Gender> list = load();
-        for (Gender gender : list) {
-            if (gender.getId() == updatedGender.getId()) {
+        List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
+        for (Gender gender : list) { // percorre a lista
+            if (gender.getId() == updatedGender.getId()) { // quando achou o objeto procurado, atualiza seus dados
             	gender.setName(updatedGender.getName());
-                save(list);
+                save(list); // salva a lista novamente
                 return;
             }
         }
     }
 
     public void delete(Long id) {
-        List<Gender> list = load();
-        list.removeIf(gender -> gender.getId() == id);
-        save(list);
+        List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
+        list.removeIf(gender -> gender.getId() == id); // expressão lambda para percorrer cada objeto, e quando encontrou o procurado, o deleta
+        save(list); // salva a lista sem o objeto deletado
     }
 	
     public void save(List<Gender> list) {
