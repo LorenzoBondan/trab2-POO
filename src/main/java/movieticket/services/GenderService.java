@@ -1,98 +1,50 @@
 package movieticket.services;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import movieticket.dtos.GenderDTO;
 import movieticket.entities.Gender;
-import movieticket.services.exceptions.DuplicateResourceException;
-import movieticket.services.exceptions.ResourceNotFoundException;
+import movieticket.exceptions.ResourceNotFoundException;
+import movieticket.repositories.GenderRepository;
 
 public class GenderService {
 
-	private String file = "genders.csv";
+	private GenderRepository repository = new GenderRepository();
 	
-	public List<Gender> findAll() {
-		return load();
+	public List<GenderDTO> findAll(){
+		List<Gender> list = repository.findAll();
+		return list.stream().map(obj -> new GenderDTO(obj)).collect(Collectors.toList());
 	}
 	
-	public Optional<Gender> findById(Long id) {
-	    List<Gender> list = load();
-	    return Optional.ofNullable(list.stream()
-	            .filter(gender -> gender.getId().equals(id))
-	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Gender with Id " + id + " not found.")));
+	public GenderDTO findById(Long id) {
+		Gender entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		return new GenderDTO(entity);
 	}
 	
-	public void insert(Gender gender) {
-	    List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
-	    Long newId = gender.getId(); // id do objeto a ser inserido
-	    boolean idExists = list.stream().anyMatch(existingGender -> existingGender.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
-	    if (idExists) {
-	        throw new DuplicateResourceException("Gender with ID " + newId + " already exists.");
-	    }
-	    list.add(gender); // adiciona o objeto a lista
-	    save(list); // salva a lista novamente
+	public void insert(GenderDTO dto) {
+		Gender entity = new Gender();
+		copyDtoToEntity(dto, entity);
+		repository.insert(entity);
 	}
-
-    public void update(Gender updatedGender) {
-        List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
-        boolean isUpdated = false; // inicia como falso para encontrar o objeto
-
-        for (Gender gender : list) { // percorre a lista
-            if (gender.getId().equals(updatedGender.getId())) { // quando achou o objeto procurado, atualiza seus dados
-                gender.setName(updatedGender.getName());
-                isUpdated = true; // muda para verdadeiro
-                break;
-            }
-        }
-
-        if (!isUpdated) {
-            throw new ResourceNotFoundException("Gender with Id " + updatedGender.getId() + " not found.");
-        }
-        save(list); // salva a lista novamente
-    }
-
-    public void delete(Long id) {
-        List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
-        boolean isDeleted = list.removeIf(gender -> gender.getId().equals(id)); // verifica a existência do id e o deleta
-
-        if (!isDeleted) {
-            throw new ResourceNotFoundException("Gender with Id " + id + " not found.");
-        }
-        save(list);
-    }
-
-    public void save(List<Gender> list) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (Gender gender : list) {
-                writer.write(gender.getId() + "," + gender.getName());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<Gender> load() {
-        List<Gender> list = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(","); // atributos separados por vírgula
-                Long id = Long.parseLong(data[0]);
-                String name = data[1];
-                Gender gender = new Gender(id, name);
-                list.add(gender);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
+	
+	public void update(Long id, GenderDTO dto) {
+		Gender entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		copyDtoToEntity(dto, entity);
+		repository.update(entity);
+	}
+	
+	public void delete(Long id) {
+		repository.delete(id);
+	}
+	
+	private void copyDtoToEntity(GenderDTO dto, Gender entity) {
+		entity.setName(dto.getName());
+		
+		entity.getMovies().clear();
+		for(Long movieId : dto.getMoviesIds()) {
+			//Movie movie = movieRepository.findById(movieId).get();
+			//entity.getMovies().add(movie);
+		}
+	}
 }

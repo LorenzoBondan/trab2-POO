@@ -1,4 +1,4 @@
-package movieticket.services.exceptions;
+package movieticket.exceptions;
 
 import java.io.Serial;
 

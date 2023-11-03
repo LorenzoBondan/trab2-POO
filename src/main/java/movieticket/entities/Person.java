@@ -57,4 +57,9 @@ public class Person {
 		Person other = (Person) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", married=" + married + "]";
+	}
 }
