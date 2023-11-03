@@ -14,7 +14,7 @@ import movieticket.entities.Person;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.ResourceNotFoundException;
 
-public class PersonService {
+public class PersonRepository {
 
 	private String file = "persons.csv";
 	
@@ -85,36 +85,24 @@ public class PersonService {
         List<Person> list = new ArrayList<>();
         File fileObject = new File(file);
 
-        // Verifica se o arquivo existe e tem tamanho maior que zero
-        if (fileObject.exists() && fileObject.length() > 0) {
+        if (fileObject.exists() && fileObject.length() > 0) { // verifica se o arquivo existe e tem tamanho maior que zero
             try (BufferedReader reader = new BufferedReader(new FileReader(fileObject))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] data = line.split(","); // atributos separados por vírgula
                     Long id = Long.parseLong(data[0]);
                     String name = data[1];
-                    if(!data[2].equals("null")) {
-                    	Long marriedPersonId = Long.parseLong(data[2]);
-                        Optional<Person> marriedPerson = findById(marriedPersonId);
-                        if (marriedPerson.isPresent()) {
-                            Person person = new Person(id, name, marriedPerson.get());
-                            list.add(person);
-                        } else {
-                            // Trate o caso em que a pessoa casada não foi encontrada
-                            // Pode lançar uma exceção ou lidar com isso de alguma outra forma
-                        }
-                    }
+                    Person person = new Person(id, name);
+                    list.add(person);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("O arquivo está vazio ou não existe.");
-            // Ou lance uma exceção ou trate de outra forma, conforme necessário
+            System.out.println("Empty or non existing file.");
         }
 
         return list;
     }
-
 
 }

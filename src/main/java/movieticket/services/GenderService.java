@@ -39,6 +39,7 @@ public class GenderService {
 	}
 	
 	private void copyDtoToEntity(GenderDTO dto, Gender entity) {
+		entity.setId(dto.getId());
 		entity.setName(dto.getName());
 		
 		entity.getMovies().clear();

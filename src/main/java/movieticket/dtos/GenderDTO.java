@@ -46,4 +46,9 @@ public class GenderDTO {
 	public List<Long> getMoviesIds() {
 		return moviesIds;
 	}
+
+	@Override
+	public String toString() {
+		return "GenderDTO [id=" + id + ", name=" + name + "]";
+	}
 }

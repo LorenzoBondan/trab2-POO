@@ -13,7 +13,9 @@ public class PersonDTO {
 	public PersonDTO(Person entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
-		this.marriedId = entity.getMarried().getId();
+		if(entity.getMarried() != null) {
+			this.marriedId = entity.getMarried().getId();
+		}
 	}
 
 	public PersonDTO(Long id, String name, Long marriedId) {

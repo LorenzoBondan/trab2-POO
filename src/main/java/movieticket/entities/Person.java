@@ -16,6 +16,12 @@ public class Person {
 		this.name = name;
 		this.married = married;
 	}
+	
+	public Person(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;
