@@ -10,45 +10,64 @@ import java.util.List;
 import java.util.Optional;
 
 import movieticket.entities.Gender;
+import movieticket.services.exceptions.DuplicateResourceException;
+import movieticket.services.exceptions.ResourceNotFoundException;
 
 public class GenderService {
 
-	private String file = "arquivo.csv";
+	private String file = "genders.csv";
 	
 	public List<Gender> findAll() {
 		return load();
 	}
 	
 	public Optional<Gender> findById(Long id) {
-		List<Gender> list = load();
-        return list.stream()
-                .filter(gender -> gender.getId() == id)
-                .findFirst();
+	    List<Gender> list = load();
+	    return Optional.ofNullable(list.stream()
+	            .filter(gender -> gender.getId().equals(id))
+	            .findFirst()
+	            .orElseThrow(() -> new ResourceNotFoundException("Gender with Id " + id + " not found.")));
 	}
 	
-    public void insert(Gender gender) {
-        List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
-        list.add(gender); // adiciona um novo objeto a essa lista
-        save(list); // salva a lista de objetos no csv
-    }
-    
+	public void insert(Gender gender) {
+	    List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
+	    Long newId = gender.getId(); // id do objeto a ser inserido
+	    boolean idExists = list.stream().anyMatch(existingGender -> existingGender.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
+	    if (idExists) {
+	        throw new DuplicateResourceException("Gender with ID " + newId + " already exists.");
+	    }
+	    list.add(gender); // adiciona o objeto a lista
+	    save(list); // salva a lista novamente
+	}
+
     public void update(Gender updatedGender) {
         List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
+        boolean isUpdated = false; // inicia como falso para encontrar o objeto
+
         for (Gender gender : list) { // percorre a lista
-            if (gender.getId() == updatedGender.getId()) { // quando achou o objeto procurado, atualiza seus dados
-            	gender.setName(updatedGender.getName());
-                save(list); // salva a lista novamente
-                return;
+            if (gender.getId().equals(updatedGender.getId())) { // quando achou o objeto procurado, atualiza seus dados
+                gender.setName(updatedGender.getName());
+                isUpdated = true; // muda para verdadeiro
+                break;
             }
         }
+
+        if (!isUpdated) {
+            throw new ResourceNotFoundException("Gender with Id " + updatedGender.getId() + " not found.");
+        }
+        save(list); // salva a lista novamente
     }
 
     public void delete(Long id) {
         List<Gender> list = load(); // carrega a lista de objetos já cadastrados no csv
-        list.removeIf(gender -> gender.getId() == id); // expressão lambda para percorrer cada objeto, e quando encontrou o procurado, o deleta
-        save(list); // salva a lista sem o objeto deletado
+        boolean isDeleted = list.removeIf(gender -> gender.getId().equals(id)); // verifica a existência do id e o deleta
+
+        if (!isDeleted) {
+            throw new ResourceNotFoundException("Gender with Id " + id + " not found.");
+        }
+        save(list);
     }
-	
+
     public void save(List<Gender> list) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Gender gender : list) {
