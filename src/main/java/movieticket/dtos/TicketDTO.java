@@ -24,7 +24,7 @@ public class TicketDTO {
 		this.date = entity.getDate();
 		this.phoneNumber = entity.getPhoneNumber();
 		this.price = entity.getPrice();
-		this.halfPrice =entity.getHalfPrice();
+		this.halfPrice = entity.getHalfPrice();
 		this.seatId = entity.getSeat().getId();
 		this.scheduleId = entity.getSchedule().getId();
 		this.movieId = entity.getMovie().getId();
@@ -114,5 +114,12 @@ public class TicketDTO {
 
 	public void setMovieId(Long movieId) {
 		this.movieId = movieId;
+	}
+
+	@Override
+	public String toString() {
+		return "TicketDTO [id=" + id + ", clientName=" + clientName + ", date=" + date + ", phoneNumber=" + phoneNumber
+				+ ", price=" + price + ", halfPrice=" + halfPrice + ", seatId=" + seatId + ", scheduleId=" + scheduleId
+				+ ", movieId=" + movieId + "]";
 	}
 }
