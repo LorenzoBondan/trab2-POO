@@ -8,17 +8,32 @@ public class Util {
 	public static int readInt(String pergunta) {
 		Scanner in = new Scanner(System.in);
 		int var = 0;
-		boolean read = false;
+		boolean leu = false;
 		do {
 			try {
 				System.out.print(pergunta);
 				var = in.nextInt();
+				leu = true;
+			}catch(InputMismatchException e) {
+			}
+			in.nextLine();
+		}while(!leu);
+		return var;
+	}
+	
+	public static Long readLong(String pergunta) {
+		Scanner in = new Scanner(System.in);
+		Long var = 0L;
+		boolean read = false;
+		do {
+			try {
+				System.out.print(pergunta);
+				var = in.nextLong();
 				read = true;
 			}catch(InputMismatchException e) {
 			}
 			in.nextLine();
 		}while(!read);
-		in.close();
 		return var;
 	}
 
@@ -35,7 +50,6 @@ public class Util {
 			}
 			
 		}while(!read);
-		in.close();
 		return var;
 	}
 
@@ -55,7 +69,6 @@ public class Util {
 			in.nextLine();
 
 		}while(!read);
-		in.close();
 		return var;
 	}
 	
@@ -63,6 +76,5 @@ public class Util {
 		Scanner in = new Scanner(System.in);
 		System.out.println("Aperte qualquer tecla para continuar...");
 		in.nextLine();
-		in.close();
 	}
 }

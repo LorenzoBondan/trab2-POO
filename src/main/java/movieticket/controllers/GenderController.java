@@ -16,5 +16,20 @@ public class GenderController {
         }
 	}
 	
+	public void findById(Long id) {
+		GenderDTO dto = service.findById(id);
+		System.out.println(dto.toStringWithList());
+	}
 	
+	public void insert(GenderDTO dto) {
+		service.insert(dto);
+	}
+	
+	public void update(Long id, GenderDTO dto) {
+		service.update(id, dto);
+	}
+	
+	public void delete(Long id) {
+		service.delete(id);
+	}
 }

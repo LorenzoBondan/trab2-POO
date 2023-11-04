@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import movieticket.entities.Cinema;
 import movieticket.entities.Gender;
@@ -24,6 +25,13 @@ private String file = "movies.csv";
 	
 	public List<Movie> findAll() {
 		return load();
+	}
+	
+	public List<Movie> findAllByGenderId(Long genderId){
+		List<Movie> list = load();
+		return list.stream()
+	            .filter(movie -> movie.getGender().getId().equals(genderId)) // filtra os filmes com o genderId fornecido
+	            .collect(Collectors.toList());
 	}
 	
 	public Optional<Movie> findById(Long id) {

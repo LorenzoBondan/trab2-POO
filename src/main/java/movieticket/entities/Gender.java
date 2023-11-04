@@ -40,6 +40,10 @@ public class Gender implements Serializable{
 		return movies;
 	}
 
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

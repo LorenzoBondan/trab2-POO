@@ -51,4 +51,8 @@ public class GenderDTO {
 	public String toString() {
 		return "GenderDTO [id=" + id + ", name=" + name + "]";
 	}
+	
+	public String toStringWithList() {
+		return "GenderDTO [id=" + id + ", name=" + name + ", moviesIds=[" + moviesIds + "]";
+	}
 }

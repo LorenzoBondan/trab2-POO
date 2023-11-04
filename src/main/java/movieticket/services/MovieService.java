@@ -8,11 +8,15 @@ import movieticket.entities.Actor;
 import movieticket.entities.Director;
 import movieticket.entities.Movie;
 import movieticket.entities.Person;
+import movieticket.entities.Schedule;
+import movieticket.entities.Ticket;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.CinemaRepository;
 import movieticket.repositories.GenderRepository;
 import movieticket.repositories.MovieRepository;
 import movieticket.repositories.PersonRepository;
+import movieticket.repositories.ScheduleRepository;
+import movieticket.repositories.TicketRepository;
 
 public class MovieService {
 
@@ -20,11 +24,16 @@ public class MovieService {
 	private GenderRepository genderRepository = new GenderRepository();
 	private CinemaRepository cinemaRepository = new CinemaRepository();
 	private PersonRepository personRepository = new PersonRepository();
-	//private ScheduleRepository scheduleRepository = new ScheduleRepository();
-	//private TicketRepository ticketRepository = new TicketRepository();
+	private ScheduleRepository scheduleRepository = new ScheduleRepository();
+	private TicketRepository ticketRepository = new TicketRepository();
 	
 	public List<MovieDTO> findAll(){
 		List<Movie> list = repository.findAll();
+		return list.stream().map(obj -> new MovieDTO(obj)).collect(Collectors.toList());
+	}
+	
+	public List<MovieDTO> findAllByGenderId(Long genderId) {
+		List<Movie> list = repository.findAllByGenderId(genderId);
 		return list.stream().map(obj -> new MovieDTO(obj)).collect(Collectors.toList());
 	}
 	
@@ -70,7 +79,7 @@ public class MovieService {
 			entity.getDirectors().add((Director) director);
 		}
 		
-		/*
+
 		entity.getSchedules().clear();
 		for(Long scheduleId : dto.getSchedulesIds()) {
 			Schedule schedule = scheduleRepository.findById(scheduleId).get();
@@ -82,7 +91,5 @@ public class MovieService {
 			Ticket ticket = ticketRepository.findById(ticketId).get();
 			entity.getTickets().add(ticket);
 		}
-		*/
-		
 	}
 }

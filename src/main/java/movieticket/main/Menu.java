@@ -25,7 +25,7 @@ public class Menu {
 	
 	GenderService genderService = new GenderService();
 	
-	public void showMenu() {
+	public static void showMenu() {
 		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
@@ -50,6 +50,7 @@ public class Menu {
 			switch (opc) {
             case 1:
                 System.out.println("Opção 1 selecionada: Gêneros");
+                showGenders();
                 break;
             case 2:
                 System.out.println("Opção 2 selecionada: Filmes");
@@ -85,8 +86,8 @@ public class Menu {
 		in.close();
 	}
 	
-	public void showGenders() {
-		GenderController controller = new GenderController();
+	public static void showGenders() {
+		GenderController genderController = new GenderController();
 		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
@@ -103,36 +104,53 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-
+	
 			switch (opc) {
-            case 1:
-                System.out.println("Opção 1 selecionada: Mostrar todos os gêneros");
-                controller.findAll();
-                break;
-            case 2:
-                System.out.println("Opção 2 selecionada: Mostrar um gênero por código");
-                break;
-            case 3:
-                System.out.println("Opção 3 selecionada: Inserir novo gênero");
-                break;
-            case 4:
-                System.out.println("Opção 4 selecionada: Atualizar um gênero");
-                break;
-            case 5:
-                System.out.println("Opção 5 selecionada: Excluir um gênero");
-                break;
-            case 6:
-                System.out.println("Saindo de Gêneros...");
-                break;
-            default:
-                System.out.println("Opção inválida. Tente novamente.");
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os gêneros\n");
+	            genderController.findAll();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um gênero por código\n");
+	            genderController.findAll();
+	            Long id = Util.readLong("Digite o código: ");
+	            genderController.findById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo gênero\n");
+	            GenderDTO newDto = new GenderDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setName(Util.readString("Digite o nome: "));
+	            genderController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um gênero\n");
+	            genderController.findAll();
+	            GenderDTO updatedDto = new GenderDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setName(Util.readString("Digite o nome: "));
+	            genderController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um gênero\n");
+	            genderController.findAll();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            genderController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Gêneros...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
 			}
-		} while (opc != 10);
+		} while (opc != 6);
 		in.close();
 	}
 
 	public static void main(String[] args) throws ParseException {
 		
+		showMenu();
+		/*
 		// #### GENDER
 		GenderService genderService = new GenderService();
 		
@@ -327,11 +345,8 @@ public class Menu {
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		*/
 	}
-	
-	private List<GenderDTO> findAllGenders(){
-		return genderService.findAll();
-	}
-	
 	
 }

@@ -2,12 +2,12 @@ package movieticket.exceptions;
 
 import java.io.Serial;
 
-public class IntegrityViolationException extends RuntimeException{
+public class InvalidDataException extends RuntimeException{
 	
 	@Serial
     private static final long serialVersionUID = 1L;
 	
-	public IntegrityViolationException(String msg){
+	public InvalidDataException(String msg){
 		super(msg);
 	}
 }
