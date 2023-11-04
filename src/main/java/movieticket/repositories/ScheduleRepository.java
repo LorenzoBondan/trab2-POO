@@ -81,20 +81,23 @@ public class ScheduleRepository {
     }
 
     public void save(List<Schedule> list) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // formato da data no arquivo CSV
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Schedule schedule : list) {
+                String formattedDate = dateFormat.format(schedule.getDate()); // formata a data para o formato desejado
                 writer.write(schedule.getId() + "," 
-                			+ schedule.getDate() + ","
-                			+ schedule.getTime()  + ","
-                			+ schedule.getRoom().getId() + ","
-                			+ schedule.getMovie().getId()
-                		);
+                            + formattedDate + "," // grava a data formatada
+                            + schedule.getTime()  + ","
+                            + schedule.getRoom().getId() + ","
+                            + schedule.getMovie().getId()
+                );
                 writer.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     public List<Schedule> load() {
         List<Schedule> list = new ArrayList<>();

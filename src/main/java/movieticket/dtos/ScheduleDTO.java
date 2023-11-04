@@ -1,5 +1,6 @@
 package movieticket.dtos;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,4 +82,12 @@ public class ScheduleDTO {
 	public List<Long> getTicketsIds() {
 		return ticketsIds;
 	}
+
+	@Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateFormat.format(date);
+        return "ScheduleDTO [id=" + id + ", date=" + formattedDate + ", time=" + time + ", roomId=" + roomId + ", movieId="
+                + movieId + "]";
+    }
 }

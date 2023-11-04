@@ -1,21 +1,26 @@
 package movieticket.main;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import movieticket.dtos.ActorDTO;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
 import movieticket.dtos.PersonDTO;
+import movieticket.dtos.ScheduleDTO;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.ResourceNotFoundException;
+import movieticket.services.GenderService;
 import movieticket.services.MovieService;
 import movieticket.services.PersonService;
+import movieticket.services.ScheduleService;
 
 public class Menu {
 
-	public static void main(String[] args) {
-		
-		/*
+	public static void main(String[] args) throws ParseException {
 		
 		// #### GENDER
 		
@@ -57,14 +62,10 @@ public class Menu {
 		// DELETE ---------------------
 		try {
 			service.delete(4L);
+			System.out.println("Gender deleted successfully.");
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		*/
-		
-		
-		
 		
 		// #### PERSON
 		
@@ -98,7 +99,7 @@ public class Menu {
 		// DELETE ---------------------
 		try {
 			personService.delete(3L);
-			System.out.println("Object deleted successfully.");
+			System.out.println("Person deleted successfully.");
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -111,8 +112,8 @@ public class Menu {
 		System.out.println("\nMOVIES\n");
 		
 		// FINDALL -------------------
-		List<MovieDTO> list = movieService.findAll();
-		for(MovieDTO g : list) {
+		List<MovieDTO> listMovie = movieService.findAll();
+		for(MovieDTO g : listMovie) {
 			System.out.println(g);
 		}
 		
@@ -144,9 +145,74 @@ public class Menu {
 		// DELETE ---------------------
 		try {
 			movieService.delete(4L);
+			System.out.println("Movie deleted successfully.");
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 		
+		
+		// #### SCHEDULE
+		
+		ScheduleService scheduleService = new ScheduleService();
+		
+		System.out.println("\nSCHEDULES\n");
+		
+		// FINDALL -------------------
+		List<ScheduleDTO> listSchedule = scheduleService.findAll();
+		for(ScheduleDTO g : listSchedule) {
+			System.out.println(g);
+		}
+		
+		// FINDBYID -------------------
+		try {
+			ScheduleDTO ge = scheduleService.findById(2L);
+			System.out.println(ge);
+		} catch(ResourceNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		// INSERT ---------------------
+		try {
+		    SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		    Date date;
+		    try {
+		        date = inputDateFormat.parse("10/05/2023");
+		    } catch (ParseException e) {
+		        e.printStackTrace();
+		        date = null;
+		    }
+
+		    LocalTime time = LocalTime.parse("18:00:00");
+		    ScheduleDTO schedule = new ScheduleDTO(5L, date, time, 1L, 1L);
+		    scheduleService.insert(schedule);
+		} catch (DuplicateResourceException e) {
+		    System.out.println(e.getMessage());
+		}
+		
+		// UPDATE --------------------
+		try {
+			SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		    Date date;
+		    try {
+		        date = inputDateFormat.parse("10/05/2023");
+		    } catch (ParseException e) {
+		        e.printStackTrace();
+		        date = null;
+		    }
+		    LocalTime time = LocalTime.parse("13:00:00");
+			ScheduleDTO updatedSchedule = new ScheduleDTO(1L, date, time, 1L, 1L);
+			scheduleService.update(1L, updatedSchedule);
+			System.out.println("Updated successfully: " + updatedSchedule.toString());
+		} catch (ResourceNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		// DELETE ---------------------
+		try {
+			scheduleService.delete(5L);
+			System.out.println("Schedule deleted successfully.");
+		} catch (ResourceNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }
