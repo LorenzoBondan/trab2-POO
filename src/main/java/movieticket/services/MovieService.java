@@ -10,6 +10,7 @@ import movieticket.entities.Movie;
 import movieticket.entities.Person;
 import movieticket.entities.Schedule;
 import movieticket.entities.Ticket;
+import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.CinemaRepository;
 import movieticket.repositories.GenderRepository;
@@ -39,23 +40,42 @@ public class MovieService {
 	
 	public MovieDTO findById(Long id) {
 		Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		// adicionar lista de atores, diretores, schedules e tickets
+		List<Actor> actors = personRepository.findAllActorsByMovieId(id);
+		entity.setActors(actors);
+		List<Director> directors = personRepository.findAllDirectorsByMovieId(id);
+		entity.setDirectors(directors);
 		return new MovieDTO(entity);
 	}
 	
 	public void insert(MovieDTO dto) {
-		Movie entity = new Movie();
-		copyDtoToEntity(dto, entity);
-		repository.insert(entity);
+		try {
+			Movie entity = new Movie();
+			copyDtoToEntity(dto, entity);
+			repository.insert(entity);
+			System.out.println("Filme inserido com sucesso: " + dto);
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void update(Long id, MovieDTO dto) {
-		Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		copyDtoToEntity(dto, entity);
-		repository.update(entity);
+		try {
+			Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			copyDtoToEntity(dto, entity);
+			repository.update(entity);
+			System.out.println("Filme atualizado com sucesso: " + dto);
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void delete(Long id) {
-		repository.delete(id);
+		MovieDTO dto = findById(id);
+		if(dto != null) {
+			repository.delete(id);
+			System.out.println("Filme deletado com sucesso: " + id);
+		}
 	}
 	
 	private void copyDtoToEntity(MovieDTO dto, Movie entity) {
@@ -78,7 +98,6 @@ public class MovieService {
 			Person director = personRepository.findById(directorId).get();
 			entity.getDirectors().add((Director) director);
 		}
-		
 
 		entity.getSchedules().clear();
 		for(Long scheduleId : dto.getSchedulesIds()) {

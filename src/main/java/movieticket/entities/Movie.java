@@ -106,6 +106,22 @@ public class Movie implements Serializable{
 		return tickets;
 	}
 
+	public void setActors(List<Actor> actors) {
+		this.actors = actors;
+	}
+
+	public void setDirectors(List<Director> directors) {
+		this.directors = directors;
+	}
+
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
+	}
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -122,6 +138,11 @@ public class Movie implements Serializable{
 		Movie other = (Movie) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description + ", duration="
+				+ duration + ", gender=" + gender + ", cinema=" + cinema + ", actors=" + actors + ", directors="
+				+ directors + ", schedules=" + schedules + ", tickets=" + tickets + "]";
+	}
 }

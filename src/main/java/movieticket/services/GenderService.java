@@ -52,7 +52,11 @@ public class GenderService {
 	}
 	
 	public void delete(Long id) {
-	    repository.delete(id);
+		GenderDTO dto = findById(id);
+		if(dto != null) {
+			repository.delete(id);
+			System.out.println("Gênero deletado com sucesso: " + id);
+		}
 	}
 	
 	private void copyDtoToEntity(GenderDTO dto, Gender entity) {

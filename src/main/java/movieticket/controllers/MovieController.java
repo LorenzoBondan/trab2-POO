@@ -2,39 +2,39 @@ package movieticket.controllers;
 
 import java.util.List;
 
-import movieticket.dtos.GenderDTO;
+import movieticket.dtos.MovieDTO;
 import movieticket.exceptions.ResourceNotFoundException;
-import movieticket.services.GenderService;
+import movieticket.services.MovieService;
 
-public class GenderController {
+public class MovieController {
 
-	private GenderService service = new GenderService();
+	private MovieService service = new MovieService();
 	
 	public void findAll() {
-		List<GenderDTO> list = service.findAll();
-        for(GenderDTO genderDto : list) {
+		List<MovieDTO> list = service.findAll();
+        for(MovieDTO genderDto : list) {
         	System.out.println(genderDto);
         }
 	}
 	
 	public void findById(Long id) {
 		try {
-			GenderDTO dto = service.findById(id);
+			MovieDTO dto = service.findById(id);
 			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Gênero não encontrado");
+			System.out.println("Filme não encontrado");
 		}
 	}
 	
-	public void insert(GenderDTO dto) {
+	public void insert(MovieDTO dto) {
 		service.insert(dto);
 	}
 	
-	public void update(Long id, GenderDTO dto) {
+	public void update(Long id, MovieDTO dto) {
 		try {
 			service.update(id, dto);
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Gênero não encontrado");
+			System.out.println("Filme não encontrado");
 		}
 	}
 	
@@ -42,7 +42,7 @@ public class GenderController {
 		try {
 			service.delete(id);
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Gênero não encontrado");
+			System.out.println("Filme não encontrado");
 		}
 	}
 }

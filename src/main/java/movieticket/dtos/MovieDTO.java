@@ -121,9 +121,32 @@ public class MovieDTO {
 		return ticketsIds;
 	}
 
+	public void setActorsIds(List<Long> actorsIds) {
+		this.actorsIds = actorsIds;
+	}
+
+	public void setDirectorsIds(List<Long> directorsIds) {
+		this.directorsIds = directorsIds;
+	}
+
+	public void setSchedulesIds(List<Long> schedulesIds) {
+		this.schedulesIds = schedulesIds;
+	}
+
+	public void setTicketsIds(List<Long> ticketsIds) {
+		this.ticketsIds = ticketsIds;
+	}
+
 	@Override
 	public String toString() {
 		return "MovieDTO [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description
 				+ ", duration=" + duration + ", genderId=" + genderId + ", cinemaId=" + cinemaId + "]";
+	}
+
+	public String toStringWithList() {
+		return "MovieDTO [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description
+				+ ", duration=" + duration + ", genderId=" + genderId + ", cinemaId=" + cinemaId + ", actorsIds="
+				+ actorsIds + ", directorsIds=" + directorsIds + ", schedulesIds=" + schedulesIds + ", ticketsIds="
+				+ ticketsIds + "]";
 	}
 }

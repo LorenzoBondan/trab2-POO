@@ -46,7 +46,8 @@ public class CinemaRepository {
 
         for (Cinema cinema : list) { // percorre a lista
             if (cinema.getId().equals(updatedCinema.getId())) { // quando achou o objeto procurado, atualiza seus dados
-                cinema.setAddress(updatedCinema.getAddress());
+                cinema.setName(updatedCinema.getName());
+            	cinema.setAddress(updatedCinema.getAddress());
                 isUpdated = true; // muda para verdadeiro
                 break;
             }

@@ -60,6 +60,14 @@ private String file = "movies.csv";
         for (Movie movie : list) { // percorre a lista
             if (movie.getId().equals(updatedMovie.getId())) { // quando achou o objeto procurado, atualiza seus dados
                 movie.setName(updatedMovie.getName());
+                movie.setDescription(updatedMovie.getDescription());
+                movie.setDuration(updatedMovie.getDuration());
+                movie.setYear(updatedMovie.getYear());
+                movie.setActors(updatedMovie.getActors());
+                movie.setCinema(updatedMovie.getCinema());
+                movie.setDirectors(updatedMovie.getDirectors());
+                movie.setSchedules(updatedMovie.getSchedules());
+                movie.setTickets(updatedMovie.getTickets());
                 isUpdated = true; // muda para verdadeiro
                 break;
             }
