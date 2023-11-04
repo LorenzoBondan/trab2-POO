@@ -73,7 +73,7 @@ public class PersonRepository {
     public void save(List<Person> list) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Person person : list) {
-                writer.write(person.getId() + "," + person.getName());
+                writer.write(person.getId() + "," + person.getName() + "," + person.getMarried().getId());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -83,20 +83,39 @@ public class PersonRepository {
 
     public List<Person> load() {
         List<Person> list = new ArrayList<>();
+        List<Long> marriedIds = new ArrayList<>(); // Lista para armazenar IDs das pessoas casadas
+
         File fileObject = new File(file);
 
-        if (fileObject.exists() && fileObject.length() > 0) { // verifica se o arquivo existe e tem tamanho maior que zero
+        if (fileObject.exists() && fileObject.length() > 0) {
             try (BufferedReader reader = new BufferedReader(new FileReader(fileObject))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] data = line.split(","); // atributos separados por vírgula
                     Long id = Long.parseLong(data[0]);
                     String name = data[1];
-                    Person person = new Person(id, name);
+                    Long marriedPersonId = Long.parseLong(data[2]);
+
+                    if (marriedPersonId != 0) {
+                        // Se o ID da pessoa casada não for 0, adicione-o à lista de IDs das pessoas casadas
+                        marriedIds.add(marriedPersonId);
+                    }
+
+                    // Crie a pessoa sem associar a pessoa casada por enquanto
+                    Person person = new Person(id, name, null);
                     list.add(person);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            // Associe as pessoas casadas na segunda passagem
+            for (Person person : list) {
+                Long marriedPersonId = marriedIds.get((int) ((Long) person.getId() - 1)); // -1 porque os IDs começam de 1
+                if (marriedPersonId != 0) {
+                    Person marriedPerson = list.get((int) (marriedPersonId - 1)); // -1 porque os IDs começam de 1
+                    person.setMarried(marriedPerson);
+                }
             }
         } else {
             System.out.println("Empty or non existing file.");

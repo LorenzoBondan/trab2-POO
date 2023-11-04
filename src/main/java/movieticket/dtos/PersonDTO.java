@@ -48,4 +48,9 @@ public class PersonDTO {
 	public void setMarriedId(Long marriedId) {
 		this.marriedId = marriedId;
 	}
+
+	@Override
+	public String toString() {
+		return "PersonDTO [id=" + id + ", name=" + name + ", marriedId=" + marriedId + "]";
+	}
 }
