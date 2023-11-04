@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import movieticket.entities.Movie;
+import movieticket.entities.Schedule;
+import movieticket.entities.Seat;
 import movieticket.entities.Ticket;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.ResourceNotFoundException;
@@ -21,8 +23,8 @@ public class TicketRepository {
 
 	private String file = "tickets.csv";
 	
-	//private SeatRepository seatRepository = new SeatRepository();
-	//private ScheduleRepository scheduleRepository = new ScheduleRepository();
+	private SeatRepository seatRepository = new SeatRepository();
+	private ScheduleRepository scheduleRepository = new ScheduleRepository();
 	private MovieRepository movieRepository = new MovieRepository();
 	
 	public List<Ticket> findAll() {
@@ -117,18 +119,17 @@ public class TicketRepository {
                     // Converte a string de data para um objeto Date usando o formato especificado
                     date = dateFormat.parse(data[2]);
                 } catch (ParseException e) {
-                    // Trate exceções de parse, se necessário
                     e.printStackTrace();
                     date = null; // Define como null se a conversão falhar
                 }
                 String phoneNumber = data[3];
                 Double price = Double.parseDouble(data[4]);
                 Boolean halfPrice = Boolean.parseBoolean(data[5]);
-                //Seat seat = seatRepository.findById(Long.parseLong(data[6])).get();
-                //Schedule schedule = scheduleRepository.findById(Long.parseLong(data[7])).get();
+                Seat seat = seatRepository.findById(Long.parseLong(data[6])).get();
+                Schedule schedule = scheduleRepository.findById(Long.parseLong(data[7])).get();
                 Movie movie = movieRepository.findById(Long.parseLong(data[8])).get();
                 
-                Ticket ticket = new Ticket(); // <<<<-----
+                Ticket ticket = new Ticket(id, clientName, date, phoneNumber, price, halfPrice, seat, schedule, movie);
                 list.add(ticket);
             }
         } catch (IOException e) {
