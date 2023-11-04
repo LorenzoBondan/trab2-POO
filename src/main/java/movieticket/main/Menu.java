@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
+import movieticket.controllers.GenderController;
 import movieticket.dtos.ActorDTO;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
@@ -17,26 +19,137 @@ import movieticket.services.GenderService;
 import movieticket.services.MovieService;
 import movieticket.services.PersonService;
 import movieticket.services.ScheduleService;
+import movieticket.util.Util;
 
 public class Menu {
+	
+	GenderService genderService = new GenderService();
+	
+	public void showMenu() {
+		Scanner in = new Scanner(System.in);
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Movie Ticket Cinemas");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha um dos tópicos a seguir:");
+			System.out.println("1) Gêneros");
+			System.out.println("2) Filmes");
+			System.out.println("3) Salas");
+			System.out.println("4) Horários");
+			System.out.println("5) Assentos");
+			System.out.println("6) Ingressos");
+			System.out.println("7) Atores");
+			System.out.println("8) Diretores");
+			System.out.println("9) Cinemas");
+			System.out.println("10) Sair do sistema");
+			System.out.println("------------------------------------------------------------");
+			
+			opc = Util.readInt("");
+
+			switch (opc) {
+            case 1:
+                System.out.println("Opção 1 selecionada: Gêneros");
+                break;
+            case 2:
+                System.out.println("Opção 2 selecionada: Filmes");
+                break;
+            case 3:
+                System.out.println("Opção 3 selecionada: Salas");
+                break;
+            case 4:
+                System.out.println("Opção 4 selecionada: Horários");
+                break;
+            case 5:
+                System.out.println("Opção 5 selecionada: Assentos");
+                break;
+            case 6:
+                System.out.println("Opção 6 selecionada: Ingressos");
+                break;
+            case 7:
+                System.out.println("Opção 7 selecionada: Atores");
+                break;
+            case 8:
+                System.out.println("Opção 8 selecionada: Diretores");
+                break;
+            case 9:
+                System.out.println("Opção 9 selecionada: Cinemas");
+                break;
+            case 10:
+                System.out.println("Saindo do sistema...");
+                break;
+            default:
+                System.out.println("Opção inválida. Tente novamente.");
+			}
+		} while (opc != 10);
+		in.close();
+	}
+	
+	public void showGenders() {
+		GenderController controller = new GenderController();
+		Scanner in = new Scanner(System.in);
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Gêneros");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os gêneros");
+			System.out.println("2) Mostrar um gênero por código");
+			System.out.println("3) Inserir novo gênero");
+			System.out.println("4) Atualizar um gênero");
+			System.out.println("5) Excluir um gênero");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+
+			switch (opc) {
+            case 1:
+                System.out.println("Opção 1 selecionada: Mostrar todos os gêneros");
+                controller.findAll();
+                break;
+            case 2:
+                System.out.println("Opção 2 selecionada: Mostrar um gênero por código");
+                break;
+            case 3:
+                System.out.println("Opção 3 selecionada: Inserir novo gênero");
+                break;
+            case 4:
+                System.out.println("Opção 4 selecionada: Atualizar um gênero");
+                break;
+            case 5:
+                System.out.println("Opção 5 selecionada: Excluir um gênero");
+                break;
+            case 6:
+                System.out.println("Saindo de Gêneros...");
+                break;
+            default:
+                System.out.println("Opção inválida. Tente novamente.");
+			}
+		} while (opc != 10);
+		in.close();
+	}
 
 	public static void main(String[] args) throws ParseException {
 		
 		// #### GENDER
+		GenderService genderService = new GenderService();
 		
-		GenderService service = new GenderService();
 		
 		System.out.println("\nGENDER\n");
 		
+		
+		
 		// FINDALL -------------------
-		List<GenderDTO> list = service.findAll();
+		List<GenderDTO> list = genderService.findAll();
 		for(GenderDTO g : list) {
 			System.out.println("Id: " + g.getId() + " Name: " + g.getName());
 		}
 		
 		// FINDBYID -------------------
 		try {
-			GenderDTO ge = service.findById(5L);
+			GenderDTO ge = genderService.findById(5L);
 			System.out.println("GENDER: " + ge.getName());
 		} catch(ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -45,7 +158,7 @@ public class Menu {
 		// INSERT ---------------------
 		try {
 			GenderDTO gender = new GenderDTO(1L, "Action");
-			service.insert(gender);
+			genderService.insert(gender);
 		} catch(DuplicateResourceException e) {
 			System.out.println(e.getMessage());
 		}
@@ -53,7 +166,7 @@ public class Menu {
 		// UPDATE --------------------
 		try {
 			GenderDTO updatedGender = new GenderDTO(1L, "Comedy");
-			service.update(1L, updatedGender);
+			genderService.update(1L, updatedGender);
 			System.out.println("Updated successfully: " + updatedGender.toString());
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -61,7 +174,7 @@ public class Menu {
 		
 		// DELETE ---------------------
 		try {
-			service.delete(4L);
+			genderService.delete(4L);
 			System.out.println("Gender deleted successfully.");
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -215,4 +328,10 @@ public class Menu {
 			System.out.println(e.getMessage());
 		}
 	}
+	
+	private List<GenderDTO> findAllGenders(){
+		return genderService.findAll();
+	}
+	
+	
 }
