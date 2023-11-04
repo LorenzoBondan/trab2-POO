@@ -65,7 +65,7 @@ public class Menu {
 		
 		
 		
-		/*
+		
 		// #### PERSON
 		
 		PersonService personService = new PersonService();
@@ -74,7 +74,7 @@ public class Menu {
 		
 		// INSERT ---------------------
 		try {
-			ActorDTO actor = new ActorDTO(3L, "Marcos", 1L);
+			ActorDTO actor = new ActorDTO(3L, "Marcos", "Actor", 1L);
 			personService.insert(actor);
 		} catch(DuplicateResourceException e) {
 			System.out.println(e.getMessage());
@@ -88,7 +88,7 @@ public class Menu {
 		
 		// UPDATE --------------------
 		try {
-			PersonDTO updatedActor = new ActorDTO(1L, "Lorenzo Bondan", 2L);
+			PersonDTO updatedActor = new ActorDTO(1L, "Lorenzo Bondan", "Director", 2L);
 			personService.update(1L, updatedActor);
 			System.out.println("Updated successfully: " + updatedActor.toString());
 		} catch (ResourceNotFoundException e) {
@@ -102,7 +102,7 @@ public class Menu {
 		} catch (ResourceNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		*/
+		
 		
 		// #### MOVIE
 		

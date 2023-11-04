@@ -48,6 +48,7 @@ public class PersonRepository {
         for (Person person : list) { // percorre a lista
             if (person.getId().equals(updatedPerson.getId())) { // quando achou o objeto procurado, atualiza seus dados
                 person.setName(updatedPerson.getName());
+                person.setRole(updatedPerson.getRole());
                 person.setMarried(updatedPerson.getMarried());
                 isUpdated = true; // muda para verdadeiro
                 break;
@@ -75,6 +76,7 @@ public class PersonRepository {
             for (Person person : list) {
                 writer.write(person.getId() + "," 
                 			+ person.getName() + "," 
+                			+ person.getRole() + ","
                 			+ person.getMarried().getId()
                 );
                 writer.newLine();
@@ -97,7 +99,8 @@ public class PersonRepository {
                     String[] data = line.split(","); // atributos separados por vírgula
                     Long id = Long.parseLong(data[0]);
                     String name = data[1];
-                    Long marriedPersonId = Long.parseLong(data[2]);
+                    String role = data[2];
+                    Long marriedPersonId = Long.parseLong(data[3]);
 
                     if (marriedPersonId != 0) {
                         // Se o ID da pessoa casada não for 0, adicione-o à lista de IDs das pessoas casadas
@@ -105,7 +108,7 @@ public class PersonRepository {
                     }
 
                     // Crie a pessoa sem associar a pessoa casada por enquanto
-                    Person person = new Person(id, name, null);
+                    Person person = new Person(id, name, role, null);
                     list.add(person);
                 }
             } catch (IOException e) {

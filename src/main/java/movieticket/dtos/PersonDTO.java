@@ -6,6 +6,7 @@ public class PersonDTO {
 
 	private Long id;
 	private String name;
+	private String role;
 	private Long marriedId;
 	
 	public PersonDTO() {}
@@ -13,15 +14,17 @@ public class PersonDTO {
 	public PersonDTO(Person entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
+		this.role = entity.getRole();
 		if(entity.getMarried() != null) {
 			this.marriedId = entity.getMarried().getId();
 		}
 	}
 
-	public PersonDTO(Long id, String name, Long marriedId) {
+	public PersonDTO(Long id, String name, String role, Long marriedId) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.role = role;
 		this.marriedId = marriedId;
 	}
 
@@ -41,6 +44,14 @@ public class PersonDTO {
 		this.name = name;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	public Long getMarriedId() {
 		return marriedId;
 	}
@@ -51,6 +62,6 @@ public class PersonDTO {
 
 	@Override
 	public String toString() {
-		return "PersonDTO [id=" + id + ", name=" + name + ", marriedId=" + marriedId + "]";
+		return "PersonDTO [id=" + id + ", name=" + name + ", role=" + role + ", marriedId=" + marriedId + "]";
 	}
 }

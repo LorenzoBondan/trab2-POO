@@ -41,6 +41,7 @@ public class PersonService {
 	private void copyDtoToEntity(PersonDTO dto, Person entity) {
 		entity.setId(dto.getId());
 		entity.setName(dto.getName());
+		entity.setRole(dto.getRole());
 		entity.setMarried(repository.findById(dto.getMarriedId()).get());
 	}
 }

@@ -6,14 +6,16 @@ public class Person {
 
 	private Long id;
 	private String name;
+	private String role; // to identify if is Actor or Director
 	private Person married;
 	
 	public Person() {}
 
-	public Person(Long id, String name, Person married) {
+	public Person(Long id, String name, String role, Person married) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.role = role;
 		this.married = married;
 	}
 	
@@ -37,6 +39,14 @@ public class Person {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public Person getMarried() {
@@ -66,6 +76,6 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", name=" + name + ", married=" + married + "]";
+		return "Person [id=" + id + ", name=" + name + ", role =" + role + ", married=" + married + "]";
 	}
 }
