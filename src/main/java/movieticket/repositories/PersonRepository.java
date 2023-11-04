@@ -73,7 +73,10 @@ public class PersonRepository {
     public void save(List<Person> list) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Person person : list) {
-                writer.write(person.getId() + "," + person.getName() + "," + person.getMarried().getId());
+                writer.write(person.getId() + "," 
+                			+ person.getName() + "," 
+                			+ person.getMarried().getId()
+                );
                 writer.newLine();
             }
         } catch (IOException e) {

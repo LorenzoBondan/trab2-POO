@@ -5,12 +5,15 @@ import java.util.stream.Collectors;
 
 import movieticket.dtos.GenderDTO;
 import movieticket.entities.Gender;
+import movieticket.entities.Movie;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.GenderRepository;
+import movieticket.repositories.MovieRepository;
 
 public class GenderService {
 
 	private GenderRepository repository = new GenderRepository();
+	private MovieRepository movieRepository = new MovieRepository();
 	
 	public List<GenderDTO> findAll(){
 		List<Gender> list = repository.findAll();
@@ -44,8 +47,8 @@ public class GenderService {
 		
 		entity.getMovies().clear();
 		for(Long movieId : dto.getMoviesIds()) {
-			//Movie movie = movieRepository.findById(movieId).get();
-			//entity.getMovies().add(movie);
+			Movie movie = movieRepository.findById(movieId).get();
+			entity.getMovies().add(movie);
 		}
 	}
 }

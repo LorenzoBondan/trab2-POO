@@ -71,7 +71,10 @@ public class CinemaRepository {
     public void save(List<Cinema> list) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Cinema cinema : list) {
-                writer.write(cinema.getId() + "," + cinema.getAddress());
+                writer.write(cinema.getId() + "," 
+                			+ cinema.getName() + "," 
+            				+ cinema.getAddress()
+            	);
                 writer.newLine();
             }
         } catch (IOException e) {
