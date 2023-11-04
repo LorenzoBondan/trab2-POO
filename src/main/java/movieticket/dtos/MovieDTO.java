@@ -120,4 +120,10 @@ public class MovieDTO {
 	public List<Long> getTicketsIds() {
 		return ticketsIds;
 	}
+
+	@Override
+	public String toString() {
+		return "MovieDTO [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description
+				+ ", duration=" + duration + ", genderId=" + genderId + ", cinemaId=" + cinemaId + "]";
+	}
 }
