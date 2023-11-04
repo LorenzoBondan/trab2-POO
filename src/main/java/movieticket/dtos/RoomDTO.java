@@ -63,4 +63,9 @@ public class RoomDTO {
 	public List<Long> getSeatsIds() {
 		return seatsIds;
 	}
+
+	@Override
+	public String toString() {
+		return "RoomDTO [id=" + id + ", number=" + number + ", cinemaId=" + cinemaId + "]";
+	}
 }
