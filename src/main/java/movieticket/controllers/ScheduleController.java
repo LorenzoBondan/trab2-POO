@@ -20,7 +20,7 @@ public class ScheduleController {
 	public void findById(Long id) {
 		try {
 			ScheduleDTO dto = service.findById(id);
-			System.out.println(dto);
+			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
 			System.out.println("Horário não encontrado");
 		}

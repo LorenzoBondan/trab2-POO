@@ -20,7 +20,7 @@ public class RoomController {
 	public void findById(Long id) {
 		try {
 			RoomDTO dto = service.findById(id);
-			System.out.println(dto);
+			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
 			System.out.println("Sala não encontrada");
 		}

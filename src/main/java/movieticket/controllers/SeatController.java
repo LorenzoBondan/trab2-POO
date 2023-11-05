@@ -20,7 +20,7 @@ public class SeatController {
 	public void findById(Long id) {
 		try {
 			SeatDTO dto = service.findById(id);
-			System.out.println(dto);
+			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
 			System.out.println("Assento não encontrado");
 		}

@@ -1,5 +1,6 @@
 package movieticket.dtos;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import movieticket.entities.Ticket;
@@ -118,7 +119,9 @@ public class TicketDTO {
 
 	@Override
 	public String toString() {
-		return "TicketDTO [id=" + id + ", clientName=" + clientName + ", date=" + date + ", phoneNumber=" + phoneNumber
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateFormat.format(date);
+		return "TicketDTO [id=" + id + ", clientName=" + clientName + ", date=" + formattedDate + ", phoneNumber=" + phoneNumber
 				+ ", price=" + price + ", halfPrice=" + halfPrice + ", seatId=" + seatId + ", scheduleId=" + scheduleId
 				+ ", movieId=" + movieId + "]";
 	}

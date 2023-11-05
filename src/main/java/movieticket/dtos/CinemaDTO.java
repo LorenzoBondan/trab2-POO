@@ -68,4 +68,9 @@ public class CinemaDTO {
 	public String toString() {
 		return "CinemaDTO [id=" + id + ", name=" + name + ", address=" + address + "]";
 	}
+	
+	public String toStringWithList() {
+		return "CinemaDTO [id=" + id + ", name=" + name + ", address=" + address + ", moviesIds=" + moviesIds
+				+ ", roomsIds=" + roomsIds + "]";
+	}
 }

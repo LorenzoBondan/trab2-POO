@@ -68,9 +68,14 @@ public class SeatDTO {
 	public List<Long> getTicketsIds() {
 		return ticketsIds;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "SeatDTO [id=" + id + ", number=" + number + ", line=" + line + ", roomId=" + roomId + "]";
+	}
+
+	public String toStringWithList() {
+		return "SeatDTO [id=" + id + ", number=" + number + ", line=" + line + ", roomId=" + roomId + ", ticketsIds="
+				+ ticketsIds + "]";
 	}
 }

@@ -68,4 +68,9 @@ public class RoomDTO {
 	public String toString() {
 		return "RoomDTO [id=" + id + ", number=" + number + ", cinemaId=" + cinemaId + "]";
 	}
+	
+	public String toStringWithList() {
+		return "RoomDTO [id=" + id + ", number=" + number + ", cinemaId=" + cinemaId + ", schedulesIds=" + schedulesIds
+				+ ", seatsIds=" + seatsIds + "]";
+	}
 }

@@ -14,4 +14,9 @@ public class DirectorDTO extends PersonDTO{
 	public List<Long> getMoviesIds() {
 		return moviesIds;
 	}
+
+	@Override
+	public String toString() {
+		return "DirectorDTO [moviesIds=" + moviesIds + "]";
+	}
 }

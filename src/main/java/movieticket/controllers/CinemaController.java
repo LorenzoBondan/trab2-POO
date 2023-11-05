@@ -20,7 +20,7 @@ public class CinemaController {
 	public void findById(Long id) {
 		try {
 			CinemaDTO dto = service.findById(id);
-			System.out.println(dto);
+			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
 			System.out.println("Cinema não encontrado");
 		}

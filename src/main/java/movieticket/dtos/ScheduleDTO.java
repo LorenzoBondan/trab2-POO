@@ -84,10 +84,17 @@ public class ScheduleDTO {
 	}
 
 	@Override
-    public String toString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	public String toString() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);
         return "ScheduleDTO [id=" + id + ", date=" + formattedDate + ", time=" + time + ", roomId=" + roomId + ", movieId="
                 + movieId + "]";
+	}
+	
+    public String toStringWithList() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = dateFormat.format(date);
+        return "ScheduleDTO [id=" + id + ", date=" + formattedDate + ", time=" + time + ", roomId=" + roomId + ", movieId="
+                + movieId + ", ticketsIds=" + ticketsIds + "]";
     }
 }
