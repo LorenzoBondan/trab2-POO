@@ -219,5 +219,24 @@ public class PersonRepository {
         return list;
     }
     
+    ////// RELAÇÕES MUITOS PARA MUITOS
+    
+    public void addActorToMovie(Long actorId, Long movieId) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file_actors_movies, true))) {
+            writer.write(actorId + "," + movieId);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addDirectorToMovie(Long directorId, Long movieId) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file_directors_movies, true))) {
+            writer.write(directorId + "," + movieId);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

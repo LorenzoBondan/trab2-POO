@@ -16,6 +16,7 @@ import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
 import movieticket.dtos.RoomDTO;
 import movieticket.dtos.ScheduleDTO;
+import movieticket.repositories.PersonRepository;
 import movieticket.util.Util;
 
 public class Menu {
@@ -151,6 +152,7 @@ public class Menu {
 		GenderController genderController = new GenderController();
 		CinemaController cinemaController = new CinemaController();
 		PersonController personController = new PersonController();
+		PersonRepository personRepository = new PersonRepository();
 		
 		Scanner in = new Scanner(System.in);
 		int opc;
@@ -199,6 +201,7 @@ public class Menu {
 	            while(stopDirector != 0) {
 	            	Long directorId = Util.readLong("Digite o código do diretor: ");
 	            	directorsIds.add(directorId);
+	            	personRepository.addDirectorToMovie(directorId, newDto.getId());
 	            	stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
 	            	if(stopDirector == 0) {
 	            		break;
@@ -212,6 +215,7 @@ public class Menu {
 	            while(stopActor != 0) {
 	            	Long actorId = Util.readLong("Digite o código do ator: ");
 	            	actorsIds.add(actorId);
+	            	personRepository.addActorToMovie(actorId, newDto.getId());
 	            	stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
 	            	if(stopActor == 0) {
 	            		break;
@@ -220,11 +224,6 @@ public class Menu {
 	            newDto.setActorsIds(actorsIds);
 	           
 	            movieController.insert(newDto);
-	            
-	            // ------- FAZER -------
-	            // RELAÇÕES DE MUITOS PARA MUITOS
-	            // adicionar os ids dos atores selecionados ao csv actor_movie (actor_id, movie_id)
-	            // adicionar os ids dos diretores selecionados ao csv director_movie (director_id, movie_id)
 	            break;
 	        case 4:
 	            System.out.println("Opção 4 selecionada: Atualizar um filme\n");
