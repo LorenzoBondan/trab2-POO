@@ -258,22 +258,13 @@ public class PersonRepository {
             return;
         }
 
-        // Renomeia o arquivo temporário para substituir o arquivo original
+        // substitui o arquivo original
         File originalFile = new File(file_actors_movies);
         originalFile.delete();
         
         File tempFile = new File("temp_actors_movies.csv");
-        tempFile.renameTo(originalFile); // então, renomeamos o arquivo temporário para o nome do arquivo original
-        
-        /*
-        if (tempFile.renameTo(originalFile)) {
-            System.out.println("Atores removidos com sucesso do filme.");
-        } else {
-            System.out.println("Falha ao remover atores do filme.");
-        }
-        */
+        tempFile.renameTo(originalFile);
     }
-
     
     public void removeDirectorsFromMovie(List<Long> directorsToRemove, Long movieId) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file_directors_movies));
@@ -294,20 +285,12 @@ public class PersonRepository {
                return;
            }
 
-           // Renomeia o arquivo temporário para substituir o arquivo original
+        // substitui o arquivo original
         File originalFile = new File(file_directors_movies);
         originalFile.delete();
         
         File tempFile = new File("temp_directors_movies.csv");
         tempFile.renameTo(originalFile);
-           
-           /*
-           if (tempFile.renameTo(originalFile)) {
-               System.out.println("Diretores removidos com sucesso do filme.");
-           } else {
-               System.out.println("Falha ao remover diretores do filme.");
-           }
-           */
     }
 
 }

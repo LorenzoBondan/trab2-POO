@@ -12,11 +12,15 @@ import movieticket.controllers.MovieController;
 import movieticket.controllers.PersonController;
 import movieticket.controllers.RoomController;
 import movieticket.controllers.ScheduleController;
+import movieticket.controllers.SeatController;
+import movieticket.controllers.TicketController;
 import movieticket.dtos.CinemaDTO;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
 import movieticket.dtos.RoomDTO;
 import movieticket.dtos.ScheduleDTO;
+import movieticket.dtos.SeatDTO;
+import movieticket.dtos.TicketDTO;
 import movieticket.entities.Actor;
 import movieticket.entities.Director;
 import movieticket.repositories.PersonRepository;
@@ -65,6 +69,7 @@ public class Menu {
                 break;
             case 5:
                 System.out.println("Opção 5 selecionada: Assentos");
+                showSeats();
                 break;
             case 6:
                 System.out.println("Opção 6 selecionada: Ingressos");
@@ -78,6 +83,7 @@ public class Menu {
             case 9:
                 System.out.println("Opção 9 selecionada: Cinemas");
                 showCinemas();
+                break;
             case 10:
                 System.out.println("Saindo do sistema...");
                 break;
@@ -91,7 +97,6 @@ public class Menu {
 	public static void showGenders() {
 		GenderController genderController = new GenderController();
 		
-		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
 			System.out.println("------------------------------------------------------------");
@@ -147,7 +152,6 @@ public class Menu {
 	            System.out.println("Opção inválida. Tente novamente.\n");
 			}
 		} while (opc != 6);
-		in.close();
 	}
 	
 	public static void showMovies() {
@@ -157,7 +161,6 @@ public class Menu {
 		PersonController personController = new PersonController();
 		PersonRepository personRepository = new PersonRepository();
 		
-		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
 			System.out.println("------------------------------------------------------------");
@@ -311,13 +314,11 @@ public class Menu {
 	            System.out.println("Opção inválida. Tente novamente.\n");
 			}
 		} while (opc != 6);
-		in.close();
 	}
 	
 	public static void showCinemas() {
 		CinemaController cinemaController = new CinemaController();
 		
-		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
 			System.out.println("------------------------------------------------------------");
@@ -375,14 +376,12 @@ public class Menu {
 	            System.out.println("Opção inválida. Tente novamente.\n");
 			}
 		} while (opc != 6);
-		in.close();
 	}
 	
 	public static void showRooms() {
 		RoomController roomController = new RoomController();
 		CinemaController cinemaController = new CinemaController();
 		
-		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
 			System.out.println("------------------------------------------------------------");
@@ -442,7 +441,6 @@ public class Menu {
 	            System.out.println("Opção inválida. Tente novamente.\n");
 			}
 		} while (opc != 6);
-		in.close();
 	}
 	
 	public static void showSchedules() {
@@ -450,7 +448,6 @@ public class Menu {
 		RoomController roomController = new RoomController();
 		MovieController movieController = new MovieController();
 		
-		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
 			System.out.println("------------------------------------------------------------");
@@ -516,7 +513,158 @@ public class Menu {
 	            System.out.println("Opção inválida. Tente novamente.\n");
 			}
 		} while (opc != 6);
-		in.close();
+	}
+	
+	public static void showSeats() {
+		SeatController seatController = new SeatController();
+		RoomController roomController = new RoomController();
+		
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Assentos");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os assentos");
+			System.out.println("2) Mostrar um assento por código");
+			System.out.println("3) Inserir novo assento");
+			System.out.println("4) Atualizar um assento");
+			System.out.println("5) Excluir um assento");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os assentos\n");
+	            seatController.findAll();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um assento por código\n");
+	            seatController.findAll();
+	            Long id = Util.readLong("Digite o código: ");
+	            seatController.findById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo assento\n");
+	            SeatDTO newDto = new SeatDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setNumber(Util.readInt("Digite o número: "));
+	            newDto.setLine(Util.readInt("Digite a fileira: "));
+	            roomController.findAll();
+	            newDto.setRoomId(Util.readLong("Digite o código da sala: "));
+	            seatController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um assento\n");
+	            seatController.findAll();
+	            SeatDTO updatedDto = new SeatDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setNumber(Util.readInt("Digite o número: "));
+	            updatedDto.setLine(Util.readInt("Digite a fileira: "));
+	            roomController.findAll();
+	            updatedDto.setRoomId(Util.readLong("Digite o código da sala: "));
+	            seatController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um assento\n");
+	            seatController.findAll();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            seatController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Assentos...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
+	}
+	
+	public static void showTickets() {
+		TicketController ticketController = new TicketController();
+		SeatController seatController = new SeatController();
+		MovieController movieController = new MovieController();
+		ScheduleController scheduleController = new ScheduleController();
+		
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Ingressos");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os ingressos");
+			System.out.println("2) Mostrar um ingresso por código");
+			System.out.println("3) Inserir novo ingresso");
+			System.out.println("4) Atualizar um ingresso");
+			System.out.println("5) Excluir um ingresso");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os ingressos\n");
+	            ticketController.findAll();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um ingresso por código\n");
+	            ticketController.findAll();
+	            Long id = Util.readLong("Digite o código: ");
+	            ticketController.findById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo ingresso\n");
+	            TicketDTO newDto = new TicketDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setClientName(Util.readString("Digite o nome do cliente: "));
+	            newDto.setPhoneNumber(Util.readString("Digite o número de telefone do clinte: "));
+	            newDto.setPrice(Util.readDouble("Digite o preço: "));
+	            newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
+	            int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
+	            newDto.setHalfPrice(half == 1);
+	            movieController.findAll();
+	            newDto.setMovieId(Util.readLong("Digite o código do filme: "));
+	            scheduleController.findAll();
+	            newDto.setScheduleId(Util.readLong("Digite o código do horário: "));
+	            seatController.findAll();
+	            newDto.setSeatId(Util.readLong("Digite o código do assento: "));
+	            ticketController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um ingresso\n");
+	            ticketController.findAll();
+	            TicketDTO updatedDto = new TicketDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setClientName(Util.readString("Digite o nome do cliente: "));
+	            updatedDto.setPhoneNumber(Util.readString("Digite o número de telefone do clinte: "));
+	            updatedDto.setPrice(Util.readDouble("Digite o preço: "));
+	            updatedDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
+	            half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
+	            updatedDto.setHalfPrice(half == 1);
+	            movieController.findAll();
+	            updatedDto.setMovieId(Util.readLong("Digite o código do filme: "));
+	            scheduleController.findAll();
+	            updatedDto.setScheduleId(Util.readLong("Digite o código do horário: "));
+	            seatController.findAll();
+	            updatedDto.setSeatId(Util.readLong("Digite o código do assento: "));
+	            ticketController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um ingresso\n");
+	            ticketController.findAll();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            ticketController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Ingressos...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
 	}
 
 	public static void main(String[] args) throws ParseException {
