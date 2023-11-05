@@ -57,6 +57,7 @@ public class Menu {
                 break;
             case 4:
                 System.out.println("Opção 4 selecionada: Horários");
+                showSchedules();
                 break;
             case 5:
                 System.out.println("Opção 5 selecionada: Assentos");
@@ -424,11 +425,8 @@ public class Menu {
 	            System.out.println("Opção 3 selecionada: Inserir novo horário\n");
 	            ScheduleDTO newDto = new ScheduleDTO();
 	            newDto.setId(Util.readLong("Digite o código: "));
-	            
-	            //// ----- FAZER
-	            newDto.setDate(null); // FAZER UM Util.readDate();
-	            newDto.setTime(null); // FAZER UM Util.readTime();
-	            
+	            newDto.setDate(Util.readDate("Informe uma data no formato dia/mês/ano: ")); 
+	            newDto.setTime(Util.readTime("Informe um horário no formato hora:minuto: "));
 	            movieController.findAll();
 	            newDto.setMovieId(Util.readLong("Digite o id do filme: "));
 	            roomController.findAll();
@@ -440,12 +438,8 @@ public class Menu {
 	            scheduleController.findAll();
 	            ScheduleDTO updatedDto = new ScheduleDTO();
 	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            
-	            //// ----- FAZER
-	            updatedDto.setDate(null);
-	            updatedDto.setTime(null);
-	            
-	            
+	            updatedDto.setDate(Util.readDate("Informe uma data no formato dia/mês/ano: ")); 
+	            updatedDto.setTime(Util.readTime("Informe um horário no formato hora:minuto: "));
 	            movieController.findAll();
 	            updatedDto.setMovieId(Util.readLong("Digite o id do filme: "));
 	            roomController.findAll();
