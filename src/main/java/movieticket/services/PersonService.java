@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import movieticket.dtos.PersonDTO;
 import movieticket.entities.Person;
+import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.PersonRepository;
 
@@ -23,19 +24,33 @@ public class PersonService {
 	}
 	
 	public void insert(PersonDTO dto) {
-		Person entity = new Person();
-		copyDtoToEntity(dto, entity);
-		repository.insert(entity);
+		try{
+			Person entity = new Person();
+			copyDtoToEntity(dto, entity);
+			repository.insert(entity);
+			System.out.println("Pessoa inserida com sucesso: " + dto);
+		} catch (Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void update(Long id, PersonDTO dto) {
-		Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		copyDtoToEntity(dto, entity);
-		repository.update(entity);
+		try {
+			Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			copyDtoToEntity(dto, entity);
+			repository.update(entity);
+			System.out.println("Pessoa atualizada com sucesso: " + dto);
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void delete(Long id) {
-		repository.delete(id);
+		PersonDTO dto = findById(id);
+		if(dto != null) {
+			repository.delete(id);
+			System.out.println("Pessoa deletada com sucesso: " + id);
+		}
 	}
 	
 	private void copyDtoToEntity(PersonDTO dto, Person entity) {

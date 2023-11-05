@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import movieticket.dtos.RoomDTO;
 import movieticket.entities.Room;
+import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.CinemaRepository;
 import movieticket.repositories.RoomRepository;
@@ -25,19 +26,32 @@ public class RoomService {
 	}
 	
 	public void insert(RoomDTO dto) {
-		Room entity = new Room();
-		copyDtoToEntity(dto, entity);
-		repository.insert(entity);
+		try {
+			Room entity = new Room();
+			copyDtoToEntity(dto, entity);
+			repository.insert(entity);
+			System.out.println("Sala inserida com sucesso: " + dto);
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void update(Long id, RoomDTO dto) {
-		Room entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		copyDtoToEntity(dto, entity);
-		repository.update(entity);
+		try{
+			Room entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			copyDtoToEntity(dto, entity);
+			repository.update(entity);
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void delete(Long id) {
-		repository.delete(id);
+		RoomDTO dto = findById(id);
+		if(dto != null) {
+			repository.delete(id);
+			System.out.println("Sala deletada com sucesso: " + id);
+		}
 	}
 	
 	private void copyDtoToEntity(RoomDTO dto, Room entity) {

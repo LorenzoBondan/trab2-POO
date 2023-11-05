@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import movieticket.dtos.ScheduleDTO;
 import movieticket.entities.Schedule;
 import movieticket.entities.Ticket;
+import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.MovieRepository;
 import movieticket.repositories.RoomRepository;
@@ -30,19 +31,34 @@ public class ScheduleService {
 	}
 	
 	public void insert(ScheduleDTO dto) {
-		Schedule entity = new Schedule();
-		copyDtoToEntity(dto, entity);
-		repository.insert(entity);
+		try {
+			Schedule entity = new Schedule();
+			copyDtoToEntity(dto, entity);
+			repository.insert(entity);
+			System.out.println("Horário inserido com sucesso.");
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
+		
 	}
 	
 	public void update(Long id, ScheduleDTO dto) {
-		Schedule entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		copyDtoToEntity(dto, entity);
-		repository.update(entity);
+		try {
+			Schedule entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			copyDtoToEntity(dto, entity);
+			repository.update(entity);
+			System.out.println("Horário atualizado com sucesso.");
+		} catch(Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
+		}
 	}
 	
 	public void delete(Long id) {
-		repository.delete(id);
+		ScheduleDTO dto = findById(id);
+		if(dto != null) {
+			repository.delete(id);
+			System.out.println("Horário deletado com sucesso: " + id);
+		}
 	}
 	
 	private void copyDtoToEntity(ScheduleDTO dto, Schedule entity) {

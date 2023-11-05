@@ -23,8 +23,7 @@ public class GenderService {
 	
 	public GenderDTO findById(Long id) {
 		Gender entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gênero não encontrado com o ID: " + id));
-		// adicionar seus respectivos filmes
-		List<Movie> list = movieRepository.findAllByGenderId(id);
+		List<Movie> list = movieRepository.findAllByGenderId(id); // adicionar seus respectivos filmes
 		entity.setMovies(list);
 		return new GenderDTO(entity);
 	}

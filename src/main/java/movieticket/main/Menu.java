@@ -7,7 +7,6 @@ import movieticket.controllers.GenderController;
 import movieticket.controllers.MovieController;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
-import movieticket.services.GenderService;
 import movieticket.util.Util;
 
 public class Menu {
