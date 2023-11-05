@@ -32,6 +32,16 @@ public class PersonService {
 		return list.stream().map(obj -> new DirectorDTO(obj)).collect(Collectors.toList());
 	}
 	
+	public List<ActorDTO> findAllActorsByMovieId(Long movieId){
+		List<Actor> list = repository.findAllActorsByMovieId(movieId);
+		return list.stream().map(obj -> new ActorDTO(obj)).collect(Collectors.toList());
+	}
+	
+	public List<DirectorDTO> findAllDirectorsByMovieId(Long movieId){
+		List<Director> list = repository.findAllDirectorsByMovieId(movieId);
+		return list.stream().map(obj -> new DirectorDTO(obj)).collect(Collectors.toList());
+	}
+	
 	public PersonDTO findById(Long id) {
 		Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
 		return new PersonDTO(entity);

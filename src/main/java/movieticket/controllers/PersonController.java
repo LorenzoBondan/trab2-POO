@@ -34,6 +34,20 @@ public class PersonController {
         }
 	}
 	
+	public void findAllActorsByMovieId(Long movieId) {
+		List<ActorDTO> list = service.findAllActorsByMovieId(movieId);
+        for(ActorDTO actorDto : list) {
+        	System.out.println(actorDto);
+        }
+	}
+	
+	public void findAllDirectorsByMovieId(Long movieId) {
+		List<DirectorDTO> list = service.findAllDirectorsByMovieId(movieId);
+        for(DirectorDTO directorDto : list) {
+        	System.out.println(directorDto);
+        }
+	}
+	
 	public void findById(Long id) {
 		try {
 			PersonDTO dto = service.findById(id);

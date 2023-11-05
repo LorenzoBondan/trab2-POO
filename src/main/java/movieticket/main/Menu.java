@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import movieticket.controllers.CinemaController;
 import movieticket.controllers.GenderController;
@@ -16,6 +17,8 @@ import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
 import movieticket.dtos.RoomDTO;
 import movieticket.dtos.ScheduleDTO;
+import movieticket.entities.Actor;
+import movieticket.entities.Director;
 import movieticket.repositories.PersonRepository;
 import movieticket.util.Util;
 
@@ -201,7 +204,7 @@ public class Menu {
 	            while(stopDirector != 0) {
 	            	Long directorId = Util.readLong("Digite o código do diretor: ");
 	            	directorsIds.add(directorId);
-	            	personRepository.addDirectorToMovie(directorId, newDto.getId());
+	            	personRepository.addDirectorToMovie(directorId, newDto.getId()); // add no csv muitos para muitos
 	            	stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
 	            	if(stopDirector == 0) {
 	            		break;
@@ -215,7 +218,7 @@ public class Menu {
 	            while(stopActor != 0) {
 	            	Long actorId = Util.readLong("Digite o código do ator: ");
 	            	actorsIds.add(actorId);
-	            	personRepository.addActorToMovie(actorId, newDto.getId());
+	            	personRepository.addActorToMovie(actorId, newDto.getId()); // add no csv muitos para muitos
 	            	stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
 	            	if(stopActor == 0) {
 	            		break;
@@ -238,7 +241,62 @@ public class Menu {
 	            updatedDto.setGenderId(Util.readLong("Digite o código do gênero: "));
 	            cinemaController.findAll();
 	            updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+	            
+	            System.out.println("Diretores já presentes neste filme:");
+	            personController.findAllDirectorsByMovieId(updatedDto.getId());
+	            int question = Util.readInt("Deseja alterar os diretores desse filme? 1-Sim 0-Não: ");
+	            if(question == 1) {
+	            	personController.findAllDirectors();
+	            	List<Long> updatedDirectorsIds = new ArrayList<>();
+		            int updatedStopDirector = 1;
+		            while(updatedStopDirector != 0) {
+		            	Long directorId = Util.readLong("Digite o código do diretor: ");
+		            	updatedDirectorsIds.add(directorId);
+		            	personRepository.addDirectorToMovie(directorId, updatedDto.getId()); // add no csv muitos para muitos
+		            	stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
+		            	if(stopDirector == 0) {
+		            		break;
+		            	}
+		            }
+		            updatedDto.setDirectorsIds(updatedDirectorsIds);
+	            }
+	            
+	            System.out.println("Atores já presentes nesse filme:");
+	            personController.findAllActorsByMovieId(updatedDto.getId());
+	            int question2 = Util.readInt("Deseja alterar os atores desse filme? 1-Sim 0-Não: ");
+	            if(question2 == 1) {
+	            	personController.findAllActors();
+	            	List<Long> updatedActorsIds = new ArrayList<>();
+		            int updatedStopActor = 1;
+		            while(updatedStopActor != 0) {
+		            	Long actorId = Util.readLong("Digite o código do ator: ");
+		            	updatedActorsIds.add(actorId);
+		            	personRepository.addActorToMovie(actorId, updatedDto.getId()); // add no csv muitos para muitos
+		            	stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
+		            	if(stopActor == 0) {
+		            		break;
+		            	}
+		            }
+		            updatedDto.setActorsIds(updatedActorsIds);
+	            }
+	            
 	            movieController.update(updatedDto.getId(), updatedDto);
+	            
+	            // remover os atores e diretores não atualizados pelo usuário das tabelas de muitos para muitos
+	            // obter ids de atores e diretores existentes no filme
+	            List<Actor> existingActors = personRepository.findAllActorsByMovieId(updatedDto.getId());
+	            List<Long> existingActorsIds = existingActors.stream().map(actor -> actor.getId()).collect(Collectors.toList());
+	            
+	            List<Director> existingDirectors = personRepository.findAllDirectorsByMovieId(updatedDto.getId());
+	            List<Long> existingDirectorsIds = existingDirectors.stream().map(director -> director.getId()).collect(Collectors.toList());
+
+	            // remover atores que não foram fornecidos pelo usuário
+	            existingActorsIds.removeAll(updatedDto.getActorsIds());
+	            personRepository.removeActorsFromMovie(existingActorsIds, updatedDto.getId());
+
+	            // remover diretores que não foram fornecidos pelo usuário
+	            existingDirectorsIds.removeAll(updatedDto.getDirectorsIds());
+	            personRepository.removeDirectorsFromMovie(existingDirectorsIds, updatedDto.getId());
 	            break;
 	        case 5:
 	            System.out.println("Opção 5 selecionada: Excluir um filme\n");

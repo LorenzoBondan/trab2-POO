@@ -238,5 +238,76 @@ public class PersonRepository {
             e.printStackTrace();
         }
     }
+    
+    public void removeActorsFromMovie(List<Long> actorsToRemove, Long movieId) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_actors_movies));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("temp_actors_movies.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                Long actorId = Long.parseLong(data[0]);
+                Long movieIdInFile = Long.parseLong(data[1]);
+                if (!movieId.equals(movieIdInFile) || movieId.equals(movieIdInFile) && !actorsToRemove.contains(actorId)) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao remover atores do filme.");
+            return;
+        }
+
+        // Renomeia o arquivo temporário para substituir o arquivo original
+        File originalFile = new File(file_actors_movies);
+        originalFile.delete();
+        
+        File tempFile = new File("temp_actors_movies.csv");
+        tempFile.renameTo(originalFile); // então, renomeamos o arquivo temporário para o nome do arquivo original
+        
+        /*
+        if (tempFile.renameTo(originalFile)) {
+            System.out.println("Atores removidos com sucesso do filme.");
+        } else {
+            System.out.println("Falha ao remover atores do filme.");
+        }
+        */
+    }
+
+    
+    public void removeDirectorsFromMovie(List<Long> directorsToRemove, Long movieId) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_directors_movies));
+                BufferedWriter writer = new BufferedWriter(new FileWriter("temp_directors_movies.csv"))) {
+               String line;
+               while ((line = reader.readLine()) != null) {
+                   String[] data = line.split(",");
+                   Long directorId = Long.parseLong(data[0]);
+                   Long movieIdInFile = Long.parseLong(data[1]);
+                   if (!movieId.equals(movieIdInFile) || movieId.equals(movieIdInFile) && !directorsToRemove.contains(directorId)) {
+                       writer.write(line);
+                       writer.newLine();
+                   }
+               }
+           } catch (IOException e) {
+               e.printStackTrace();
+               System.out.println("Erro ao remover diretores do filme.");
+               return;
+           }
+
+           // Renomeia o arquivo temporário para substituir o arquivo original
+        File originalFile = new File(file_directors_movies);
+        originalFile.delete();
+        
+        File tempFile = new File("temp_directors_movies.csv");
+        tempFile.renameTo(originalFile);
+           
+           /*
+           if (tempFile.renameTo(originalFile)) {
+               System.out.println("Diretores removidos com sucesso do filme.");
+           } else {
+               System.out.println("Falha ao remover diretores do filme.");
+           }
+           */
+    }
 
 }
