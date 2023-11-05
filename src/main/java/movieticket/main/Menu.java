@@ -3,8 +3,10 @@ package movieticket.main;
 import java.text.ParseException;
 import java.util.Scanner;
 
+import movieticket.controllers.CinemaController;
 import movieticket.controllers.GenderController;
 import movieticket.controllers.MovieController;
+import movieticket.dtos.CinemaDTO;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
 import movieticket.util.Util;
@@ -62,7 +64,7 @@ public class Menu {
                 break;
             case 9:
                 System.out.println("Opção 9 selecionada: Cinemas");
-                break;
+                showCinemas();
             case 10:
                 System.out.println("Saindo do sistema...");
                 break;
@@ -137,6 +139,7 @@ public class Menu {
 	public static void showMovies() {
 		MovieController movieController = new MovieController();
 		GenderController genderController = new GenderController();
+		CinemaController cinemaController = new CinemaController();
 		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
@@ -175,10 +178,10 @@ public class Menu {
 	            newDto.setYear(Util.readInt("Digite o ano: "));
 	            genderController.findAll();
 	            newDto.setGenderId(Util.readLong("Digite o código do gênero: "));
-	            // mostrar todos os cinemas
+	            cinemaController.findAll();
 	            newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
-	            // digitar uma lista de atores
-	            // digitar uma lista de diretores
+	            // acrescentar aqui digitar uma lista de atores
+	            // acrescentar aqui digitar uma lista de diretores
 	            movieController.insert(newDto);
 	            break;
 	        case 4:
@@ -192,7 +195,7 @@ public class Menu {
 	            updatedDto.setYear(Util.readInt("Digite o ano: "));
 	            genderController.findAll();
 	            updatedDto.setGenderId(Util.readLong("Digite o código do gênero: "));
-	            // mostrar todos os cinemas
+	            cinemaController.findAll();
 	            updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
 	            movieController.update(updatedDto.getId(), updatedDto);
 	            break;
@@ -211,11 +214,77 @@ public class Menu {
 		} while (opc != 6);
 		in.close();
 	}
+	
+	public static void showCinemas() {
+		CinemaController cinemaController = new CinemaController();
+		Scanner in = new Scanner(System.in);
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Cinemas");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os cinemas");
+			System.out.println("2) Mostrar um cinema por código");
+			System.out.println("3) Inserir novo cinema");
+			System.out.println("4) Atualizar um cinema");
+			System.out.println("5) Excluir um cinema");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os cinemas\n");
+	            cinemaController.findAll();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um cinema por código\n");
+	            cinemaController.findAll();
+	            Long id = Util.readLong("Digite o código: ");
+	            cinemaController.findById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo cinema\n");
+	            CinemaDTO newDto = new CinemaDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setName(Util.readString("Digite o nome: "));
+	            newDto.setAddress(Util.readString("Digite o endereço: "));
+	            cinemaController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um cinema\n");
+	            cinemaController.findAll();
+	            CinemaDTO updatedDto = new CinemaDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setName(Util.readString("Digite o nome: "));
+	            updatedDto.setAddress(Util.readString("Digite o endereço: "));
+	            cinemaController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um cinema\n");
+	            cinemaController.findAll();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            cinemaController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Cinemas...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
+		in.close();
+	}
 
 	public static void main(String[] args) throws ParseException {
 		
 		showMenu();
-		/*
+		
+		/* --------------- EXEMPLO DE IMPLEMENTAÇÃO DOS MÉTODOS --------------
+		 * 
+		 * 
 		// #### GENDER
 		GenderService genderService = new GenderService();
 		

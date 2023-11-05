@@ -23,6 +23,8 @@ public class CinemaService {
 	
 	public CinemaDTO findById(Long id) {
 		Cinema entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		// adicionar aqui método para trazer os filmes por cinema id
+		// adicionar aqui método para trazer as salas por cinema id
 		return new CinemaDTO(entity);
 	}
 	
