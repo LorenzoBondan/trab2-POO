@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +29,7 @@ public class SeatRepository {
 	
 	public List<Seat> findAllByRoomId(Long roomId){
 		List<Seat> list = load();
+		order(list);
 		return list.stream()
 	            .filter(seat -> seat.getRoom().getId().equals(roomId)) // filtra os assentos com o roomId fornecido
 	            .collect(Collectors.toList());
@@ -94,6 +97,26 @@ public class SeatRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    private static void order(List<Seat> seats) {
+
+        Collections.sort(seats, new Comparator<Seat>() {
+
+            public int compare(Seat o1, Seat o2) {
+
+                Integer x1 = ((Seat) o1).getLine();
+                Integer x2 = ((Seat) o2).getLine();
+                int sComp = x1.compareTo(x2);
+
+                if (sComp != 0) {
+                   return sComp;
+                } 
+
+                Integer x12 = ((Seat) o1).getNumber();
+                Integer x22 = ((Seat) o2).getNumber();
+                return x12.compareTo(x22);
+        }});
     }
 
     public List<Seat> load() {

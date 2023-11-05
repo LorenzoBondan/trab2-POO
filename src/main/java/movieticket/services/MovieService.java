@@ -46,8 +46,8 @@ public class MovieService {
 		entity.setDirectors(directors);
 		List<Schedule> schedules = scheduleRepository.findAllByMovieId(id);
 		entity.setSchedules(schedules);
-		List<Ticket> tickets = ticketRepository.findAllByMovieId(id);
-		entity.setTickets(tickets);
+		/*List<Ticket> tickets = ticketRepository.findAllByMovieId(id);
+		entity.setTickets(tickets);*/
 		return new MovieDTO(entity);
 	}
 	
@@ -58,7 +58,7 @@ public class MovieService {
 			repository.insert(entity);
 			System.out.println("Filme inserido com sucesso: " + dto);
 		} catch(Exception e) {
-			throw new InvalidDataException("Dados inválidos.");
+			throw new InvalidDataException("Dados inválidos." + e.getMessage());
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class MovieService {
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Filme atualizado com sucesso: " + dto);
-		} catch(Exception e) {
+		}catch(Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
@@ -108,10 +108,10 @@ public class MovieService {
 			entity.getSchedules().add(schedule);
 		}
 		
-		entity.getTickets().clear();
+		/*entity.getTickets().clear();
 		for(Long ticketId : dto.getTicketsIds()) {
 			Ticket ticket = ticketRepository.findById(ticketId).get();
 			entity.getTickets().add(ticket);
-		}
+		}*/
 	}
 }

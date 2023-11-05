@@ -85,7 +85,7 @@ public class MovieRepository {
                 movie.setCinema(updatedMovie.getCinema());
                 movie.setDirectors(updatedMovie.getDirectors());
                 movie.setSchedules(updatedMovie.getSchedules());
-                movie.setTickets(updatedMovie.getTickets());
+                //movie.setTickets(updatedMovie.getTickets());
                 isUpdated = true; // muda para verdadeiro
                 break;
             }

@@ -3,6 +3,7 @@ package movieticket.controllers;
 import java.util.List;
 
 import movieticket.dtos.MovieDTO;
+import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.services.MovieService;
 
@@ -34,6 +35,8 @@ public class MovieController {
 		try {
 			service.update(id, dto);
 		} catch(ResourceNotFoundException e) {
+			System.out.println("Filme não encontrado");
+		} catch(InvalidDataException ie) {
 			System.out.println("Filme não encontrado");
 		}
 	}

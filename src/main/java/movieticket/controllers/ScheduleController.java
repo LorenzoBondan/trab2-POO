@@ -1,8 +1,10 @@
 package movieticket.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import movieticket.dtos.ScheduleDTO;
+import movieticket.entities.Seat;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.services.ScheduleService;
 
@@ -25,6 +27,25 @@ public class ScheduleController {
 			System.out.println("Horário não encontrado");
 		}
 	}
+	
+	public void findByMovieId(Long id) {
+		try {
+			ScheduleDTO dto = service.findById(id);
+			System.out.println(dto.toStringWithList());
+		} catch(ResourceNotFoundException e) {
+			System.out.println("Horário não encontrado");
+		}
+	}	
+	
+	public List<Seat> checkAvailableSeats(Long id) {
+		try {
+			return service.checkAvailableSeats(id);
+		} catch(ResourceNotFoundException e) {
+			System.out.println("Horário não encontrado");
+		}
+		return new ArrayList();
+	}
+
 	
 	public void insert(ScheduleDTO dto) {
 		service.insert(dto);

@@ -143,6 +143,6 @@ public class Movie implements Serializable{
 	public String toString() {
 		return "Movie [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description + ", duration="
 				+ duration + ", gender=" + gender + ", cinema=" + cinema + ", actors=" + actors + ", directors="
-				+ directors + ", schedules=" + schedules + ", tickets=" + tickets + "]";
+				+ directors + ", schedules=" + schedules + ", tickets=" + tickets +"]"; 
 	}
 }

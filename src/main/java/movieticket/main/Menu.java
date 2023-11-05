@@ -2,6 +2,7 @@ package movieticket.main;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -24,7 +25,9 @@ import movieticket.dtos.SeatDTO;
 import movieticket.dtos.TicketDTO;
 import movieticket.entities.Actor;
 import movieticket.entities.Director;
+import movieticket.entities.Seat;
 import movieticket.repositories.PersonRepository;
+import movieticket.services.ScheduleService;
 import movieticket.util.Util;
 
 public class Menu {
@@ -46,7 +49,8 @@ public class Menu {
 			System.out.println("7) Atores");
 			System.out.println("8) Diretores");
 			System.out.println("9) Cinemas");
-			System.out.println("10) Sair do sistema");
+			System.out.println("10) Verificar Disponibilidade");
+			System.out.println("11) Sair do sistema");
 			System.out.println("------------------------------------------------------------");
 			
 			opc = Util.readInt("");
@@ -89,12 +93,16 @@ public class Menu {
                 showCinemas();
                 break;
             case 10:
+                System.out.println("Opção 10 selecionada: Verificar Disponibilidade");
+                showDisponibilidade();
+                break;
+            case 11:
                 System.out.println("Saindo do sistema...");
                 break;
             default:
                 System.out.println("Opção inválida. Tente novamente.");
 			}
-		} while (opc != 10);
+		} while (opc != 11);
 		in.close();
 	}
 	
@@ -382,6 +390,65 @@ public class Menu {
 		} while (opc != 6);
 	}
 	
+	public static void showDisponibilidade() {
+		MovieController movieController = new MovieController();
+		ScheduleController scheduleController = new ScheduleController();
+		TicketController ticketController = new TicketController();
+		
+		movieController.findAll();
+		Long filmeId = Util.readLong("Digite o código do filme que deseja assistir: ");
+		scheduleController.findByMovieId(filmeId);
+		Long scheduleId = Util.readLong("Digite o código do horario que deseja ver: ");
+		List<Seat> freeSeats = scheduleController.checkAvailableSeats(scheduleId);
+			
+		if(freeSeats.size() <= 0) {		
+			System.out.println("\nNenhum assento livre!");
+			return;
+		}
+		
+		System.out.println("\nEscolha uma das ações a seguir:");
+		System.out.println("1) Escolher Assento");
+		System.out.println("2) Sair");
+		
+		if (Util.readInt("") != 1) {
+			return;
+		}
+		
+		Seat chosenSeat = null;
+		
+		do {
+			int fileira = Util.readInt("\nDigite a fileira do seu assento: ");
+			int numero = Util.readInt("Digite o numero do seu assento: ");
+						
+			for(Seat seat : freeSeats) {
+				if (seat.getLine() == fileira && seat.getNumber() == numero) {
+					chosenSeat = seat;
+				}
+			}
+			if(chosenSeat == null) {
+				System.out.println("Este assento ja esta ocupado!");
+			}
+			
+		}while(chosenSeat == null);		
+		
+		
+        TicketDTO newDto = new TicketDTO();
+        newDto.setId(Util.readLong("Digite o código: "));
+        newDto.setClientName(Util.readString("Digite o nome do cliente: "));
+        newDto.setPhoneNumber(Util.readString("Digite o número de telefone do cliente: "));
+        newDto.setPrice(Util.readDouble("Digite o preço: "));
+        newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
+        int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
+        newDto.setHalfPrice(half == 1);
+        newDto.setMovieId(filmeId);
+        newDto.setScheduleId(scheduleId);
+        newDto.setSeatId(chosenSeat.getId());
+        ticketController.insert(newDto);
+        
+        List<Seat> freeSeatsAux = scheduleController.checkAvailableSeats(scheduleId);
+		
+	}
+		
 	public static void showRooms() {
 		RoomController roomController = new RoomController();
 		CinemaController cinemaController = new CinemaController();
@@ -624,7 +691,7 @@ public class Menu {
 	            TicketDTO newDto = new TicketDTO();
 	            newDto.setId(Util.readLong("Digite o código: "));
 	            newDto.setClientName(Util.readString("Digite o nome do cliente: "));
-	            newDto.setPhoneNumber(Util.readString("Digite o número de telefone do clinte: "));
+	            newDto.setPhoneNumber(Util.readString("Digite o número de telefone do cliente: "));
 	            newDto.setPrice(Util.readDouble("Digite o preço: "));
 	            newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
 	            int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");

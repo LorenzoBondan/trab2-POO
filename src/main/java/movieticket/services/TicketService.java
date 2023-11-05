@@ -36,7 +36,7 @@ public class TicketService {
 			repository.insert(entity);
 			System.out.println("Ingresso inserido com sucesso: " + dto);
 		} catch(Exception e) {
-			throw new InvalidDataException("Dados inválidos.");
+			throw new InvalidDataException("Dados inválidos." + e);
 		}
 	}
 	
