@@ -108,11 +108,13 @@ public class TicketRepository {
     }
 
     public void save(List<Ticket> list) {
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // formato da data no arquivo CSV
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Ticket ticket : list) {
+            	String formattedDate = dateFormat.format(ticket.getDate()); // formata a data para o formato desejado
                 writer.write(ticket.getId() + "," 
                 			+ ticket.getClientName() + "," 
-                			+ ticket.getDate() + ","
+                			+ formattedDate + ","
                 			+ ticket.getPhoneNumber() + ","
                 			+ ticket.getPrice() + ","
                 			+ ticket.getHalfPrice() + ","
@@ -129,7 +131,7 @@ public class TicketRepository {
 
     public List<Ticket> load() {
         List<Ticket> list = new ArrayList<>();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // Formato da data no arquivo CSV
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // formato da data no arquivo CSV
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -138,11 +140,10 @@ public class TicketRepository {
                 String clientName = data[1];
                 Date date;
                 try {
-                    // Converte a string de data para um objeto Date usando o formato especificado
-                    date = dateFormat.parse(data[2]);
+                    date = dateFormat.parse(data[2]); // converte a string de data para um objeto Date usando o formato especificado
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    date = null; // Define como null se a conversão falhar
+                    date = null; // define como null se a conversão falhar
                 }
                 String phoneNumber = data[3];
                 Double price = Double.parseDouble(data[4]);

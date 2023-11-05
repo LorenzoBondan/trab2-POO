@@ -73,6 +73,7 @@ public class Menu {
                 break;
             case 6:
                 System.out.println("Opção 6 selecionada: Ingressos");
+                showTickets();
                 break;
             case 7:
                 System.out.println("Opção 7 selecionada: Atores");
