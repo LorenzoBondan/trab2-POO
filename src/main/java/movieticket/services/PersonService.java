@@ -8,14 +8,17 @@ import movieticket.dtos.DirectorDTO;
 import movieticket.dtos.PersonDTO;
 import movieticket.entities.Actor;
 import movieticket.entities.Director;
+import movieticket.entities.Movie;
 import movieticket.entities.Person;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
+import movieticket.repositories.MovieRepository;
 import movieticket.repositories.PersonRepository;
 
 public class PersonService {
 
 	private PersonRepository repository = new PersonRepository();
+	private MovieRepository movieRepository = new MovieRepository();
 	
 	public List<PersonDTO> findAll(){
 		List<Person> list = repository.findAll();
@@ -45,6 +48,20 @@ public class PersonService {
 	public PersonDTO findById(Long id) {
 		Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
 		return new PersonDTO(entity);
+	}
+	
+	public ActorDTO findActorById(Long id) {
+		Actor entity = repository.findActorById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		List<Movie> list = movieRepository.findAllByActorId(id);
+		entity.setMovies(list);
+		return new ActorDTO(entity);
+	}
+	
+	public DirectorDTO findDirectorById(Long id) {
+		Director entity = repository.findDirectorById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		List<Movie> list = movieRepository.findAllByDirectorId(id);
+		entity.setMovies(list);
+		return new DirectorDTO(entity);
 	}
 	
 	public void insert(PersonDTO dto) {
@@ -81,6 +98,8 @@ public class PersonService {
 		entity.setId(dto.getId());
 		entity.setName(dto.getName());
 		entity.setRole(dto.getRole());
-		entity.setMarried(repository.findById(dto.getMarriedId()).get());
+		if(dto.getMarriedId() != null) {
+			entity.setMarried(repository.findById(dto.getMarriedId()).get());
+		}
 	}
 }

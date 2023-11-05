@@ -57,6 +57,24 @@ public class PersonController {
 		}
 	}
 	
+	public void findActorById(Long id) {
+		try {
+			ActorDTO dto = service.findActorById(id);
+			System.out.println(dto.toStringWithList());
+		} catch(ResourceNotFoundException e) {
+			System.out.println("Ator não encontrado");
+		}
+	}
+	
+	public void findDirectorById(Long id) {
+		try {
+			DirectorDTO dto = service.findDirectorById(id);
+			System.out.println(dto.toStringWithList());
+		} catch(ResourceNotFoundException e) {
+			System.out.println("Diretor não encontrado");
+		}
+	}
+	
 	public void insert(PersonDTO dto) {
 		try {
 			service.insert(dto);

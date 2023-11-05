@@ -2,6 +2,7 @@ package movieticket.repositories;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +19,9 @@ import movieticket.exceptions.ResourceNotFoundException;
 
 public class MovieRepository {
 
-private String file = "movies.csv";
+	private String file = "movies.csv";
+	private String file_actors_movies = "actors_movies.csv";
+	private String file_directors_movies = "directors_movies.csv";
 
 	private GenderRepository genderRepository = new GenderRepository();
 	private CinemaRepository cinemaRepository = new CinemaRepository();
@@ -39,6 +42,14 @@ private String file = "movies.csv";
 		return list.stream()
 	            .filter(movie -> movie.getCinema().getId().equals(cinemaId)) // filtra os filmes com o cinemaId fornecido
 	            .collect(Collectors.toList());
+	}
+	
+	public List<Movie> findAllByActorId(Long actorId){
+		return loadMoviesByActorId(actorId);
+	}
+	
+	public List<Movie> findAllByDirectorId(Long directorId){
+		return loadMoviesByDirectorId(directorId);
 	}
 	
 	public Optional<Movie> findById(Long id) {
@@ -134,6 +145,56 @@ private String file = "movies.csv";
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public List<Movie> loadMoviesByActorId(Long actorId){
+        List<Movie> list = new ArrayList<>();
+        File fileObject = new File(file_actors_movies);
+
+        if (fileObject.exists() && fileObject.length() > 0) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileObject))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(","); // atributos separados por vírgula
+                    Long actorId1 = Long.parseLong(data[0]);
+                    Long movieId = Long.parseLong(data[1]);
+                    if (actorId == actorId1) {
+                        Movie movie = findById(movieId).orElse(null);
+                        list.add(movie);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Empty or non existing file.");
+        }
+        return list;
+    }
+    
+    public List<Movie> loadMoviesByDirectorId(Long directorId){
+        List<Movie> list = new ArrayList<>();
+        File fileObject = new File(file_directors_movies);
+
+        if (fileObject.exists() && fileObject.length() > 0) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileObject))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(","); // atributos separados por vírgula
+                    Long directoId1 = Long.parseLong(data[0]);
+                    Long movieId = Long.parseLong(data[1]);
+                    if (directorId == directoId1) {
+                        Movie movie = findById(movieId).orElse(null);
+                        list.add(movie);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Empty or non existing file.");
         }
         return list;
     }

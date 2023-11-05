@@ -17,6 +17,7 @@ import movieticket.controllers.TicketController;
 import movieticket.dtos.CinemaDTO;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
+import movieticket.dtos.PersonDTO;
 import movieticket.dtos.RoomDTO;
 import movieticket.dtos.ScheduleDTO;
 import movieticket.dtos.SeatDTO;
@@ -77,9 +78,11 @@ public class Menu {
                 break;
             case 7:
                 System.out.println("Opção 7 selecionada: Atores");
+                showActors();
                 break;
             case 8:
                 System.out.println("Opção 8 selecionada: Diretores");
+                showDirectors();
                 break;
             case 9:
                 System.out.println("Opção 9 selecionada: Cinemas");
@@ -661,6 +664,150 @@ public class Menu {
 	            break;
 	        case 6:
 	            System.out.println("Saindo de Ingressos...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
+	}
+	
+	public static void showActors() {
+		PersonController personController = new PersonController();
+		
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Atores");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os atores");
+			System.out.println("2) Mostrar um ator por código");
+			System.out.println("3) Inserir novo ator");
+			System.out.println("4) Atualizar um ator");
+			System.out.println("5) Excluir um ator");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os atores\n");
+	            personController.findAllActors();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um ator por código\n");
+	            personController.findAllActors();
+	            Long id = Util.readLong("Digite o código: ");
+	            personController.findActorById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo ator\n");
+	            PersonDTO newDto = new PersonDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setName(Util.readString("Digite o nome: "));
+	            newDto.setRole("Actor");
+	            personController.findAll();
+	            newDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+	            if(newDto.getMarriedId() == 0) {
+	            	newDto.setMarriedId(null);
+	            }
+	            personController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um ator\n");
+	            personController.findAllActors();
+	            PersonDTO updatedDto = new PersonDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setName(Util.readString("Digite o nome: "));
+	            updatedDto.setRole("Actor");
+	            personController.findAll();
+	            updatedDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+	            if(updatedDto.getMarriedId() == 0) {
+	            	updatedDto.setMarriedId(null);
+	            }
+	            personController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um ator\n");
+	            personController.findAllActors();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            personController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Atores...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
+	}
+	
+	public static void showDirectors() {
+		PersonController personController = new PersonController();
+		
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Diretores");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os diretores");
+			System.out.println("2) Mostrar um diretor por código");
+			System.out.println("3) Inserir novo diretor");
+			System.out.println("4) Atualizar um diretor");
+			System.out.println("5) Excluir um diretor");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os diretores\n");
+	            personController.findAllDirectors();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um diretor por código\n");
+	            personController.findAllDirectors();
+	            Long id = Util.readLong("Digite o código: ");
+	            personController.findDirectorById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo diretor\n");
+	            PersonDTO newDto = new PersonDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setName(Util.readString("Digite o nome: "));
+	            newDto.setRole("Director");
+	            personController.findAll();
+	            newDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+	            if(newDto.getMarriedId() == 0) {
+	            	newDto.setMarriedId(null);
+	            }
+	            personController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um diretor\n");
+	            personController.findAllDirectors();
+	            PersonDTO updatedDto = new PersonDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setName(Util.readString("Digite o nome: "));
+	            updatedDto.setRole("Director");
+	            personController.findAll();
+	            updatedDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+	            if(updatedDto.getMarriedId() == 0) {
+	            	updatedDto.setMarriedId(null);
+	            }
+	            personController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um diretor\n");
+	            personController.findAllDirectors();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            personController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Diretores...\n");
 	            break;
 	        default:
 	            System.out.println("Opção inválida. Tente novamente.\n");

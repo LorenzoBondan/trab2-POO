@@ -27,6 +27,10 @@ public class DirectorDTO extends PersonDTO{
 
 	@Override
 	public String toString() {
+		return "DirectorDTO [id=" + this.getId() + ", name=" + this.getName() + ", role=" + this.getRole() + "]";
+	}
+	
+	public String toStringWithList() {
 		return "DirectorDTO [id=" + this.getId() + ", name=" + this.getName() + ", role=" + this.getRole() + ", moviesIds=" + moviesIds + "]";
 	}
 }

@@ -51,6 +51,22 @@ public class PersonRepository {
 	            .orElseThrow(() -> new ResourceNotFoundException("Person with Id " + id + " not found.")));
 	}
 	
+	public Optional<Actor> findActorById(Long id) {
+	    List<Actor> list = loadAllActors();
+	    return Optional.ofNullable(list.stream()
+	            .filter(actor -> actor.getId().equals(id))
+	            .findFirst()
+	            .orElseThrow(() -> new ResourceNotFoundException("Actor with Id " + id + " not found.")));
+	}
+	
+	public Optional<Director> findDirectorById(Long id) {
+	    List<Director> list = loadAllDirectors();
+	    return Optional.ofNullable(list.stream()
+	            .filter(director -> director.getId().equals(id))
+	            .findFirst()
+	            .orElseThrow(() -> new ResourceNotFoundException("Director with Id " + id + " not found.")));
+	}
+	
 	public void insert(Person person) {
 	    List<Person> list = load(); // carrega a lista de objetos já cadastrados no csv
 	    Long newId = person.getId(); // id do objeto a ser inserido
