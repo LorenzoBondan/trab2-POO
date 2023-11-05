@@ -2,7 +2,10 @@ package movieticket.controllers;
 
 import java.util.List;
 
+import movieticket.dtos.ActorDTO;
+import movieticket.dtos.DirectorDTO;
 import movieticket.dtos.PersonDTO;
+import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.services.PersonService;
 
@@ -12,8 +15,22 @@ public class PersonController {
 	
 	public void findAll() {
 		List<PersonDTO> list = service.findAll();
-        for(PersonDTO genderDto : list) {
-        	System.out.println(genderDto);
+        for(PersonDTO personDto : list) {
+        	System.out.println(personDto);
+        }
+	}
+	
+	public void findAllActors() {
+		List<ActorDTO> list = service.findAllActors();
+        for(ActorDTO actorDto : list) {
+        	System.out.println(actorDto);
+        }
+	}
+	
+	public void findAllDirectors() {
+		List<DirectorDTO> list = service.findAllDirectors();
+        for(DirectorDTO directorDto : list) {
+        	System.out.println(directorDto);
         }
 	}
 	
@@ -27,7 +44,11 @@ public class PersonController {
 	}
 	
 	public void insert(PersonDTO dto) {
-		service.insert(dto);
+		try {
+			service.insert(dto);
+		} catch(InvalidDataException e) {
+			System.out.println("Dados inválidos.");
+		}
 	}
 	
 	public void update(Long id, PersonDTO dto) {
@@ -35,6 +56,8 @@ public class PersonController {
 			service.update(id, dto);
 		} catch(ResourceNotFoundException e) {
 			System.out.println("Pessoa não encontrada");
+		} catch(InvalidDataException e) {
+			System.out.println("Dados inválidos.");
 		}
 	}
 	

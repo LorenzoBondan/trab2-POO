@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import movieticket.entities.Movie;
 import movieticket.entities.Room;
@@ -28,6 +29,20 @@ public class ScheduleRepository {
 	
 	public List<Schedule> findAll() {
 		return load();
+	}
+	
+	public List<Schedule> findAllByRoomId(Long roomId){
+		List<Schedule> list = load();
+		return list.stream()
+	            .filter(schedule -> schedule.getRoom().getId().equals(roomId)) // filtra os horários com o roomId fornecido
+	            .collect(Collectors.toList());
+	}
+	
+	public List<Schedule> findAllByMovieId(Long movieId){
+		List<Schedule> list = load();
+		return list.stream()
+	            .filter(schedule -> schedule.getMovie().getId().equals(movieId)) // filtra os horários com o movieId fornecido
+	            .collect(Collectors.toList());
 	}
 	
 	public Optional<Schedule> findById(Long id) {

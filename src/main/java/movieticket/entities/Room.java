@@ -54,6 +54,14 @@ public class Room {
 		return seats;
 	}
 
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
+	}
+
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

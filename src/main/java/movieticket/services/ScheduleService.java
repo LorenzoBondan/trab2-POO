@@ -27,6 +27,8 @@ public class ScheduleService {
 	
 	public ScheduleDTO findById(Long id) {
 		Schedule entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		List<Ticket> tickets = ticketRepository.findAllByScheduleId(id);
+		entity.setTickets(tickets);
 		return new ScheduleDTO(entity);
 	}
 	

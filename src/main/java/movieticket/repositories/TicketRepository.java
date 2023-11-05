@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import movieticket.entities.Movie;
 import movieticket.entities.Schedule;
@@ -29,6 +30,27 @@ public class TicketRepository {
 	
 	public List<Ticket> findAll() {
 		return load();
+	}
+	
+	public List<Ticket> findAllByMovieId(Long movieId){
+		List<Ticket> list = load();
+		return list.stream()
+	            .filter(ticket -> ticket.getMovie().getId().equals(movieId)) // filtra os ingressos com o movieId fornecido
+	            .collect(Collectors.toList());
+	}
+	
+	public List<Ticket> findAllByScheduleId(Long scheduleId){
+		List<Ticket> list = load();
+		return list.stream()
+	            .filter(ticket -> ticket.getSchedule().getId().equals(scheduleId)) // filtra os ingressos com o scheduleId fornecido
+	            .collect(Collectors.toList());
+	}
+	
+	public List<Ticket> findAllBySeatId(Long seatId){
+		List<Ticket> list = load();
+		return list.stream()
+	            .filter(ticket -> ticket.getSeat().getId().equals(seatId)) // filtra os ingressos com o seatId fornecido
+	            .collect(Collectors.toList());
 	}
 	
 	public Optional<Ticket> findById(Long id) {

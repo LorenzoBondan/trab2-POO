@@ -25,6 +25,8 @@ public class SeatService {
 	
 	public SeatDTO findById(Long id) {
 		Seat entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		List<Ticket> tickets = ticketRepository.findAllBySeatId(id);
+		entity.setTickets(tickets);
 		return new SeatDTO(entity);
 	}
 	

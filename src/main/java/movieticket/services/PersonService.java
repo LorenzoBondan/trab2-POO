@@ -3,7 +3,11 @@ package movieticket.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import movieticket.dtos.ActorDTO;
+import movieticket.dtos.DirectorDTO;
 import movieticket.dtos.PersonDTO;
+import movieticket.entities.Actor;
+import movieticket.entities.Director;
 import movieticket.entities.Person;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
@@ -16,6 +20,16 @@ public class PersonService {
 	public List<PersonDTO> findAll(){
 		List<Person> list = repository.findAll();
 		return list.stream().map(obj -> new PersonDTO(obj)).collect(Collectors.toList());
+	}
+	
+	public List<ActorDTO> findAllActors(){
+		List<Actor> list = repository.findAllActors();
+		return list.stream().map(obj -> new ActorDTO(obj)).collect(Collectors.toList());
+	}
+	
+	public List<DirectorDTO> findAllDirectors(){
+		List<Director> list = repository.findAllDirectors();
+		return list.stream().map(obj -> new DirectorDTO(obj)).collect(Collectors.toList());
 	}
 	
 	public PersonDTO findById(Long id) {

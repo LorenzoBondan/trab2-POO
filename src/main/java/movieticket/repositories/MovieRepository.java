@@ -34,6 +34,13 @@ private String file = "movies.csv";
 	            .collect(Collectors.toList());
 	}
 	
+	public List<Movie> findAllByCinemaId(Long cinemaId){
+		List<Movie> list = load();
+		return list.stream()
+	            .filter(movie -> movie.getCinema().getId().equals(cinemaId)) // filtra os filmes com o cinemaId fornecido
+	            .collect(Collectors.toList());
+	}
+	
 	public Optional<Movie> findById(Long id) {
 	    List<Movie> list = load();
 	    return Optional.ofNullable(list.stream()

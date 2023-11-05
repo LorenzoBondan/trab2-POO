@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import movieticket.entities.Actor;
 import movieticket.entities.Director;
@@ -24,6 +25,14 @@ public class PersonRepository {
 	
 	public List<Person> findAll() {
 		return load();
+	}
+	
+	public List<Actor> findAllActors(){
+		return loadAllActors();
+	}
+	
+	public List<Director> findAllDirectors(){
+		return loadAllDirectors();
 	}
 	
 	public List<Actor> findAllActorsByMovieId(Long movieId){
@@ -142,6 +151,24 @@ public class PersonRepository {
         return list;
     }
     
+    public List<Actor> loadAllActors() {
+        List<Person> people = load();
+        List<Actor> directors = people.stream()
+                .filter(person -> "Actor".equals(person.getRole()))
+                .map(person -> new Actor(person.getId(), person.getName(), person.getRole(), person.getMarried()))
+                .collect(Collectors.toList());
+        return directors;
+    }
+    
+    public List<Director> loadAllDirectors() {
+        List<Person> people = load();
+        List<Director> directors = people.stream()
+                .filter(person -> "Director".equals(person.getRole()))
+                .map(person -> new Director(person.getId(), person.getName(), person.getRole(), person.getMarried()))
+                .collect(Collectors.toList());
+        return directors;
+    }
+    
     public List<Actor> loadActorsByMovieId(Long movieId){
         List<Actor> list = new ArrayList<>();
         File fileObject = new File(file_actors_movies);
@@ -191,5 +218,6 @@ public class PersonRepository {
         }
         return list;
     }
+    
 
 }

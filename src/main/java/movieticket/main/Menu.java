@@ -1,14 +1,21 @@
 package movieticket.main;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import movieticket.controllers.CinemaController;
 import movieticket.controllers.GenderController;
 import movieticket.controllers.MovieController;
+import movieticket.controllers.PersonController;
+import movieticket.controllers.RoomController;
+import movieticket.controllers.ScheduleController;
 import movieticket.dtos.CinemaDTO;
 import movieticket.dtos.GenderDTO;
 import movieticket.dtos.MovieDTO;
+import movieticket.dtos.RoomDTO;
+import movieticket.dtos.ScheduleDTO;
 import movieticket.util.Util;
 
 public class Menu {
@@ -46,6 +53,7 @@ public class Menu {
                 break;
             case 3:
                 System.out.println("Opção 3 selecionada: Salas");
+                showRooms();
                 break;
             case 4:
                 System.out.println("Opção 4 selecionada: Horários");
@@ -77,6 +85,7 @@ public class Menu {
 	
 	public static void showGenders() {
 		GenderController genderController = new GenderController();
+		
 		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
@@ -140,6 +149,8 @@ public class Menu {
 		MovieController movieController = new MovieController();
 		GenderController genderController = new GenderController();
 		CinemaController cinemaController = new CinemaController();
+		PersonController personController = new PersonController();
+		
 		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
@@ -180,9 +191,39 @@ public class Menu {
 	            newDto.setGenderId(Util.readLong("Digite o código do gênero: "));
 	            cinemaController.findAll();
 	            newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
-	            // acrescentar aqui digitar uma lista de atores
-	            // acrescentar aqui digitar uma lista de diretores
+	            
+	            personController.findAllDirectors();
+	            List<Long> directorsIds = new ArrayList<>();
+	            int stopDirector = 1;
+	            while(stopDirector != 0) {
+	            	Long directorId = Util.readLong("Digite o código do diretor: ");
+	            	directorsIds.add(directorId);
+	            	stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
+	            	if(stopDirector == 0) {
+	            		break;
+	            	}
+	            }
+	            newDto.setDirectorsIds(directorsIds);
+	            
+	            personController.findAllActors();
+	            List<Long> actorsIds = new ArrayList<>();
+	            int stopActor = 1;
+	            while(stopActor != 0) {
+	            	Long actorId = Util.readLong("Digite o código do ator: ");
+	            	actorsIds.add(actorId);
+	            	stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
+	            	if(stopActor == 0) {
+	            		break;
+	            	}
+	            }
+	            newDto.setActorsIds(actorsIds);
+	           
 	            movieController.insert(newDto);
+	            
+	            // ------- FAZER -------
+	            // RELAÇÕES DE MUITOS PARA MUITOS
+	            // adicionar os ids dos atores selecionados ao csv actor_movie (actor_id, movie_id)
+	            // adicionar os ids dos diretores selecionados ao csv director_movie (director_id, movie_id)
 	            break;
 	        case 4:
 	            System.out.println("Opção 4 selecionada: Atualizar um filme\n");
@@ -217,6 +258,7 @@ public class Menu {
 	
 	public static void showCinemas() {
 		CinemaController cinemaController = new CinemaController();
+		
 		Scanner in = new Scanner(System.in);
 		int opc;
 		do {
@@ -270,6 +312,154 @@ public class Menu {
 	            break;
 	        case 6:
 	            System.out.println("Saindo de Cinemas...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
+		in.close();
+	}
+	
+	public static void showRooms() {
+		RoomController roomController = new RoomController();
+		CinemaController cinemaController = new CinemaController();
+		
+		Scanner in = new Scanner(System.in);
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Salas");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todas as salas");
+			System.out.println("2) Mostrar uma sala por código");
+			System.out.println("3) Inserir nova sala");
+			System.out.println("4) Atualizar uma sala");
+			System.out.println("5) Excluir uma sala");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todas as salas\n");
+	            roomController.findAll();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar uma sala por código\n");
+	            roomController.findAll();
+	            Long id = Util.readLong("Digite o código: ");
+	            roomController.findById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir nova sala\n");
+	            RoomDTO newDto = new RoomDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            newDto.setNumber(Util.readInt("Digite o número da sala: "));
+	            cinemaController.findAll();
+	            newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+	            roomController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar uma sala\n");
+	            roomController.findAll();
+	            RoomDTO updatedDto = new RoomDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            updatedDto.setNumber(Util.readInt("Digite o número da sala: "));
+	            cinemaController.findAll();
+	            updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+	            roomController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir uma sala\n");
+	            roomController.findAll();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            roomController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Salas...\n");
+	            break;
+	        default:
+	            System.out.println("Opção inválida. Tente novamente.\n");
+			}
+		} while (opc != 6);
+		in.close();
+	}
+	
+	public static void showSchedules() {
+		ScheduleController scheduleController = new ScheduleController();
+		RoomController roomController = new RoomController();
+		MovieController movieController = new MovieController();
+		
+		Scanner in = new Scanner(System.in);
+		int opc;
+		do {
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Horários");
+			System.out.println("------------------------------------------------------------");
+			System.out.println("Escolha uma das ações a seguir:");
+			System.out.println("1) Mostrar todos os horários");
+			System.out.println("2) Mostrar um horário por código");
+			System.out.println("3) Inserir novo horário");
+			System.out.println("4) Atualizar um horário");
+			System.out.println("5) Excluir um horário");
+			System.out.println("6) Sair");
+			System.out.println("------------------------------------------------------------");
+
+			opc = Util.readInt("");
+	
+			switch (opc) {
+			case 1:
+	            System.out.println("Opção 1 selecionada: Mostrar todos os horários\n");
+	            scheduleController.findAll();
+	            break;
+	        case 2:
+	            System.out.println("Opção 2 selecionada: Mostrar um horário por código\n");
+	            scheduleController.findAll();
+	            Long id = Util.readLong("Digite o código: ");
+	            scheduleController.findById(id);
+	            break;
+	        case 3:
+	            System.out.println("Opção 3 selecionada: Inserir novo horário\n");
+	            ScheduleDTO newDto = new ScheduleDTO();
+	            newDto.setId(Util.readLong("Digite o código: "));
+	            
+	            //// ----- FAZER
+	            newDto.setDate(null); // FAZER UM Util.readDate();
+	            newDto.setTime(null); // FAZER UM Util.readTime();
+	            
+	            movieController.findAll();
+	            newDto.setMovieId(Util.readLong("Digite o id do filme: "));
+	            roomController.findAll();
+	            newDto.setRoomId(Util.readLong("Digite o número da sala: "));
+	            scheduleController.insert(newDto);
+	            break;
+	        case 4:
+	            System.out.println("Opção 4 selecionada: Atualizar um horário\n");
+	            scheduleController.findAll();
+	            ScheduleDTO updatedDto = new ScheduleDTO();
+	            updatedDto.setId(Util.readLong("Digite o código: "));
+	            
+	            //// ----- FAZER
+	            updatedDto.setDate(null);
+	            updatedDto.setTime(null);
+	            
+	            
+	            movieController.findAll();
+	            updatedDto.setMovieId(Util.readLong("Digite o id do filme: "));
+	            roomController.findAll();
+	            updatedDto.setRoomId(Util.readLong("Digite o número da sala: "));
+	            scheduleController.update(updatedDto.getId(), updatedDto);
+	            break;
+	        case 5:
+	            System.out.println("Opção 5 selecionada: Excluir um horário\n");
+	            scheduleController.findAll();
+	            Long deletedId = Util.readLong("Digite o código: ");
+	            scheduleController.delete(deletedId);
+	            break;
+	        case 6:
+	            System.out.println("Saindo de Horários...\n");
 	            break;
 	        default:
 	            System.out.println("Opção inválida. Tente novamente.\n");

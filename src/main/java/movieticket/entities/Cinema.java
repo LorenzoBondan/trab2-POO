@@ -54,6 +54,14 @@ public class Cinema {
 		return movies;
 	}
 
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
+	}
+
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

@@ -59,6 +59,10 @@ public class Seat {
 		return tickets;
 	}
 
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

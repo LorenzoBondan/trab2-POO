@@ -40,11 +40,14 @@ public class MovieService {
 	
 	public MovieDTO findById(Long id) {
 		Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		// adicionar lista de atores, diretores, schedules e tickets
 		List<Actor> actors = personRepository.findAllActorsByMovieId(id);
 		entity.setActors(actors);
 		List<Director> directors = personRepository.findAllDirectorsByMovieId(id);
 		entity.setDirectors(directors);
+		List<Schedule> schedules = scheduleRepository.findAllByMovieId(id);
+		entity.setSchedules(schedules);
+		List<Ticket> tickets = ticketRepository.findAllByMovieId(id);
+		entity.setTickets(tickets);
 		return new MovieDTO(entity);
 	}
 	
@@ -90,15 +93,15 @@ public class MovieService {
 		entity.getActors().clear();
 		for(Long actorId : dto.getActorsIds()) {
 			Person actor = personRepository.findById(actorId).get();
-			entity.getActors().add((Actor) actor);
+			entity.getActors().add(new Actor(actor.getId(), actor.getName(), actor.getRole(), actor.getMarried())); 
 		}
 		
 		entity.getDirectors().clear();
 		for(Long directorId : dto.getDirectorsIds()) {
 			Person director = personRepository.findById(directorId).get();
-			entity.getDirectors().add((Director) director);
+			entity.getDirectors().add(new Director(director.getId(), director.getName(), director.getRole(), director.getMarried())); 
 		}
-
+		
 		entity.getSchedules().clear();
 		for(Long scheduleId : dto.getSchedulesIds()) {
 			Schedule schedule = scheduleRepository.findById(scheduleId).get();

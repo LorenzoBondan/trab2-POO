@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import movieticket.entities.Cinema;
 import movieticket.entities.Room;
@@ -22,6 +23,13 @@ public class RoomRepository {
 	
 	public List<Room> findAll() {
 		return load();
+	}
+	
+	public List<Room> findAllByCinemaId(Long cinemaId){
+		List<Room> list = load();
+		return list.stream()
+	            .filter(room -> room.getCinema().getId().equals(cinemaId)) // filtra as salas com o cinemaId fornecido
+	            .collect(Collectors.toList());
 	}
 	
 	public Optional<Room> findById(Long id) {

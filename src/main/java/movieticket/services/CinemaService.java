@@ -6,15 +6,18 @@ import java.util.stream.Collectors;
 import movieticket.dtos.CinemaDTO;
 import movieticket.entities.Cinema;
 import movieticket.entities.Movie;
+import movieticket.entities.Room;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.CinemaRepository;
 import movieticket.repositories.MovieRepository;
+import movieticket.repositories.RoomRepository;
 
 public class CinemaService {
 
 	private CinemaRepository repository = new CinemaRepository();
 	private MovieRepository movieRepository = new MovieRepository();
+	private RoomRepository roomRepository = new RoomRepository();
 	
 	public List<CinemaDTO> findAll(){
 		List<Cinema> list = repository.findAll();
@@ -23,8 +26,10 @@ public class CinemaService {
 	
 	public CinemaDTO findById(Long id) {
 		Cinema entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		// adicionar aqui método para trazer os filmes por cinema id
-		// adicionar aqui método para trazer as salas por cinema id
+		List<Movie> movieList = movieRepository.findAllByCinemaId(id); // adiciona seus respectivos filmes
+		entity.setMovies(movieList);
+		List<Room> roomList = roomRepository.findAllByCinemaId(id); // adiciona suas respectivas salas
+		entity.setRooms(roomList);
 		return new CinemaDTO(entity);
 	}
 	
@@ -67,6 +72,12 @@ public class CinemaService {
 		for(Long movieId : dto.getMoviesIds()) {
 			Movie movie = movieRepository.findById(movieId).get();
 			entity.getMovies().add(movie);
+		}
+		
+		entity.getRooms().clear();
+		for(Long roomId : dto.getRoomsIds()) {
+			Room room = roomRepository.findById(roomId).get();
+			entity.getRooms().add(room);
 		}
 	}
 }

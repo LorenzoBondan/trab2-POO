@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import movieticket.entities.Room;
 import movieticket.entities.Seat;
@@ -22,6 +23,13 @@ public class SeatRepository {
 	
 	public List<Seat> findAll() {
 		return load();
+	}
+	
+	public List<Seat> findAllByRoomId(Long roomId){
+		List<Seat> list = load();
+		return list.stream()
+	            .filter(seat -> seat.getRoom().getId().equals(roomId)) // filtra os assentos com o roomId fornecido
+	            .collect(Collectors.toList());
 	}
 	
 	public Optional<Seat> findById(Long id) {

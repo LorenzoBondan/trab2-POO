@@ -71,6 +71,10 @@ public class Schedule {
 		return tickets;
 	}
 
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
