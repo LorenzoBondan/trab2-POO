@@ -34,7 +34,7 @@ public class CinemaRepository {
 	    Long newId = cinema.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingCinema -> existingCinema.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Cinema with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Cinema com ID " + newId + " já existe.");
 	    }
 	    list.add(cinema); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

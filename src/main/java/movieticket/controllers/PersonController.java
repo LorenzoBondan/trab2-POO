@@ -5,6 +5,7 @@ import java.util.List;
 import movieticket.dtos.ActorDTO;
 import movieticket.dtos.DirectorDTO;
 import movieticket.dtos.PersonDTO;
+import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.services.PersonService;
@@ -53,7 +54,7 @@ public class PersonController {
 			PersonDTO dto = service.findById(id);
 			System.out.println(dto);
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Pessoa não encontrada");
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -62,7 +63,7 @@ public class PersonController {
 			ActorDTO dto = service.findActorById(id);
 			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Ator não encontrado");
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -71,33 +72,31 @@ public class PersonController {
 			DirectorDTO dto = service.findDirectorById(id);
 			System.out.println(dto.toStringWithList());
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Diretor não encontrado");
+			System.out.println(e.getMessage());
 		}
 	}
 	
 	public void insert(PersonDTO dto) {
 		try {
 			service.insert(dto);
-		} catch(InvalidDataException e) {
-			System.out.println("Dados inválidos.");
+		} catch(InvalidDataException | DuplicateResourceException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 	
 	public void update(Long id, PersonDTO dto) {
 		try {
 			service.update(id, dto);
-		} catch(ResourceNotFoundException e) {
-			System.out.println("Pessoa não encontrada");
-		} catch(InvalidDataException e) {
-			System.out.println("Dados inválidos.");
+		} catch(ResourceNotFoundException | InvalidDataException e) {
+			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	public void delete(Long id) {
 		try {
 			service.delete(id);
 		} catch(ResourceNotFoundException e) {
-			System.out.println("Pessoa não encontrada");
+			System.out.println(e.getMessage());
 		}
 	}
 }

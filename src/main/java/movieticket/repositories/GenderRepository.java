@@ -15,7 +15,7 @@ import movieticket.exceptions.ResourceNotFoundException;
 
 public class GenderRepository {
 
-	private String file = "genders.csv";
+	private String file = "genres.csv";
 	
 	public List<Gender> findAll() {
 		return load();
@@ -34,7 +34,7 @@ public class GenderRepository {
 	    Long newId = gender.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingGender -> existingGender.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Gender with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Gênero com ID " + newId + " já existe.");
 	    }
 	    list.add(gender); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

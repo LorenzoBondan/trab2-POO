@@ -10,6 +10,8 @@ import movieticket.entities.Person;
 import movieticket.entities.Schedule;
 import movieticket.entities.Seat;
 import movieticket.entities.Ticket;
+import movieticket.exceptions.DuplicateResourceException;
+import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.MovieRepository;
@@ -51,16 +53,20 @@ public class ScheduleService {
 	}
 	
 
-	public List<Seat> checkAvailableSeats(Long id) {
+	public List<Seat> checkAvailableSeats(Long id, Long movie_id) {
 		StringBuilder sb = new StringBuilder();
 		List<Seat> freeSeats = new ArrayList<>();
 		
-		Schedule entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Schedule entity = repository.findByIdMovieId(id, movie_id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
 		List<Seat> seats = seatRepository.findAllByRoomId(entity.getRoom().getId());
 		List<Ticket> tickets = ticketRepository.findAllByScheduleId(id);
 			
 		int fileiraAux = 0;
 		int fileira = 0;
+		
+		sb.append("----------------\n");
+		sb.append("|     TELA     |\n");
+		sb.append("----------------");
 		
 		for(Seat seat : seats) {			
 			fileira = seat.getLine();
@@ -74,7 +80,7 @@ public class ScheduleService {
 				if (seat.getId() == ticket.getSeat().getId()) {
 					encontrou = true;
 				}
-			}			
+			}
 			
 			if (encontrou) {
 				sb.append(seat.getNumber() + "-X ");
@@ -87,6 +93,10 @@ public class ScheduleService {
 		
 		System.out.println(sb.toString());
 		
+		if(freeSeats.isEmpty()) {
+			System.out.println("\nNenhum assento livre!");
+		}
+		
 		return freeSeats;
 		
 	}
@@ -97,19 +107,22 @@ public class ScheduleService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Horário inserido com sucesso.");
-		} catch(Exception e) {
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
-		
 	}
 	
 	public void update(Long id, ScheduleDTO dto) {
 		try {
-			Schedule entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			Schedule entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Horário não encontrado com o ID: " + id));
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Horário atualizado com sucesso.");
-		} catch(Exception e) {
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Horário não encontrado com o ID: " + id);
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
@@ -117,8 +130,14 @@ public class ScheduleService {
 	public void delete(Long id) {
 		ScheduleDTO dto = findById(id);
 		if(dto != null) {
-			repository.delete(id);
-			System.out.println("Horário deletado com sucesso: " + id);
+			if(dto.getTicketsIds().isEmpty()){
+				repository.delete(id);
+				System.out.println("Horário deletado com sucesso: " + id);
+			} else{
+				throw new IntegrityViolationException("Não é possível deletar pois há dependências relacionadas a esse objeto");
+			}
+		} else{
+			throw new ResourceNotFoundException("Horário não encontrado com o ID: " + id);
 		}
 	}
 	

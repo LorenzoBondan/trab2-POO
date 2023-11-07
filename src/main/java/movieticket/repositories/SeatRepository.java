@@ -48,7 +48,7 @@ public class SeatRepository {
 	    Long newId = seat.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingSeat -> existingSeat.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Seat with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Assento com ID " + newId + " já existe.");
 	    }
 	    list.add(seat); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

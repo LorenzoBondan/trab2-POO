@@ -6,14 +6,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import movieticket.entities.Cinema;
 import movieticket.entities.Gender;
 import movieticket.entities.Movie;
+import movieticket.entities.Schedule;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.ResourceNotFoundException;
 
@@ -25,10 +24,18 @@ public class MovieRepository {
 
 	private GenderRepository genderRepository = new GenderRepository();
 	private CinemaRepository cinemaRepository = new CinemaRepository();
+
 	
 	public List<Movie> findAll() {
 		return load();
 	}
+
+    public List<Movie> findAllByName(String name) {
+        List<Movie> movies = load();
+        return movies.stream()
+                .filter(movie -> movie.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
+    }
 	
 	public List<Movie> findAllByGenderId(Long genderId){
 		List<Movie> list = load();
@@ -51,7 +58,7 @@ public class MovieRepository {
 	public List<Movie> findAllByDirectorId(Long directorId){
 		return loadMoviesByDirectorId(directorId);
 	}
-	
+
 	public Optional<Movie> findById(Long id) {
 	    List<Movie> list = load();
 	    return Optional.ofNullable(list.stream()
@@ -65,7 +72,7 @@ public class MovieRepository {
 	    Long newId = movie.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingMovie -> existingMovie.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Movie with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Filme com ID " + newId + " já existe.");
 	    }
 	    list.add(movie); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

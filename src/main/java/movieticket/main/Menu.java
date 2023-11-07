@@ -1,6 +1,5 @@
 package movieticket.main;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +26,6 @@ import movieticket.entities.Actor;
 import movieticket.entities.Director;
 import movieticket.entities.Seat;
 import movieticket.repositories.PersonRepository;
-import movieticket.services.ScheduleService;
 import movieticket.util.Util;
 
 public class Menu {
@@ -37,7 +35,7 @@ public class Menu {
 		int opc;
 		do {
 			System.out.println("------------------------------------------------------------");
-			System.out.println("Movie Ticket Cinemas");
+			System.out.println("Bem-vindo ao MovieTicket Cinemas");
 			System.out.println("------------------------------------------------------------");
 			System.out.println("Escolha um dos tópicos a seguir:");
 			System.out.println("1) Gêneros");
@@ -55,58 +53,55 @@ public class Menu {
 			
 			opc = Util.readInt("");
 
-			switch (opc) {
-            case 1:
-                System.out.println("Opção 1 selecionada: Gêneros");
-                showGenders();
-                break;
-            case 2:
-                System.out.println("Opção 2 selecionada: Filmes");
-                showMovies();
-                break;
-            case 3:
-                System.out.println("Opção 3 selecionada: Salas");
-                showRooms();
-                break;
-            case 4:
-                System.out.println("Opção 4 selecionada: Horários");
-                showSchedules();
-                break;
-            case 5:
-                System.out.println("Opção 5 selecionada: Assentos");
-                showSeats();
-                break;
-            case 6:
-                System.out.println("Opção 6 selecionada: Ingressos");
-                showTickets();
-                break;
-            case 7:
-                System.out.println("Opção 7 selecionada: Atores");
-                showActors();
-                break;
-            case 8:
-                System.out.println("Opção 8 selecionada: Diretores");
-                showDirectors();
-                break;
-            case 9:
-                System.out.println("Opção 9 selecionada: Cinemas");
-                showCinemas();
-                break;
-            case 10:
-                System.out.println("Opção 10 selecionada: Verificar Disponibilidade");
-                showDisponibilidade();
-                break;
-            case 11:
-                System.out.println("Saindo do sistema...");
-                break;
-            default:
-                System.out.println("Opção inválida. Tente novamente.");
-			}
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Gêneros");
+					showGenres();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Filmes");
+                    showMovies();
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Salas");
+                    showRooms();
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Horários");
+                    showSchedules();
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Assentos");
+                    showSeats();
+                }
+                case 6 -> {
+                    System.out.println("Opção 6 selecionada: Ingressos");
+                    showTickets();
+                }
+                case 7 -> {
+                    System.out.println("Opção 7 selecionada: Atores");
+                    showActors();
+                }
+                case 8 -> {
+                    System.out.println("Opção 8 selecionada: Diretores");
+                    showDirectors();
+                }
+                case 9 -> {
+                    System.out.println("Opção 9 selecionada: Cinemas");
+                    showCinemas();
+                }
+                case 10 -> {
+                    System.out.println("Opção 10 selecionada: Verificar Disponibilidade");
+                    showDisponibilidade();
+                }
+                case 11 -> System.out.println("Saindo do sistema...");
+                default -> System.out.println("Opção inválida. Tente novamente.");
+            }
 		} while (opc != 11);
 		in.close();
 	}
 	
-	public static void showGenders() {
+	public static void showGenres() {
 		GenderController genderController = new GenderController();
 		
 		int opc;
@@ -124,45 +119,42 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os gêneros\n");
-	            genderController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um gênero por código\n");
-	            genderController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            genderController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo gênero\n");
-	            GenderDTO newDto = new GenderDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setName(Util.readString("Digite o nome: "));
-	            genderController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um gênero\n");
-	            genderController.findAll();
-	            GenderDTO updatedDto = new GenderDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setName(Util.readString("Digite o nome: "));
-	            genderController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um gênero\n");
-	            genderController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            genderController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Gêneros...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os gêneros\n");
+                    genderController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um gênero por código\n");
+                    genderController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    genderController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo gênero\n");
+                    GenderDTO newDto = new GenderDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setName(Util.readString("Digite o nome: "));
+                    genderController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um gênero\n");
+                    genderController.findAll();
+                    GenderDTO updatedDto = new GenderDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setName(Util.readString("Digite o nome: "));
+                    genderController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um gênero\n");
+                    genderController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    genderController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Gêneros...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -184,148 +176,147 @@ public class Menu {
 			System.out.println("3) Inserir novo filme");
 			System.out.println("4) Atualizar um filme");
 			System.out.println("5) Excluir um filme");
-			System.out.println("6) Sair");
+			System.out.println("6) Mostrar filmes por nome");
+			System.out.println("7) Mostrar filmes por período de datas");
+			System.out.println("8) Sair");
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os filmes\n");
-	            movieController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um filme por código\n");
-	            movieController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            movieController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo filme\n");
-	            MovieDTO newDto = new MovieDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setName(Util.readString("Digite o nome: "));
-	            newDto.setDescription(Util.readString("Digite a descrição: "));
-	            newDto.setDuration(Util.readInt("Digite a duração em minutos: "));
-	            newDto.setYear(Util.readInt("Digite o ano: "));
-	            genderController.findAll();
-	            newDto.setGenderId(Util.readLong("Digite o código do gênero: "));
-	            cinemaController.findAll();
-	            newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
-	            
-	            personController.findAllDirectors();
-	            List<Long> directorsIds = new ArrayList<>();
-	            int stopDirector = 1;
-	            while(stopDirector != 0) {
-	            	Long directorId = Util.readLong("Digite o código do diretor: ");
-	            	directorsIds.add(directorId);
-	            	personRepository.addDirectorToMovie(directorId, newDto.getId()); // add no csv muitos para muitos
-	            	stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
-	            	if(stopDirector == 0) {
-	            		break;
-	            	}
-	            }
-	            newDto.setDirectorsIds(directorsIds);
-	            
-	            personController.findAllActors();
-	            List<Long> actorsIds = new ArrayList<>();
-	            int stopActor = 1;
-	            while(stopActor != 0) {
-	            	Long actorId = Util.readLong("Digite o código do ator: ");
-	            	actorsIds.add(actorId);
-	            	personRepository.addActorToMovie(actorId, newDto.getId()); // add no csv muitos para muitos
-	            	stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
-	            	if(stopActor == 0) {
-	            		break;
-	            	}
-	            }
-	            newDto.setActorsIds(actorsIds);
-	           
-	            movieController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um filme\n");
-	            movieController.findAll();
-	            MovieDTO updatedDto = new MovieDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setName(Util.readString("Digite o nome: "));
-	            updatedDto.setDescription(Util.readString("Digite a descrição: "));
-	            updatedDto.setDuration(Util.readInt("Digite a duração em minutos: "));
-	            updatedDto.setYear(Util.readInt("Digite o ano: "));
-	            genderController.findAll();
-	            updatedDto.setGenderId(Util.readLong("Digite o código do gênero: "));
-	            cinemaController.findAll();
-	            updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
-	            
-	            System.out.println("Diretores já presentes neste filme:");
-	            personController.findAllDirectorsByMovieId(updatedDto.getId());
-	            int question = Util.readInt("Deseja alterar os diretores desse filme? 1-Sim 0-Não: ");
-	            if(question == 1) {
-	            	personController.findAllDirectors();
-	            	List<Long> updatedDirectorsIds = new ArrayList<>();
-		            int updatedStopDirector = 1;
-		            while(updatedStopDirector != 0) {
-		            	Long directorId = Util.readLong("Digite o código do diretor: ");
-		            	updatedDirectorsIds.add(directorId);
-		            	personRepository.addDirectorToMovie(directorId, updatedDto.getId()); // add no csv muitos para muitos
-		            	stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
-		            	if(stopDirector == 0) {
-		            		break;
-		            	}
-		            }
-		            updatedDto.setDirectorsIds(updatedDirectorsIds);
-	            }
-	            
-	            System.out.println("Atores já presentes nesse filme:");
-	            personController.findAllActorsByMovieId(updatedDto.getId());
-	            int question2 = Util.readInt("Deseja alterar os atores desse filme? 1-Sim 0-Não: ");
-	            if(question2 == 1) {
-	            	personController.findAllActors();
-	            	List<Long> updatedActorsIds = new ArrayList<>();
-		            int updatedStopActor = 1;
-		            while(updatedStopActor != 0) {
-		            	Long actorId = Util.readLong("Digite o código do ator: ");
-		            	updatedActorsIds.add(actorId);
-		            	personRepository.addActorToMovie(actorId, updatedDto.getId()); // add no csv muitos para muitos
-		            	stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
-		            	if(stopActor == 0) {
-		            		break;
-		            	}
-		            }
-		            updatedDto.setActorsIds(updatedActorsIds);
-	            }
-	            
-	            movieController.update(updatedDto.getId(), updatedDto);
-	            
-	            // remover os atores e diretores não atualizados pelo usuário das tabelas de muitos para muitos
-	            // obter ids de atores e diretores existentes no filme
-	            List<Actor> existingActors = personRepository.findAllActorsByMovieId(updatedDto.getId());
-	            List<Long> existingActorsIds = existingActors.stream().map(actor -> actor.getId()).collect(Collectors.toList());
-	            
-	            List<Director> existingDirectors = personRepository.findAllDirectorsByMovieId(updatedDto.getId());
-	            List<Long> existingDirectorsIds = existingDirectors.stream().map(director -> director.getId()).collect(Collectors.toList());
 
-	            // remover atores que não foram fornecidos pelo usuário
-	            existingActorsIds.removeAll(updatedDto.getActorsIds());
-	            personRepository.removeActorsFromMovie(existingActorsIds, updatedDto.getId());
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os filmes\n");
+                    movieController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um filme por código\n");
+                    movieController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    movieController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo filme\n");
+                    MovieDTO newDto = new MovieDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setName(Util.readString("Digite o nome: "));
+                    newDto.setDescription(Util.readString("Digite a descrição: "));
+                    newDto.setDuration(Util.readInt("Digite a duração em minutos: "));
+                    newDto.setYear(Util.readInt("Digite o ano: "));
+                    genderController.findAll();
+                    newDto.setGenderId(Util.readLong("Digite o código do gênero: "));
+                    cinemaController.findAll();
+                    newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+                    personController.findAllDirectors();
+                    List<Long> directorsIds = new ArrayList<>();
+                    int stopDirector;
+                    do {
+                        Long directorId = Util.readLong("Digite o código do diretor: ");
+                        directorsIds.add(directorId);
+                        personRepository.addDirectorToMovie(directorId, newDto.getId()); // add no csv muitos para muitos
+                        stopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
+                    } while (stopDirector != 0);
+                    newDto.setDirectorsIds(directorsIds);
+                    personController.findAllActors();
+                    List<Long> actorsIds = new ArrayList<>();
+                    int stopActor;
+                    do {
+                        Long actorId = Util.readLong("Digite o código do ator: ");
+                        actorsIds.add(actorId);
+                        personRepository.addActorToMovie(actorId, newDto.getId()); // add no csv muitos para muitos
+                        stopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
+                    } while (stopActor != 0);
+                    newDto.setActorsIds(actorsIds);
+                    movieController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um filme\n");
+                    movieController.findAll();
+                    MovieDTO updatedDto = new MovieDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setName(Util.readString("Digite o nome: "));
+                    updatedDto.setDescription(Util.readString("Digite a descrição: "));
+                    updatedDto.setDuration(Util.readInt("Digite a duração em minutos: "));
+                    updatedDto.setYear(Util.readInt("Digite o ano: "));
+                    genderController.findAll();
+                    updatedDto.setGenderId(Util.readLong("Digite o código do gênero: "));
+                    cinemaController.findAll();
+                    updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+                    System.out.println("Diretores já presentes neste filme:");
+                    personController.findAllDirectorsByMovieId(updatedDto.getId());
+                    int question = Util.readInt("Deseja alterar os diretores desse filme? 1-Sim 0-Não: ");
+                    if (question == 1) {
+                        personController.findAllDirectors();
+                        List<Long> updatedDirectorsIds = new ArrayList<>();
+                        int updatedStopDirector;
+                        do {
+                            Long directorId = Util.readLong("Digite o código do diretor: ");
+                            updatedDirectorsIds.add(directorId);
+                            if (!personRepository.existsByDirectorIdAndMovieId(directorId, updatedDto.getId())) {
+                                personRepository.addDirectorToMovie(directorId, updatedDto.getId()); // add no csv muitos para muitos
+                            }
+                            updatedStopDirector = Util.readInt("Deseja adicionar mais algum diretor? 1-Sim 0-Não: ");
+                        } while (updatedStopDirector != 0);
+                        updatedDto.setDirectorsIds(updatedDirectorsIds);
+                    }
+                    System.out.println("Atores já presentes nesse filme:");
+                    personController.findAllActorsByMovieId(updatedDto.getId());
+                    int question2 = Util.readInt("Deseja alterar os atores desse filme? 1-Sim 0-Não: ");
+                    if (question2 == 1) {
+                        personController.findAllActors();
+                        List<Long> updatedActorsIds = new ArrayList<>();
+                        int updatedStopActor;
+                        do {
+                            Long actorId = Util.readLong("Digite o código do ator: ");
+                            updatedActorsIds.add(actorId);
+                            if (!personRepository.existsByActorIdAndMovieId(actorId, updatedDto.getId())) {
+                                personRepository.addActorToMovie(actorId, updatedDto.getId()); // add no csv muitos para muitos
+                            }
+                            updatedStopActor = Util.readInt("Deseja adicionar mais algum ator? 1-Sim 0-Não: ");
+                        } while (updatedStopActor != 0);
+                        updatedDto.setActorsIds(updatedActorsIds);
+                    }
+                    movieController.update(updatedDto.getId(), updatedDto);
 
-	            // remover diretores que não foram fornecidos pelo usuário
-	            existingDirectorsIds.removeAll(updatedDto.getDirectorsIds());
-	            personRepository.removeDirectorsFromMovie(existingDirectorsIds, updatedDto.getId());
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um filme\n");
-	            movieController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            movieController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Filmes...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
-		} while (opc != 6);
+                    // remover os atores e diretores não atualizados pelo usuário das tabelas de muitos para muitos
+                    // obter ids de atores e diretores existentes no filme
+                    List<Actor> existingActors = personRepository.findAllActorsByMovieId(updatedDto.getId());
+                    List<Long> existingActorsIds = existingActors.stream().map(actor -> actor.getId()).collect(Collectors.toList());
+                    List<Director> existingDirectors = personRepository.findAllDirectorsByMovieId(updatedDto.getId());
+                    List<Long> existingDirectorsIds = existingDirectors.stream().map(director -> director.getId()).collect(Collectors.toList());
+
+                    // remover atores que não foram fornecidos pelo usuário
+                    existingActorsIds.removeAll(updatedDto.getActorsIds());
+                    personRepository.removeActorsFromMovie(existingActorsIds, updatedDto.getId());
+
+                    // remover diretores que não foram fornecidos pelo usuário
+                    existingDirectorsIds.removeAll(updatedDto.getDirectorsIds());
+                    personRepository.removeDirectorsFromMovie(existingDirectorsIds, updatedDto.getId());
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um filme\n");
+                    movieController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    movieController.delete(deletedId);
+                }
+                case 6 -> {
+                    System.out.println("Opção 6 selecionada: Mostrar filmes por nome\n");
+                    String nome = Util.readString("Digite o nome: ");
+                    movieController.findAllByName(nome);
+                    int details = Util.readInt("Deseja ver os detalhes de algum filme? 1-Sim 0-Não: ");
+                    if (details == 1) {
+                        movieController.findById(Util.readLong("Digite o código do filme: "));
+                    }
+                }
+                case 7 -> {
+                    System.out.println("Opção 7 selecionada: Mostrar filmes por período de datas\n");
+                    Date startDate = Util.readDate("Digite a data inicial no formato dia/mês/ano: ");
+                    Date finalDate = Util.readDate("Digite a data final no formato dia/mês/ano: ");
+                    movieController.findAllByDateRange(startDate, finalDate);
+                }
+                case 8 -> System.out.println("Saindo de Filmes...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
+		} while (opc != 8);
 	}
 	
 	public static void showCinemas() {
@@ -346,47 +337,44 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os cinemas\n");
-	            cinemaController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um cinema por código\n");
-	            cinemaController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            cinemaController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo cinema\n");
-	            CinemaDTO newDto = new CinemaDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setName(Util.readString("Digite o nome: "));
-	            newDto.setAddress(Util.readString("Digite o endereço: "));
-	            cinemaController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um cinema\n");
-	            cinemaController.findAll();
-	            CinemaDTO updatedDto = new CinemaDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setName(Util.readString("Digite o nome: "));
-	            updatedDto.setAddress(Util.readString("Digite o endereço: "));
-	            cinemaController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um cinema\n");
-	            cinemaController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            cinemaController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Cinemas...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os cinemas\n");
+                    cinemaController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um cinema por código\n");
+                    cinemaController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    cinemaController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo cinema\n");
+                    CinemaDTO newDto = new CinemaDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setName(Util.readString("Digite o nome: "));
+                    newDto.setAddress(Util.readString("Digite o endereço: "));
+                    cinemaController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um cinema\n");
+                    cinemaController.findAll();
+                    CinemaDTO updatedDto = new CinemaDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setName(Util.readString("Digite o nome: "));
+                    updatedDto.setAddress(Util.readString("Digite o endereço: "));
+                    cinemaController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um cinema\n");
+                    cinemaController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    cinemaController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Cinemas...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -396,13 +384,12 @@ public class Menu {
 		TicketController ticketController = new TicketController();
 		
 		movieController.findAll();
-		Long filmeId = Util.readLong("Digite o código do filme que deseja assistir: ");
-		scheduleController.findByMovieId(filmeId);
+		Long movieId = Util.readLong("Digite o código do filme que deseja assistir: ");
+		scheduleController.findByMovieId(movieId);
 		Long scheduleId = Util.readLong("Digite o código do horario que deseja ver: ");
-		List<Seat> freeSeats = scheduleController.checkAvailableSeats(scheduleId);
+		List<Seat> freeSeats = scheduleController.checkAvailableSeats(scheduleId, movieId);
 			
-		if(freeSeats.size() <= 0) {		
-			System.out.println("\nNenhum assento livre!");
+		if(freeSeats == null || freeSeats.isEmpty()) {
 			return;
 		}
 		
@@ -440,12 +427,12 @@ public class Menu {
         newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
         int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
         newDto.setHalfPrice(half == 1);
-        newDto.setMovieId(filmeId);
+        newDto.setMovieId(movieId);
         newDto.setScheduleId(scheduleId);
         newDto.setSeatId(chosenSeat.getId());
         ticketController.insert(newDto);
         
-        List<Seat> freeSeatsAux = scheduleController.checkAvailableSeats(scheduleId);
+        scheduleController.checkAvailableSeats(scheduleId, movieId);
 		
 	}
 		
@@ -468,49 +455,46 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todas as salas\n");
-	            roomController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar uma sala por código\n");
-	            roomController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            roomController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir nova sala\n");
-	            RoomDTO newDto = new RoomDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setNumber(Util.readInt("Digite o número da sala: "));
-	            cinemaController.findAll();
-	            newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
-	            roomController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar uma sala\n");
-	            roomController.findAll();
-	            RoomDTO updatedDto = new RoomDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setNumber(Util.readInt("Digite o número da sala: "));
-	            cinemaController.findAll();
-	            updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
-	            roomController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir uma sala\n");
-	            roomController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            roomController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Salas...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todas as salas\n");
+                    roomController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar uma sala por código\n");
+                    roomController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    roomController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir nova sala\n");
+                    RoomDTO newDto = new RoomDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setNumber(Util.readInt("Digite o número da sala: "));
+                    cinemaController.findAll();
+                    newDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+                    roomController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar uma sala\n");
+                    roomController.findAll();
+                    RoomDTO updatedDto = new RoomDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setNumber(Util.readInt("Digite o número da sala: "));
+                    cinemaController.findAll();
+                    updatedDto.setCinemaId(Util.readLong("Digite o código do cinema: "));
+                    roomController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir uma sala\n");
+                    roomController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    roomController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Salas...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -534,55 +518,52 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os horários\n");
-	            scheduleController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um horário por código\n");
-	            scheduleController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            scheduleController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo horário\n");
-	            ScheduleDTO newDto = new ScheduleDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setDate(Util.readDate("Informe uma data no formato dia/mês/ano: ")); 
-	            newDto.setTime(Util.readTime("Informe um horário no formato hora:minuto: "));
-	            movieController.findAll();
-	            newDto.setMovieId(Util.readLong("Digite o id do filme: "));
-	            roomController.findAll();
-	            newDto.setRoomId(Util.readLong("Digite o número da sala: "));
-	            scheduleController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um horário\n");
-	            scheduleController.findAll();
-	            ScheduleDTO updatedDto = new ScheduleDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setDate(Util.readDate("Informe uma data no formato dia/mês/ano: ")); 
-	            updatedDto.setTime(Util.readTime("Informe um horário no formato hora:minuto: "));
-	            movieController.findAll();
-	            updatedDto.setMovieId(Util.readLong("Digite o id do filme: "));
-	            roomController.findAll();
-	            updatedDto.setRoomId(Util.readLong("Digite o número da sala: "));
-	            scheduleController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um horário\n");
-	            scheduleController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            scheduleController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Horários...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os horários\n");
+                    scheduleController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um horário por código\n");
+                    scheduleController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    scheduleController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo horário\n");
+                    ScheduleDTO newDto = new ScheduleDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setDate(Util.readDate("Informe uma data no formato dia/mês/ano: "));
+                    newDto.setTime(Util.readTime("Informe um horário no formato hora:minuto: "));
+                    movieController.findAll();
+                    newDto.setMovieId(Util.readLong("Digite o id do filme: "));
+                    roomController.findAll();
+                    newDto.setRoomId(Util.readLong("Digite o número da sala: "));
+                    scheduleController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um horário\n");
+                    scheduleController.findAll();
+                    ScheduleDTO updatedDto = new ScheduleDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setDate(Util.readDate("Informe uma data no formato dia/mês/ano: "));
+                    updatedDto.setTime(Util.readTime("Informe um horário no formato hora:minuto: "));
+                    movieController.findAll();
+                    updatedDto.setMovieId(Util.readLong("Digite o id do filme: "));
+                    roomController.findAll();
+                    updatedDto.setRoomId(Util.readLong("Digite o número da sala: "));
+                    scheduleController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um horário\n");
+                    scheduleController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    scheduleController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Horários...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -605,51 +586,48 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os assentos\n");
-	            seatController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um assento por código\n");
-	            seatController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            seatController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo assento\n");
-	            SeatDTO newDto = new SeatDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setNumber(Util.readInt("Digite o número: "));
-	            newDto.setLine(Util.readInt("Digite a fileira: "));
-	            roomController.findAll();
-	            newDto.setRoomId(Util.readLong("Digite o código da sala: "));
-	            seatController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um assento\n");
-	            seatController.findAll();
-	            SeatDTO updatedDto = new SeatDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setNumber(Util.readInt("Digite o número: "));
-	            updatedDto.setLine(Util.readInt("Digite a fileira: "));
-	            roomController.findAll();
-	            updatedDto.setRoomId(Util.readLong("Digite o código da sala: "));
-	            seatController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um assento\n");
-	            seatController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            seatController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Assentos...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os assentos\n");
+                    seatController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um assento por código\n");
+                    seatController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    seatController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo assento\n");
+                    SeatDTO newDto = new SeatDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setNumber(Util.readInt("Digite o número: "));
+                    newDto.setLine(Util.readInt("Digite a fileira: "));
+                    roomController.findAll();
+                    newDto.setRoomId(Util.readLong("Digite o código da sala: "));
+                    seatController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um assento\n");
+                    seatController.findAll();
+                    SeatDTO updatedDto = new SeatDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setNumber(Util.readInt("Digite o número: "));
+                    updatedDto.setLine(Util.readInt("Digite a fileira: "));
+                    roomController.findAll();
+                    updatedDto.setRoomId(Util.readLong("Digite o código da sala: "));
+                    seatController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um assento\n");
+                    seatController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    seatController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Assentos...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -674,67 +652,64 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os ingressos\n");
-	            ticketController.findAll();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um ingresso por código\n");
-	            ticketController.findAll();
-	            Long id = Util.readLong("Digite o código: ");
-	            ticketController.findById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo ingresso\n");
-	            TicketDTO newDto = new TicketDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setClientName(Util.readString("Digite o nome do cliente: "));
-	            newDto.setPhoneNumber(Util.readString("Digite o número de telefone do cliente: "));
-	            newDto.setPrice(Util.readDouble("Digite o preço: "));
-	            newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
-	            int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
-	            newDto.setHalfPrice(half == 1);
-	            movieController.findAll();
-	            newDto.setMovieId(Util.readLong("Digite o código do filme: "));
-	            scheduleController.findAll();
-	            newDto.setScheduleId(Util.readLong("Digite o código do horário: "));
-	            seatController.findAll();
-	            newDto.setSeatId(Util.readLong("Digite o código do assento: "));
-	            ticketController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um ingresso\n");
-	            ticketController.findAll();
-	            TicketDTO updatedDto = new TicketDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setClientName(Util.readString("Digite o nome do cliente: "));
-	            updatedDto.setPhoneNumber(Util.readString("Digite o número de telefone do clinte: "));
-	            updatedDto.setPrice(Util.readDouble("Digite o preço: "));
-	            updatedDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
-	            half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
-	            updatedDto.setHalfPrice(half == 1);
-	            movieController.findAll();
-	            updatedDto.setMovieId(Util.readLong("Digite o código do filme: "));
-	            scheduleController.findAll();
-	            updatedDto.setScheduleId(Util.readLong("Digite o código do horário: "));
-	            seatController.findAll();
-	            updatedDto.setSeatId(Util.readLong("Digite o código do assento: "));
-	            ticketController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um ingresso\n");
-	            ticketController.findAll();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            ticketController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Ingressos...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os ingressos\n");
+                    ticketController.findAll();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um ingresso por código\n");
+                    ticketController.findAll();
+                    Long id = Util.readLong("Digite o código: ");
+                    ticketController.findById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo ingresso\n");
+                    TicketDTO newDto = new TicketDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setClientName(Util.readString("Digite o nome do cliente: "));
+                    newDto.setPhoneNumber(Util.readString("Digite o número de telefone do cliente: "));
+                    newDto.setPrice(Util.readDouble("Digite o preço: "));
+                    newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
+                    int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
+                    newDto.setHalfPrice(half == 1);
+                    movieController.findAll();
+                    newDto.setMovieId(Util.readLong("Digite o código do filme: "));
+                    scheduleController.findAll();
+                    newDto.setScheduleId(Util.readLong("Digite o código do horário: "));
+                    seatController.findAll();
+                    newDto.setSeatId(Util.readLong("Digite o código do assento: "));
+                    ticketController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um ingresso\n");
+                    ticketController.findAll();
+                    TicketDTO updatedDto = new TicketDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setClientName(Util.readString("Digite o nome do cliente: "));
+                    updatedDto.setPhoneNumber(Util.readString("Digite o número de telefone do clinte: "));
+                    updatedDto.setPrice(Util.readDouble("Digite o preço: "));
+                    updatedDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
+                    int half2 = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
+                    updatedDto.setHalfPrice(half2 == 1);
+                    movieController.findAll();
+                    updatedDto.setMovieId(Util.readLong("Digite o código do filme: "));
+                    scheduleController.findAll();
+                    updatedDto.setScheduleId(Util.readLong("Digite o código do horário: "));
+                    seatController.findAll();
+                    updatedDto.setSeatId(Util.readLong("Digite o código do assento: "));
+                    ticketController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um ingresso\n");
+                    ticketController.findAll();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    ticketController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Ingressos...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -756,57 +731,54 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os atores\n");
-	            personController.findAllActors();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um ator por código\n");
-	            personController.findAllActors();
-	            Long id = Util.readLong("Digite o código: ");
-	            personController.findActorById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo ator\n");
-	            PersonDTO newDto = new PersonDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setName(Util.readString("Digite o nome: "));
-	            newDto.setRole("Actor");
-	            personController.findAll();
-	            newDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
-	            if(newDto.getMarriedId() == 0) {
-	            	newDto.setMarriedId(null);
-	            }
-	            personController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um ator\n");
-	            personController.findAllActors();
-	            PersonDTO updatedDto = new PersonDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setName(Util.readString("Digite o nome: "));
-	            updatedDto.setRole("Actor");
-	            personController.findAll();
-	            updatedDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
-	            if(updatedDto.getMarriedId() == 0) {
-	            	updatedDto.setMarriedId(null);
-	            }
-	            personController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um ator\n");
-	            personController.findAllActors();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            personController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Atores...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os atores\n");
+                    personController.findAllActors();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um ator por código\n");
+                    personController.findAllActors();
+                    Long id = Util.readLong("Digite o código: ");
+                    personController.findActorById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo ator\n");
+                    PersonDTO newDto = new PersonDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setName(Util.readString("Digite o nome: "));
+                    newDto.setRole("Actor");
+                    personController.findAll();
+                    newDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+                    if (newDto.getMarriedId() == 0) {
+                        newDto.setMarriedId(null);
+                    }
+                    personController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um ator\n");
+                    personController.findAllActors();
+                    PersonDTO updatedDto = new PersonDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setName(Util.readString("Digite o nome: "));
+                    updatedDto.setRole("Actor");
+                    personController.findAll();
+                    updatedDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+                    if (updatedDto.getMarriedId() == 0) {
+                        updatedDto.setMarriedId(null);
+                    }
+                    personController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um ator\n");
+                    personController.findAllActors();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    personController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Atores...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 	
@@ -828,263 +800,59 @@ public class Menu {
 			System.out.println("------------------------------------------------------------");
 
 			opc = Util.readInt("");
-	
-			switch (opc) {
-			case 1:
-	            System.out.println("Opção 1 selecionada: Mostrar todos os diretores\n");
-	            personController.findAllDirectors();
-	            break;
-	        case 2:
-	            System.out.println("Opção 2 selecionada: Mostrar um diretor por código\n");
-	            personController.findAllDirectors();
-	            Long id = Util.readLong("Digite o código: ");
-	            personController.findDirectorById(id);
-	            break;
-	        case 3:
-	            System.out.println("Opção 3 selecionada: Inserir novo diretor\n");
-	            PersonDTO newDto = new PersonDTO();
-	            newDto.setId(Util.readLong("Digite o código: "));
-	            newDto.setName(Util.readString("Digite o nome: "));
-	            newDto.setRole("Director");
-	            personController.findAll();
-	            newDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
-	            if(newDto.getMarriedId() == 0) {
-	            	newDto.setMarriedId(null);
-	            }
-	            personController.insert(newDto);
-	            break;
-	        case 4:
-	            System.out.println("Opção 4 selecionada: Atualizar um diretor\n");
-	            personController.findAllDirectors();
-	            PersonDTO updatedDto = new PersonDTO();
-	            updatedDto.setId(Util.readLong("Digite o código: "));
-	            updatedDto.setName(Util.readString("Digite o nome: "));
-	            updatedDto.setRole("Director");
-	            personController.findAll();
-	            updatedDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
-	            if(updatedDto.getMarriedId() == 0) {
-	            	updatedDto.setMarriedId(null);
-	            }
-	            personController.update(updatedDto.getId(), updatedDto);
-	            break;
-	        case 5:
-	            System.out.println("Opção 5 selecionada: Excluir um diretor\n");
-	            personController.findAllDirectors();
-	            Long deletedId = Util.readLong("Digite o código: ");
-	            personController.delete(deletedId);
-	            break;
-	        case 6:
-	            System.out.println("Saindo de Diretores...\n");
-	            break;
-	        default:
-	            System.out.println("Opção inválida. Tente novamente.\n");
-			}
+
+            switch (opc) {
+                case 1 -> {
+                    System.out.println("Opção 1 selecionada: Mostrar todos os diretores\n");
+                    personController.findAllDirectors();
+                }
+                case 2 -> {
+                    System.out.println("Opção 2 selecionada: Mostrar um diretor por código\n");
+                    personController.findAllDirectors();
+                    Long id = Util.readLong("Digite o código: ");
+                    personController.findDirectorById(id);
+                }
+                case 3 -> {
+                    System.out.println("Opção 3 selecionada: Inserir novo diretor\n");
+                    PersonDTO newDto = new PersonDTO();
+                    newDto.setId(Util.readLong("Digite o código: "));
+                    newDto.setName(Util.readString("Digite o nome: "));
+                    newDto.setRole("Director");
+                    personController.findAll();
+                    newDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+                    if (newDto.getMarriedId() == 0) {
+                        newDto.setMarriedId(null);
+                    }
+                    personController.insert(newDto);
+                }
+                case 4 -> {
+                    System.out.println("Opção 4 selecionada: Atualizar um diretor\n");
+                    personController.findAllDirectors();
+                    PersonDTO updatedDto = new PersonDTO();
+                    updatedDto.setId(Util.readLong("Digite o código: "));
+                    updatedDto.setName(Util.readString("Digite o nome: "));
+                    updatedDto.setRole("Director");
+                    personController.findAll();
+                    updatedDto.setMarriedId(Util.readLong("Digite o código do cônjuge, se não houver, digite zero: "));
+                    if (updatedDto.getMarriedId() == 0) {
+                        updatedDto.setMarriedId(null);
+                    }
+                    personController.update(updatedDto.getId(), updatedDto);
+                }
+                case 5 -> {
+                    System.out.println("Opção 5 selecionada: Excluir um diretor\n");
+                    personController.findAllDirectors();
+                    Long deletedId = Util.readLong("Digite o código: ");
+                    personController.delete(deletedId);
+                }
+                case 6 -> System.out.println("Saindo de Diretores...\n");
+                default -> System.out.println("Opção inválida. Tente novamente.\n");
+            }
 		} while (opc != 6);
 	}
 
-	public static void main(String[] args) throws ParseException {
-		
+	public static void main(String[] args) {
 		showMenu();
-		
-		/* --------------- EXEMPLO DE IMPLEMENTAÇÃO DOS MÉTODOS --------------
-		 * 
-		 * 
-		// #### GENDER
-		GenderService genderService = new GenderService();
-		
-		
-		System.out.println("\nGENDER\n");
-		
-		
-		
-		// FINDALL -------------------
-		List<GenderDTO> list = genderService.findAll();
-		for(GenderDTO g : list) {
-			System.out.println("Id: " + g.getId() + " Name: " + g.getName());
-		}
-		
-		// FINDBYID -------------------
-		try {
-			GenderDTO ge = genderService.findById(5L);
-			System.out.println("GENDER: " + ge.getName());
-		} catch(ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// INSERT ---------------------
-		try {
-			GenderDTO gender = new GenderDTO(1L, "Action");
-			genderService.insert(gender);
-		} catch(DuplicateResourceException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// UPDATE --------------------
-		try {
-			GenderDTO updatedGender = new GenderDTO(1L, "Comedy");
-			genderService.update(1L, updatedGender);
-			System.out.println("Updated successfully: " + updatedGender.toString());
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// DELETE ---------------------
-		try {
-			genderService.delete(4L);
-			System.out.println("Gender deleted successfully.");
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// #### PERSON
-		
-		PersonService personService = new PersonService();
-		
-		System.out.println("\nACTOR\n");
-		
-		// INSERT ---------------------
-		try {
-			ActorDTO actor = new ActorDTO(3L, "Marcos", "Actor", 1L);
-			personService.insert(actor);
-		} catch(DuplicateResourceException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// FINDALL -------------------
-		List<PersonDTO> actorList = personService.findAll();
-		for(PersonDTO g : actorList) {
-			System.out.println(g);
-		}
-		
-		// UPDATE --------------------
-		try {
-			PersonDTO updatedActor = new ActorDTO(1L, "Lorenzo Bondan", "Director", 2L);
-			personService.update(1L, updatedActor);
-			System.out.println("Updated successfully: " + updatedActor.toString());
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// DELETE ---------------------
-		try {
-			personService.delete(3L);
-			System.out.println("Person deleted successfully.");
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		
-		// #### MOVIE
-		
-		MovieService movieService = new MovieService();
-		
-		System.out.println("\nMOVIES\n");
-		
-		// FINDALL -------------------
-		List<MovieDTO> listMovie = movieService.findAll();
-		for(MovieDTO g : listMovie) {
-			System.out.println(g);
-		}
-		
-		// FINDBYID -------------------
-		try {
-			MovieDTO ge = movieService.findById(2L);
-			System.out.println(ge);
-		} catch(ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// INSERT ---------------------
-		try {
-			MovieDTO movie = new MovieDTO(2L, "Saw", 2010, "Saw description", 120, 1L, 1L);
-			movieService.insert(movie);
-		} catch(DuplicateResourceException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// UPDATE --------------------
-		try {
-			MovieDTO updatedMovie = new MovieDTO(1L, "Scary Movie 2", 2002, "A parody of Horror movies", 110, 1L, 1L);
-			movieService.update(1L, updatedMovie);
-			System.out.println("Updated successfully: " + updatedMovie.toString());
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// DELETE ---------------------
-		try {
-			movieService.delete(4L);
-			System.out.println("Movie deleted successfully.");
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		
-		// #### SCHEDULE
-		
-		ScheduleService scheduleService = new ScheduleService();
-		
-		System.out.println("\nSCHEDULES\n");
-		
-		// FINDALL -------------------
-		List<ScheduleDTO> listSchedule = scheduleService.findAll();
-		for(ScheduleDTO g : listSchedule) {
-			System.out.println(g);
-		}
-		
-		// FINDBYID -------------------
-		try {
-			ScheduleDTO ge = scheduleService.findById(2L);
-			System.out.println(ge);
-		} catch(ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// INSERT ---------------------
-		try {
-		    SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		    Date date;
-		    try {
-		        date = inputDateFormat.parse("10/05/2023");
-		    } catch (ParseException e) {
-		        e.printStackTrace();
-		        date = null;
-		    }
-
-		    LocalTime time = LocalTime.parse("18:00:00");
-		    ScheduleDTO schedule = new ScheduleDTO(5L, date, time, 1L, 1L);
-		    scheduleService.insert(schedule);
-		} catch (DuplicateResourceException e) {
-		    System.out.println(e.getMessage());
-		}
-		
-		// UPDATE --------------------
-		try {
-			SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		    Date date;
-		    try {
-		        date = inputDateFormat.parse("10/05/2023");
-		    } catch (ParseException e) {
-		        e.printStackTrace();
-		        date = null;
-		    }
-		    LocalTime time = LocalTime.parse("13:00:00");
-			ScheduleDTO updatedSchedule = new ScheduleDTO(1L, date, time, 1L, 1L);
-			scheduleService.update(1L, updatedSchedule);
-			System.out.println("Updated successfully: " + updatedSchedule.toString());
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		// DELETE ---------------------
-		try {
-			scheduleService.delete(5L);
-			System.out.println("Schedule deleted successfully.");
-		} catch (ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		*/
 	}
 	
 }

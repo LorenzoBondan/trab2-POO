@@ -66,7 +66,7 @@ public class TicketRepository {
 	    Long newId = ticket.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingTicket -> existingTicket.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Ticket with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Ingresso com ID " + newId + " já existe.");
 	    }
 	    list.add(ticket); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

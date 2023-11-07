@@ -1,6 +1,7 @@
 package movieticket.services;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import movieticket.dtos.MovieDTO;
@@ -10,8 +11,7 @@ import movieticket.entities.Movie;
 import movieticket.entities.Person;
 import movieticket.entities.Schedule;
 import movieticket.entities.Ticket;
-import movieticket.exceptions.InvalidDataException;
-import movieticket.exceptions.ResourceNotFoundException;
+import movieticket.exceptions.*;
 import movieticket.repositories.CinemaRepository;
 import movieticket.repositories.GenderRepository;
 import movieticket.repositories.MovieRepository;
@@ -32,14 +32,51 @@ public class MovieService {
 		List<Movie> list = repository.findAll();
 		return list.stream().map(obj -> new MovieDTO(obj)).collect(Collectors.toList());
 	}
+
+	public List<MovieDTO> findAllByName(String name){
+		List<Movie> list = repository.findAllByName(name);
+		return list.stream().map(obj -> new MovieDTO(obj)).collect(Collectors.toList());
+	}
 	
 	public List<MovieDTO> findAllByGenderId(Long genderId) {
 		List<Movie> list = repository.findAllByGenderId(genderId);
 		return list.stream().map(obj -> new MovieDTO(obj)).collect(Collectors.toList());
 	}
+
+	public List<MovieDTO> findAllByDateRange(Date startDate, Date finalDate){
+		if (startDate.after(finalDate)) {
+			throw new InvalidDateRangeException("Data inicial não pode ser maior do que a data final.");
+		}
+
+		List<Movie> movies = repository.findAll();
+		List<Movie> newMovies = new ArrayList<>();
+
+		for (Movie movie : movies) {
+			List<Schedule> schedules = scheduleRepository.findAllByMovieId(movie.getId());
+			for (Schedule schedule : schedules) {
+				if (!schedule.getDate().before(startDate) && !schedule.getDate().after(finalDate)) {
+					newMovies.add(movie);
+					List<Ticket> tickets = ticketRepository.findAllByMovieId(movie.getId());
+					movie.setTickets(tickets);
+					break;
+				}
+			}
+		}
+
+		Set<Movie> nonReplicatedMovies = new HashSet<>(newMovies);
+
+		List<Movie> finalList = new ArrayList<>(nonReplicatedMovies);
+		sortByTicketsSold(finalList);
+		return finalList.stream().map(obj -> new MovieDTO(obj)).collect(Collectors.toList());
+	}
+
+	private void sortByTicketsSold(List<Movie> movies) {
+		Comparator<Movie> ticketsSoldComparator = Comparator.comparingInt(movie -> movie.getTickets().size());
+		Collections.sort(movies, ticketsSoldComparator.reversed());
+	}
 	
 	public MovieDTO findById(Long id) {
-		Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com o ID: " + id));
 		List<Actor> actors = personRepository.findAllActorsByMovieId(id);
 		entity.setActors(actors);
 		List<Director> directors = personRepository.findAllDirectorsByMovieId(id);
@@ -57,18 +94,22 @@ public class MovieService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Filme inserido com sucesso: " + dto);
-		} catch(Exception e) {
-			throw new InvalidDataException("Dados inválidos." + e.getMessage());
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
+		} catch (Exception e) {
+			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
 	
 	public void update(Long id, MovieDTO dto) {
 		try {
-			Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			Movie entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Filme não encontrado com o ID: " + id));
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Filme atualizado com sucesso: " + dto);
-		}catch(Exception e) {
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Filme não encontrado com o ID: " + id);
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
@@ -76,8 +117,14 @@ public class MovieService {
 	public void delete(Long id) {
 		MovieDTO dto = findById(id);
 		if(dto != null) {
-			repository.delete(id);
-			System.out.println("Filme deletado com sucesso: " + id);
+			if(dto.getSchedulesIds().isEmpty() && dto.getTicketsIds().isEmpty()){
+				repository.delete(id);
+				System.out.println("Filme deletado com sucesso: " + id);
+			} else{
+				throw new IntegrityViolationException("Não é possível deletar pois há dependências relacionadas a esse objeto");
+			}
+		} else{
+			throw new ResourceNotFoundException("Filme não encontrado com o ID: " + id);
 		}
 	}
 	

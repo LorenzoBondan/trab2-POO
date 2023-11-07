@@ -53,12 +53,23 @@ public class ScheduleRepository {
 	            .orElseThrow(() -> new ResourceNotFoundException("Schedule with Id " + id + " not found.")));
 	}
 	
+	
+	public Optional<Schedule> findByIdMovieId(Long id, Long movie_id) {
+	    List<Schedule> list = load();
+	    return Optional.ofNullable(list.stream()
+	            .filter(schedule -> schedule.getId().equals(id) && schedule.getMovie().getId().equals(movie_id))
+	            .findFirst()
+	            .orElseThrow(() -> new ResourceNotFoundException("Schedule with Id " + id + " not found.")));
+	}
+	
+
+	
 	public void insert(Schedule schedule) {
 	    List<Schedule> list = load(); // carrega a lista de objetos já cadastrados no csv
 	    Long newId = schedule.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingSchedule -> existingSchedule.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Schedule with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Horário com ID " + newId + " já existe.");
 	    }
 	    list.add(schedule); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

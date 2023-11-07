@@ -7,6 +7,8 @@ import movieticket.dtos.CinemaDTO;
 import movieticket.entities.Cinema;
 import movieticket.entities.Movie;
 import movieticket.entities.Room;
+import movieticket.exceptions.DuplicateResourceException;
+import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.CinemaRepository;
@@ -25,7 +27,7 @@ public class CinemaService {
 	}
 	
 	public CinemaDTO findById(Long id) {
-		Cinema entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Cinema entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cinema não encontrado com o ID: " + id));
 		List<Movie> movieList = movieRepository.findAllByCinemaId(id); // adiciona seus respectivos filmes
 		entity.setMovies(movieList);
 		List<Room> roomList = roomRepository.findAllByCinemaId(id); // adiciona suas respectivas salas
@@ -39,6 +41,8 @@ public class CinemaService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Cinema inserido com sucesso: " + dto);
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
 		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
@@ -46,10 +50,12 @@ public class CinemaService {
 	
 	public void update(Long id, CinemaDTO dto) {
 		try {
-			Cinema entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			Cinema entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cinema não encontrado com o ID: " + id));
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Cinema atualizado com sucesso: " + dto);
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Cinema não encontrado com o ID: " + id);
 		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
@@ -58,8 +64,14 @@ public class CinemaService {
 	public void delete(Long id) {
 		CinemaDTO dto = findById(id);
 		if(dto != null) {
-			repository.delete(id);
-			System.out.println("Cinema deletado com sucesso: " + id);
+			if(dto.getMoviesIds().isEmpty() && dto.getRoomsIds().isEmpty()){
+				repository.delete(id);
+				System.out.println("Cinema deletado com sucesso: " + id);
+			} else{
+				throw new IntegrityViolationException("Não é possível deletar pois há dependências relacionadas a esse objeto");
+			}
+		} else{
+			throw new ResourceNotFoundException("Cinema não encontrado com o ID: " + id);
 		}
 	}
 	

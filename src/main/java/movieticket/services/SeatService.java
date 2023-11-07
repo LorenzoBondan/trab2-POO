@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import movieticket.dtos.SeatDTO;
 import movieticket.entities.Seat;
 import movieticket.entities.Ticket;
+import movieticket.exceptions.DuplicateResourceException;
+import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.RoomRepository;
@@ -36,18 +38,22 @@ public class SeatService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Assento inserido com sucesso: " + dto);
-		} catch(Exception e) {
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
 	
 	public void update(Long id, SeatDTO dto) {
 		try {
-			Seat entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			Seat entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Assento não encontrado com o ID: " + id));
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Assento atualizado com sucesso: " + dto);
-		} catch(Exception e) {
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Assento não encontrado com o ID: " + id);
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
@@ -55,8 +61,14 @@ public class SeatService {
 	public void delete(Long id) {
 		SeatDTO dto = findById(id);
 		if(dto != null) {
-			repository.delete(id);
-			System.out.println("Cinema deletado com sucesso: " + id);
+			if(dto.getTicketsIds().isEmpty()){
+				repository.delete(id);
+				System.out.println("Assento deletado com sucesso: " + id);
+			} else{
+				throw new IntegrityViolationException("Não é possível deletar pois há dependências relacionadas a esse objeto");
+			}
+		} else{
+			throw new ResourceNotFoundException("Assento não encontrado com o ID: " + id);
 		}
 	}
 	

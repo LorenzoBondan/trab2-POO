@@ -45,7 +45,7 @@ public class RoomRepository {
 	    Long newId = room.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingRoom -> existingRoom.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Room with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Sala com ID " + newId + " já existe.");
 	    }
 	    list.add(room); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente

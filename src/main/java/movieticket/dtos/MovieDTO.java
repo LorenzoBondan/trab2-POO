@@ -149,4 +149,8 @@ public class MovieDTO {
 				+ actorsIds + ", directorsIds=" + directorsIds + ", schedulesIds=" + schedulesIds + ", ticketsIds="
 				+ ticketsIds + "]";
 	}
+
+	public String toStringSimple(){
+		return "MovieDTO [id=" + id + ", name=" + name + "]";
+	}
 }

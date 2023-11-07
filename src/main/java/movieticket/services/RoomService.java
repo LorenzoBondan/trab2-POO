@@ -7,6 +7,8 @@ import movieticket.dtos.RoomDTO;
 import movieticket.entities.Room;
 import movieticket.entities.Schedule;
 import movieticket.entities.Seat;
+import movieticket.exceptions.DuplicateResourceException;
+import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.CinemaRepository;
@@ -27,7 +29,7 @@ public class RoomService {
 	}
 	
 	public RoomDTO findById(Long id) {
-		Room entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Room entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sala não encontrada com o ID: " + id));
 		List<Schedule> scheduleList = scheduleRepository.findAllByRoomId(id);
 		entity.setSchedules(scheduleList);
 		List<Seat> seatList = seatRepository.findAllByRoomId(id);
@@ -41,17 +43,21 @@ public class RoomService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Sala inserida com sucesso: " + dto);
-		} catch(Exception e) {
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
 	
 	public void update(Long id, RoomDTO dto) {
 		try{
-			Room entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			Room entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Sala não encontrada com o ID: " + id));
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
-		} catch(Exception e) {
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Sala não encontrada com o ID: " + id);
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
@@ -59,8 +65,14 @@ public class RoomService {
 	public void delete(Long id) {
 		RoomDTO dto = findById(id);
 		if(dto != null) {
-			repository.delete(id);
-			System.out.println("Sala deletada com sucesso: " + id);
+			if(dto.getSchedulesIds().isEmpty() && dto.getSeatsIds().isEmpty()){
+				repository.delete(id);
+				System.out.println("Sala deletada com sucesso: " + id);
+			} else{
+				throw new IntegrityViolationException("Não é possível deletar pois há dependências relacionadas a esse objeto");
+			}
+		} else{
+			throw new ResourceNotFoundException("Sala não encontrada com o ID: " + id);
 		}
 	}
 	

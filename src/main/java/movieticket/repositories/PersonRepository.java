@@ -19,7 +19,7 @@ import movieticket.exceptions.ResourceNotFoundException;
 
 public class PersonRepository {
 
-	private String file = "persons.csv";
+	private String file = "people.csv";
 	private String file_actors_movies = "actors_movies.csv";
 	private String file_directors_movies = "directors_movies.csv";
 	
@@ -72,7 +72,7 @@ public class PersonRepository {
 	    Long newId = person.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingPerson -> existingPerson.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Person with ID " + newId + " already exists.");
+	        throw new DuplicateResourceException("Pessoa com ID " + newId + " já existe.");
 	    }
 	    list.add(person); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -169,11 +169,11 @@ public class PersonRepository {
     
     public List<Actor> loadAllActors() {
         List<Person> people = load();
-        List<Actor> directors = people.stream()
+        List<Actor> actors = people.stream()
                 .filter(person -> "Actor".equals(person.getRole()))
                 .map(person -> new Actor(person.getId(), person.getName(), person.getRole(), person.getMarried()))
                 .collect(Collectors.toList());
-        return directors;
+        return actors;
     }
     
     public List<Director> loadAllDirectors() {
@@ -253,6 +253,42 @@ public class PersonRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Boolean existsByActorIdAndMovieId(Long actorId, Long movieId){
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_actors_movies))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                Long storedActorId = Long.parseLong(data[0]);
+                Long storedMovieId = Long.parseLong(data[1]);
+                if (actorId.equals(storedActorId) && movieId.equals(storedMovieId)) {
+                    return true; // a relação ator-filme foi encontrada no arquivo.
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao verificar a existência da relação ator-filme.");
+        }
+        return false; // a relação ator-filme não foi encontrada no arquivo.
+    }
+
+    public Boolean existsByDirectorIdAndMovieId(Long directorId, Long movieId){
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_directors_movies))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                Long storedDirectorId = Long.parseLong(data[0]);
+                Long storedMovieId = Long.parseLong(data[1]);
+                if (directorId.equals(storedDirectorId) && movieId.equals(storedMovieId)) {
+                    return true; // a relação diretor-filme foi encontrada no arquivo.
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erro ao verificar a existência da relação diretor-filme.");
+        }
+        return false; // a relação diretor-filme não foi encontrada no arquivo.
     }
     
     public void removeActorsFromMovie(List<Long> actorsToRemove, Long movieId) {

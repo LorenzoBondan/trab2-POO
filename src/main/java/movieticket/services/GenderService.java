@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import movieticket.dtos.GenderDTO;
 import movieticket.entities.Gender;
 import movieticket.entities.Movie;
+import movieticket.exceptions.DuplicateResourceException;
+import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.GenderRepository;
@@ -34,6 +36,8 @@ public class GenderService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Gênero inserido com sucesso: " + dto);
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
 		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
@@ -45,6 +49,8 @@ public class GenderService {
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Gênero atualizado com sucesso: " + dto);
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Gênero não encontrado com o ID: " + id);
 		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
@@ -53,8 +59,14 @@ public class GenderService {
 	public void delete(Long id) {
 		GenderDTO dto = findById(id);
 		if(dto != null) {
-			repository.delete(id);
-			System.out.println("Gênero deletado com sucesso: " + id);
+			if(dto.getMoviesIds().isEmpty()){
+				repository.delete(id);
+				System.out.println("Gênero deletado com sucesso: " + id);
+			} else{
+				throw new IntegrityViolationException("Não é possível deletar pois há dependências relacionadas a esse objeto");
+			}
+		} else{
+			throw new ResourceNotFoundException("Gênero não encontrado com o ID:" + id);
 		}
 	}
 	

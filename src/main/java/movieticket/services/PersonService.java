@@ -10,6 +10,7 @@ import movieticket.entities.Actor;
 import movieticket.entities.Director;
 import movieticket.entities.Movie;
 import movieticket.entities.Person;
+import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.InvalidDataException;
 import movieticket.exceptions.ResourceNotFoundException;
 import movieticket.repositories.MovieRepository;
@@ -46,19 +47,19 @@ public class PersonService {
 	}
 	
 	public PersonDTO findById(Long id) {
-		Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com o ID: " + id));
 		return new PersonDTO(entity);
 	}
 	
 	public ActorDTO findActorById(Long id) {
-		Actor entity = repository.findActorById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Actor entity = repository.findActorById(id).orElseThrow(() -> new ResourceNotFoundException("Ator não encontrado com o ID: " + id));
 		List<Movie> list = movieRepository.findAllByActorId(id);
 		entity.setMovies(list);
 		return new ActorDTO(entity);
 	}
 	
 	public DirectorDTO findDirectorById(Long id) {
-		Director entity = repository.findDirectorById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+		Director entity = repository.findDirectorById(id).orElseThrow(() -> new ResourceNotFoundException("Diretor não encontrado com o ID: " + id));
 		List<Movie> list = movieRepository.findAllByDirectorId(id);
 		entity.setMovies(list);
 		return new DirectorDTO(entity);
@@ -70,6 +71,8 @@ public class PersonService {
 			copyDtoToEntity(dto, entity);
 			repository.insert(entity);
 			System.out.println("Pessoa inserida com sucesso: " + dto);
+		} catch (DuplicateResourceException e) {
+			throw new DuplicateResourceException(e.getMessage());
 		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
@@ -77,11 +80,13 @@ public class PersonService {
 	
 	public void update(Long id, PersonDTO dto) {
 		try {
-			Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
+			Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada com o ID: " + id));
 			copyDtoToEntity(dto, entity);
 			repository.update(entity);
 			System.out.println("Pessoa atualizada com sucesso: " + dto);
-		} catch(Exception e) {
+		} catch (ResourceNotFoundException ex){
+			throw new ResourceNotFoundException("Pessoa não encontrada com o ID: " + id);
+		} catch (Exception e) {
 			throw new InvalidDataException("Dados inválidos.");
 		}
 	}
