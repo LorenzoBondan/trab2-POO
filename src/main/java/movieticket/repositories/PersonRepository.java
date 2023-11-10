@@ -48,7 +48,7 @@ public class PersonRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(person -> person.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Person with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Pessoa com Id " + id + " não encontrada.")));
 	}
 	
 	public Optional<Actor> findActorById(Long id) {
@@ -56,7 +56,7 @@ public class PersonRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(actor -> actor.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Actor with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Ator com Id " + id + " não encontrado.")));
 	}
 	
 	public Optional<Director> findDirectorById(Long id) {
@@ -64,7 +64,7 @@ public class PersonRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(director -> director.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Director with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Diretor com Id " + id + " não encontrado.")));
 	}
 	
 	public void insert(Person person) {
@@ -72,7 +72,7 @@ public class PersonRepository {
 	    Long newId = person.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingPerson -> existingPerson.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Pessoa com ID " + newId + " já existe.");
+	        throw new DuplicateResourceException("Pessoa com Id " + newId + " já existe.");
 	    }
 	    list.add(person); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -93,7 +93,7 @@ public class PersonRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Person with Id " + updatedPerson.getId() + " not found.");
+            throw new ResourceNotFoundException("Pessoa com Id " + updatedPerson.getId() + " não encontrada.");
         }
         save(list); // salva a lista novamente
     }
@@ -103,7 +103,7 @@ public class PersonRepository {
         boolean isDeleted = list.removeIf(person -> person.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Person with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Pessoa com Id " + id + " não encontrada.");
         }
         save(list);
     }
@@ -119,7 +119,7 @@ public class PersonRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -149,7 +149,7 @@ public class PersonRepository {
                     list.add(person);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Falha ao abrir o arquivo: " + file);
             }
 
             // associa as pessoas casadas na segunda passagem
@@ -202,10 +202,10 @@ public class PersonRepository {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Falha ao abrir o arquivo: " + file_actors_movies);
             }
         } else {
-            System.out.println("Empty or non existing file.");
+            System.out.println("Arquivo vazio ou não encontrado.");
         }
         return list;
     }
@@ -227,10 +227,10 @@ public class PersonRepository {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Falha ao abrir o arquivo: " + file_directors_movies);
             }
         } else {
-            System.out.println("Empty or non existing file.");
+            System.out.println("Arquivo vazio ou não encontrado.");
         }
         return list;
     }
@@ -242,7 +242,7 @@ public class PersonRepository {
             writer.write(actorId + "," + movieId);
             writer.newLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file_actors_movies);
         }
     }
     
@@ -251,7 +251,7 @@ public class PersonRepository {
             writer.write(directorId + "," + movieId);
             writer.newLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file_directors_movies);
         }
     }
 
@@ -267,7 +267,7 @@ public class PersonRepository {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file_actors_movies);
             System.out.println("Erro ao verificar a existência da relação ator-filme.");
         }
         return false; // a relação ator-filme não foi encontrada no arquivo.
@@ -285,7 +285,7 @@ public class PersonRepository {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file_directors_movies);
             System.out.println("Erro ao verificar a existência da relação diretor-filme.");
         }
         return false; // a relação diretor-filme não foi encontrada no arquivo.
@@ -305,7 +305,7 @@ public class PersonRepository {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file_actors_movies);
             System.out.println("Erro ao remover atores do filme.");
             return;
         }
@@ -332,7 +332,7 @@ public class PersonRepository {
                    }
                }
            } catch (IOException e) {
-               e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file_directors_movies);
                System.out.println("Erro ao remover diretores do filme.");
                return;
            }

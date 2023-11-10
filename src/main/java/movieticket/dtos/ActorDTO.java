@@ -27,10 +27,10 @@ public class ActorDTO extends PersonDTO {
 
 	@Override
 	public String toString() {
-		return "ActorDTO [id=" + this.getId() + ", name=" + this.getName() + ", role=" + this.getRole() + "]";
+		return "Ator [código=" + this.getId() + ", nome=" + this.getName() + ", papel=" + this.getRole() + "]";
 	}
 	
 	public String toStringWithList() {
-		return "ActorDTO [id=" + this.getId() + ", name=" + this.getName() + ", role=" + this.getRole() + ", moviesIds=" + moviesIds + "]";
+		return "Ator [código=" + this.getId() + ", nome=" + this.getName() + ", papel=" + this.getRole() + ", códigos dos filmes=" + moviesIds + "]";
 	}
 }

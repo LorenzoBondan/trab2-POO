@@ -15,9 +15,9 @@ public class GenderController {
 	
 	public void findAll() {
 		List<GenderDTO> list = service.findAll();
-        for(GenderDTO genderDto : list) {
-        	System.out.println(genderDto);
-        }
+		for(GenderDTO genderDto : list) {
+			System.out.println(genderDto);
+		}
 	}
 	
 	public void findById(Long id) {

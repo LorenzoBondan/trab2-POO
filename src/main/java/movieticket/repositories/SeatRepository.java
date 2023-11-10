@@ -40,7 +40,7 @@ public class SeatRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(seat -> seat.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Seat with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Assento com Id " + id + " não encontrado.")));
 	}
 	
 	public void insert(Seat seat) {
@@ -48,7 +48,7 @@ public class SeatRepository {
 	    Long newId = seat.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingSeat -> existingSeat.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Assento com ID " + newId + " já existe.");
+	        throw new DuplicateResourceException("Assento com Id " + newId + " já existe.");
 	    }
 	    list.add(seat); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -69,7 +69,7 @@ public class SeatRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Seat with Id " + updatedSeat.getId() + " not found.");
+            throw new ResourceNotFoundException("Assento com Id " + updatedSeat.getId() + " não encontrado.");
         }
         save(list); // salva a lista novamente
     }
@@ -79,7 +79,7 @@ public class SeatRepository {
         boolean isDeleted = list.removeIf(seat -> seat.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Seat with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Assento com Id " + id + " não encontrado.");
         }
         save(list);
     }
@@ -95,7 +95,7 @@ public class SeatRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
     
@@ -105,16 +105,16 @@ public class SeatRepository {
 
             public int compare(Seat o1, Seat o2) {
 
-                Integer x1 = ((Seat) o1).getLine();
-                Integer x2 = ((Seat) o2).getLine();
+                Integer x1 = o1.getLine();
+                Integer x2 = o2.getLine();
                 int sComp = x1.compareTo(x2);
 
                 if (sComp != 0) {
                    return sComp;
-                } 
+                }
 
-                Integer x12 = ((Seat) o1).getNumber();
-                Integer x22 = ((Seat) o2).getNumber();
+                Integer x12 = o1.getNumber();
+                Integer x22 = o2.getNumber();
                 return x12.compareTo(x22);
         }});
     }
@@ -134,7 +134,7 @@ public class SeatRepository {
                 list.add(seat);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }

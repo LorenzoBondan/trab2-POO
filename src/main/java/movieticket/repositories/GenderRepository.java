@@ -26,7 +26,7 @@ public class GenderRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(gender -> gender.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Gender with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Gênero com Id " + id + " não encontrado.")));
 	}
 	
 	public void insert(Gender gender) {
@@ -53,7 +53,7 @@ public class GenderRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Gender with Id " + updatedGender.getId() + " not found.");
+            throw new ResourceNotFoundException("Gênero com Id " + updatedGender.getId() + " não encontrado.");
         }
         save(list); // salva a lista novamente
     }
@@ -63,7 +63,7 @@ public class GenderRepository {
         boolean isDeleted = list.removeIf(gender -> gender.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Gender with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Gênero com Id " + id + " não encontrado.");
         }
         save(list);
     }
@@ -75,7 +75,7 @@ public class GenderRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -91,7 +91,7 @@ public class GenderRepository {
                 list.add(gender);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }

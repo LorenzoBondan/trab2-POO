@@ -71,11 +71,11 @@ public class SeatDTO {
 	
 	@Override
 	public String toString() {
-		return "SeatDTO [id=" + id + ", number=" + number + ", line=" + line + ", roomId=" + roomId + "]";
+		return "Assento [código=" + id + ", número=" + number + ", fileira=" + line + ", código da sala=" + roomId + "]";
 	}
 
 	public String toStringWithList() {
-		return "SeatDTO [id=" + id + ", number=" + number + ", line=" + line + ", roomId=" + roomId + ", ticketsIds="
+		return "Assento [código=" + id + ", número=" + number + ", fileira=" + line + ", código da sala=" + roomId + ", códigos dos ingressos="
 				+ ticketsIds + "]";
 	}
 }

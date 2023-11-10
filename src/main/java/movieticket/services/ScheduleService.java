@@ -1,14 +1,10 @@
 package movieticket.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import movieticket.dtos.ScheduleDTO;
-import movieticket.entities.Actor;
-import movieticket.entities.Person;
 import movieticket.entities.Schedule;
-import movieticket.entities.Seat;
 import movieticket.entities.Ticket;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.IntegrityViolationException;
@@ -26,9 +22,7 @@ public class ScheduleService {
 	private MovieRepository movieRepository = new MovieRepository();
 	private RoomRepository roomRepository = new RoomRepository();
 	private TicketRepository ticketRepository = new TicketRepository();
-	private SeatRepository seatRepository = new SeatRepository();
 
-	
 	public List<ScheduleDTO> findAll(){
 		List<Schedule> list = repository.findAll();
 		return list.stream().map(obj -> new ScheduleDTO(obj)).collect(Collectors.toList());
@@ -41,7 +35,7 @@ public class ScheduleService {
 		return new ScheduleDTO(entity);
 	}
 	
-	public List<ScheduleDTO> findByMovieId(Long id) {
+	public List<ScheduleDTO> findAllByMovieId(Long id) {
 		List<Schedule> entities = repository.findAllByMovieId(id);
 
 		for(Schedule schedule : entities) {
@@ -50,55 +44,6 @@ public class ScheduleService {
 		}		
 		
 		return entities.stream().map(obj -> new ScheduleDTO(obj)).collect(Collectors.toList());
-	}
-	
-
-	public List<Seat> checkAvailableSeats(Long id, Long movie_id) {
-		StringBuilder sb = new StringBuilder();
-		List<Seat> freeSeats = new ArrayList<>();
-		
-		Schedule entity = repository.findByIdMovieId(id, movie_id).orElseThrow(() -> new ResourceNotFoundException("Id not found"));
-		List<Seat> seats = seatRepository.findAllByRoomId(entity.getRoom().getId());
-		List<Ticket> tickets = ticketRepository.findAllByScheduleId(id);
-			
-		int fileiraAux = 0;
-		int fileira = 0;
-		
-		sb.append("----------------\n");
-		sb.append("|     TELA     |\n");
-		sb.append("----------------");
-		
-		for(Seat seat : seats) {			
-			fileira = seat.getLine();
-			if(fileiraAux != fileira) {
-				sb.append("\nFileira " + fileira + ": ");
-				fileiraAux = fileira;
-			}
-			boolean encontrou = false;
-			
-			for(Ticket ticket : tickets) {
-				if (seat.getId() == ticket.getSeat().getId()) {
-					encontrou = true;
-				}
-			}
-			
-			if (encontrou) {
-				sb.append(seat.getNumber() + "-X ");
-			}else {
-				freeSeats.add(seat);
-				sb.append(seat.getNumber() + "-D ");
-			}
-			
-		}		
-		
-		System.out.println(sb.toString());
-		
-		if(freeSeats.isEmpty()) {
-			System.out.println("\nNenhum assento livre!");
-		}
-		
-		return freeSeats;
-		
 	}
 	
 	public void insert(ScheduleDTO dto) {

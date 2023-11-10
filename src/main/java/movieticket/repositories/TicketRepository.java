@@ -58,7 +58,7 @@ public class TicketRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(ticket -> ticket.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Ticket with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Ingresso com Id " + id + " não encontrado.")));
 	}
 	
 	public void insert(Ticket ticket) {
@@ -66,7 +66,7 @@ public class TicketRepository {
 	    Long newId = ticket.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingTicket -> existingTicket.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Ingresso com ID " + newId + " já existe.");
+	        throw new DuplicateResourceException("Ingresso com Id " + newId + " já existe.");
 	    }
 	    list.add(ticket); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -92,7 +92,7 @@ public class TicketRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Ticket with Id " + updatedTicket.getId() + " not found.");
+            throw new ResourceNotFoundException("Ingresso com Id " + updatedTicket.getId() + " não encontrado.");
         }
         save(list); // salva a lista novamente
     }
@@ -102,7 +102,7 @@ public class TicketRepository {
         boolean isDeleted = list.removeIf(ticket -> ticket.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Ticket with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Ingresso com Id " + id + " não encontrado.");
         }
         save(list);
     }
@@ -125,7 +125,7 @@ public class TicketRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -156,7 +156,7 @@ public class TicketRepository {
                 list.add(ticket);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }

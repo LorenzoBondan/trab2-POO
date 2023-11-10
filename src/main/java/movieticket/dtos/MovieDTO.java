@@ -139,18 +139,18 @@ public class MovieDTO {
 
 	@Override
 	public String toString() {
-		return "MovieDTO [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description
-				+ ", duration=" + duration + ", genderId=" + genderId + ", cinemaId=" + cinemaId + "]";
+		return "Filme [código=" + id + ", nome=" + name + ", ano=" + year + ", descrição=" + description
+				+ ", duração=" + duration + ", Código do gênero=" + genderId + ", Código do cinema=" + cinemaId + "]";
 	}
 
 	public String toStringWithList() {
-		return "MovieDTO [id=" + id + ", name=" + name + ", year=" + year + ", description=" + description
-				+ ", duration=" + duration + ", genderId=" + genderId + ", cinemaId=" + cinemaId + ", actorsIds="
-				+ actorsIds + ", directorsIds=" + directorsIds + ", schedulesIds=" + schedulesIds + ", ticketsIds="
+		return "Filme [código=" + id + ", nome=" + name + ", ano=" + year + ", descrição=" + description
+				+ ", duração=" + duration + ", código do gênero=" + genderId + ", código do cinema=" + cinemaId + ", códigos dos atores="
+				+ actorsIds + ", códigos dos diretores=" + directorsIds + ", códigos dos horários=" + schedulesIds + ", códigos dos ingressos="
 				+ ticketsIds + "]";
 	}
 
 	public String toStringSimple(){
-		return "MovieDTO [id=" + id + ", name=" + name + "]";
+		return "Filme [código=" + id + ", nome=" + name + "]";
 	}
 }

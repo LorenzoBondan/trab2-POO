@@ -64,7 +64,7 @@ public class MovieRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(movie -> movie.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Movie with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Filme com Id " + id + " não encontrado.")));
 	}
 	
 	public void insert(Movie movie) {
@@ -72,7 +72,7 @@ public class MovieRepository {
 	    Long newId = movie.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingMovie -> existingMovie.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Filme com ID " + newId + " já existe.");
+	        throw new DuplicateResourceException("Filme com Id " + newId + " já existe.");
 	    }
 	    list.add(movie); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -99,7 +99,7 @@ public class MovieRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Movie with Id " + updatedMovie.getId() + " not found.");
+            throw new ResourceNotFoundException("Filme com Id " + updatedMovie.getId() + " não encontrado.");
         }
         save(list); // salva a lista novamente
     }
@@ -109,7 +109,7 @@ public class MovieRepository {
         boolean isDeleted = list.removeIf(movie -> movie.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Movie with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Filme com Id " + id + " não encontrado.");
         }
         save(list);
     }
@@ -128,7 +128,7 @@ public class MovieRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -151,7 +151,7 @@ public class MovieRepository {
                 list.add(movie);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }
@@ -173,10 +173,10 @@ public class MovieRepository {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Falha ao abrir o arquivo: " + file);
             }
         } else {
-            System.out.println("Empty or non existing file.");
+            System.out.println("Arquivo vazio ou não encontrado.");
         }
         return list;
     }
@@ -198,10 +198,10 @@ public class MovieRepository {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Falha ao abrir o arquivo: " + file);
             }
         } else {
-            System.out.println("Empty or non existing file.");
+            System.out.println("Arquivo vazio ou não encontrado.");
         }
         return list;
     }

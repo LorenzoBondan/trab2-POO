@@ -1,10 +1,8 @@
 package movieticket.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import movieticket.dtos.ScheduleDTO;
-import movieticket.entities.Seat;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
@@ -21,6 +19,27 @@ public class ScheduleController {
         	System.out.println(genderDto);
         }
 	}
+
+	public void findAllByMovieId(Long id) {
+		try {
+			List<ScheduleDTO> list = service.findAllByMovieId(id);
+			for(ScheduleDTO dto : list) {
+				System.out.println(dto.toStringWithList());
+			}
+		} catch(ResourceNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public Boolean existsByMovieId(Long id){
+		try {
+			List<ScheduleDTO> list = service.findAllByMovieId(id);
+            return !list.isEmpty();
+        } catch(ResourceNotFoundException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+    }
 	
 	public void findById(Long id) {
 		try {
@@ -30,26 +49,7 @@ public class ScheduleController {
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	public void findByMovieId(Long id) {
-		try {
-			ScheduleDTO dto = service.findById(id);
-			System.out.println(dto.toStringWithList());
-		} catch(ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-	}	
-	
-	public List<Seat> checkAvailableSeats(Long id, Long movie_id) {
-		try {
-			return service.checkAvailableSeats(id, movie_id);
-		} catch(ResourceNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
 
-	
 	public void insert(ScheduleDTO dto) {
 		try {
 			service.insert(dto);

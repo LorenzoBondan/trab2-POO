@@ -66,11 +66,11 @@ public class RoomDTO {
 
 	@Override
 	public String toString() {
-		return "RoomDTO [id=" + id + ", number=" + number + ", cinemaId=" + cinemaId + "]";
+		return "Sala [código=" + id + ", número=" + number + ", Código do cinema=" + cinemaId + "]";
 	}
 	
 	public String toStringWithList() {
-		return "RoomDTO [id=" + id + ", number=" + number + ", cinemaId=" + cinemaId + ", schedulesIds=" + schedulesIds
-				+ ", seatsIds=" + seatsIds + "]";
+		return "Sala [código=" + id + ", número=" + number + ", Código do cinema=" + cinemaId + ", Códigos dos horários=" + schedulesIds
+				+ ", Códigos dos assentos=" + seatsIds + "]";
 	}
 }

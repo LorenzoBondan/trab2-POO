@@ -3,6 +3,7 @@ package movieticket.controllers;
 import java.util.List;
 
 import movieticket.dtos.SeatDTO;
+import movieticket.entities.Seat;
 import movieticket.exceptions.DuplicateResourceException;
 import movieticket.exceptions.IntegrityViolationException;
 import movieticket.exceptions.InvalidDataException;
@@ -18,6 +19,15 @@ public class SeatController {
         for(SeatDTO genderDto : list) {
         	System.out.println(genderDto);
         }
+	}
+
+	public List<SeatDTO> findAvailableSeats(Long id, Long movie_id) {
+		try {
+			return service.findAvailableSeats(id, movie_id);
+		} catch(ResourceNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 	
 	public void findById(Long id) {

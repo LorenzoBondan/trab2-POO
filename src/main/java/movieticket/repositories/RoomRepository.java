@@ -37,7 +37,7 @@ public class RoomRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(room -> room.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Room with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Sala com Id " + id + " não encontrada.")));
 	}
 	
 	public void insert(Room room) {
@@ -45,7 +45,7 @@ public class RoomRepository {
 	    Long newId = room.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingRoom -> existingRoom.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Sala com ID " + newId + " já existe.");
+	        throw new DuplicateResourceException("Sala com Id " + newId + " já existe.");
 	    }
 	    list.add(room); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -65,7 +65,7 @@ public class RoomRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Room with Id " + updatedRoom.getId() + " not found.");
+            throw new ResourceNotFoundException("Sala com Id " + updatedRoom.getId() + " não encontrada.");
         }
         save(list); // salva a lista novamente
     }
@@ -75,7 +75,7 @@ public class RoomRepository {
         boolean isDeleted = list.removeIf(room -> room.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Room with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Sala com Id " + id + " não encontrada.");
         }
         save(list);
     }
@@ -87,7 +87,7 @@ public class RoomRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -104,7 +104,7 @@ public class RoomRepository {
                 list.add(room);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }

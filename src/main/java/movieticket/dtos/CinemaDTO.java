@@ -66,11 +66,11 @@ public class CinemaDTO {
 
 	@Override
 	public String toString() {
-		return "CinemaDTO [id=" + id + ", name=" + name + ", address=" + address + "]";
+		return "Cinema [código=" + id + ", nome=" + name + ", endereço=" + address + "]";
 	}
 	
 	public String toStringWithList() {
-		return "CinemaDTO [id=" + id + ", name=" + name + ", address=" + address + ", moviesIds=" + moviesIds
-				+ ", roomsIds=" + roomsIds + "]";
+		return "Cinema [código=" + id + ", nome=" + name + ", endereço=" + address + ", códigos dos filmes=" + moviesIds
+				+ ", códigos das salas=" + roomsIds + "]";
 	}
 }

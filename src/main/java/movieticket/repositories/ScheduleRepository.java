@@ -50,26 +50,23 @@ public class ScheduleRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(schedule -> schedule.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Schedule with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Horário com Id " + id + " não encontrado.")));
 	}
-	
-	
-	public Optional<Schedule> findByIdMovieId(Long id, Long movie_id) {
+
+	public Optional<Schedule> findByIdAndMovieId(Long id, Long movie_id) {
 	    List<Schedule> list = load();
 	    return Optional.ofNullable(list.stream()
 	            .filter(schedule -> schedule.getId().equals(id) && schedule.getMovie().getId().equals(movie_id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Schedule with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Horário com Id " + id + " não encontrado.")));
 	}
-	
-
 	
 	public void insert(Schedule schedule) {
 	    List<Schedule> list = load(); // carrega a lista de objetos já cadastrados no csv
 	    Long newId = schedule.getId(); // id do objeto a ser inserido
 	    boolean idExists = list.stream().anyMatch(existingSchedule -> existingSchedule.getId().equals(newId)); // percorre a lista para ver se o id já está cadastrado
 	    if (idExists) {
-	        throw new DuplicateResourceException("Horário com ID " + newId + " já existe.");
+	        throw new DuplicateResourceException("Horário com Id " + newId + " já existe.");
 	    }
 	    list.add(schedule); // adiciona o objeto a lista
 	    save(list); // salva a lista novamente
@@ -91,7 +88,7 @@ public class ScheduleRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Schedule with Id " + updatedSchedule.getId() + " not found.");
+            throw new ResourceNotFoundException("Horário com Id " + updatedSchedule.getId() + " não encontrado.");
         }
         save(list); // salva a lista novamente
     }
@@ -101,7 +98,7 @@ public class ScheduleRepository {
         boolean isDeleted = list.removeIf(schedule -> schedule.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Schedule with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Horário com Id " + id + " não encontrado.");
         }
         save(list);
     }
@@ -120,7 +117,7 @@ public class ScheduleRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -149,7 +146,7 @@ public class ScheduleRepository {
                 list.add(schedule);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }

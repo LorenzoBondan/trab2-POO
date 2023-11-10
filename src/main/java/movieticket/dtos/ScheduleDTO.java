@@ -87,14 +87,14 @@ public class ScheduleDTO {
 	public String toString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);
-        return "ScheduleDTO [id=" + id + ", date=" + formattedDate + ", time=" + time + ", roomId=" + roomId + ", movieId="
+        return "Horário [código=" + id + ", data=" + formattedDate + ", hora=" + time + ", código da sala=" + roomId + ", código do filme="
                 + movieId + "]";
 	}
 	
     public String toStringWithList() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);
-        return "ScheduleDTO [id=" + id + ", date=" + formattedDate + ", time=" + time + ", roomId=" + roomId + ", movieId="
-                + movieId + ", ticketsIds=" + ticketsIds + "]";
+        return "Horário [código=" + id + ", data=" + formattedDate + ", hora=" + time + ", código da sala=" + roomId + ", código do filme="
+                + movieId + ", códigos dos ingressos=" + ticketsIds + "]";
     }
 }

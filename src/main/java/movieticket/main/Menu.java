@@ -29,7 +29,11 @@ import movieticket.repositories.PersonRepository;
 import movieticket.util.Util;
 
 public class Menu {
-	
+
+    public static void main(String[] args) {
+        showMenu();
+    }
+
 	public static void showMenu() {
 		Scanner in = new Scanner(System.in);
 		int opc;
@@ -379,61 +383,66 @@ public class Menu {
 	}
 	
 	public static void showDisponibilidade() {
+        SeatController seatController = new SeatController();
 		MovieController movieController = new MovieController();
 		ScheduleController scheduleController = new ScheduleController();
 		TicketController ticketController = new TicketController();
 		
 		movieController.findAll();
 		Long movieId = Util.readLong("Digite o código do filme que deseja assistir: ");
-		scheduleController.findByMovieId(movieId);
-		Long scheduleId = Util.readLong("Digite o código do horario que deseja ver: ");
-		List<Seat> freeSeats = scheduleController.checkAvailableSeats(scheduleId, movieId);
-			
-		if(freeSeats == null || freeSeats.isEmpty()) {
-			return;
-		}
-		
-		System.out.println("\nEscolha uma das ações a seguir:");
-		System.out.println("1) Escolher Assento");
-		System.out.println("2) Sair");
-		
-		if (Util.readInt("") != 1) {
-			return;
-		}
-		
-		Seat chosenSeat = null;
-		
-		do {
-			int fileira = Util.readInt("\nDigite a fileira do seu assento: ");
-			int numero = Util.readInt("Digite o numero do seu assento: ");
-						
-			for(Seat seat : freeSeats) {
-				if (seat.getLine() == fileira && seat.getNumber() == numero) {
-					chosenSeat = seat;
-				}
-			}
-			if(chosenSeat == null) {
-				System.out.println("Este assento ja esta ocupado!");
-			}
-			
-		}while(chosenSeat == null);		
-		
-		
-        TicketDTO newDto = new TicketDTO();
-        newDto.setId(Util.readLong("Digite o código: "));
-        newDto.setClientName(Util.readString("Digite o nome do cliente: "));
-        newDto.setPhoneNumber(Util.readString("Digite o número de telefone do cliente: "));
-        newDto.setPrice(Util.readDouble("Digite o preço: "));
-        newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
-        int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
-        newDto.setHalfPrice(half == 1);
-        newDto.setMovieId(movieId);
-        newDto.setScheduleId(scheduleId);
-        newDto.setSeatId(chosenSeat.getId());
-        ticketController.insert(newDto);
-        
-        scheduleController.checkAvailableSeats(scheduleId, movieId);
-		
+
+		if(scheduleController.existsByMovieId(movieId)){
+            scheduleController.findAllByMovieId(movieId);
+
+            Long scheduleId = Util.readLong("Digite o código do horario que deseja ver: ");
+            List<SeatDTO> freeSeats = seatController.findAvailableSeats(scheduleId, movieId);
+
+            if(freeSeats == null || freeSeats.isEmpty()) {
+                return;
+            }
+
+            System.out.println("\nEscolha uma das ações a seguir:");
+            System.out.println("1) Escolher Assento");
+            System.out.println("2) Sair");
+
+            if (Util.readInt("") != 1) {
+                return;
+            }
+
+            SeatDTO chosenSeat = null;
+
+            do {
+                int fileira = Util.readInt("\nDigite a fileira do seu assento: ");
+                int numero = Util.readInt("Digite o numero do seu assento: ");
+
+                for(SeatDTO seat : freeSeats) {
+                    if (seat.getLine() == fileira && seat.getNumber() == numero) {
+                        chosenSeat = seat;
+                    }
+                }
+                if(chosenSeat == null) {
+                    System.out.println("Este assento ja esta ocupado!");
+                }
+
+            }while(chosenSeat == null);
+
+            TicketDTO newDto = new TicketDTO();
+            newDto.setId(Util.readLong("Digite o código: "));
+            newDto.setClientName(Util.readString("Digite o nome do cliente: "));
+            newDto.setPhoneNumber(Util.readString("Digite o número de telefone do cliente: "));
+            newDto.setPrice(Util.readDouble("Digite o preço: "));
+            newDto.setDate(Util.readDate("Digite a data no formato dia/mês/ano: "));
+            int half = Util.readInt("É meia entrada? 1-Sim 0-Não: ");
+            newDto.setHalfPrice(half == 1);
+            newDto.setMovieId(movieId);
+            newDto.setScheduleId(scheduleId);
+            newDto.setSeatId(chosenSeat.getId());
+            ticketController.insert(newDto);
+
+            seatController.findAvailableSeats(scheduleId, movieId); // printa novamente na tela
+        } else{
+            System.out.println("Não há horários disponíveis para esse filme");
+        }
 	}
 		
 	public static void showRooms() {
@@ -850,9 +859,4 @@ public class Menu {
             }
 		} while (opc != 6);
 	}
-
-	public static void main(String[] args) {
-		showMenu();
-	}
-	
 }

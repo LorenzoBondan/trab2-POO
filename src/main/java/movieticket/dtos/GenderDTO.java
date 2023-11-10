@@ -49,10 +49,10 @@ public class GenderDTO {
 
 	@Override
 	public String toString() {
-		return "GenderDTO [id=" + id + ", name=" + name + "]";
+		return "Gênero [código=" + id + ", nome=" + name + "]";
 	}
 	
 	public String toStringWithList() {
-		return "GenderDTO [id=" + id + ", name=" + name + ", moviesIds=[" + moviesIds + "]";
+		return "Gênero [código=" + id + ", nome=" + name + ", códigos dos filmes=[" + moviesIds + "]";
 	}
 }

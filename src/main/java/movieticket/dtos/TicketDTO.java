@@ -121,8 +121,8 @@ public class TicketDTO {
 	public String toString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = dateFormat.format(date);
-		return "TicketDTO [id=" + id + ", clientName=" + clientName + ", date=" + formattedDate + ", phoneNumber=" + phoneNumber
-				+ ", price=" + price + ", halfPrice=" + halfPrice + ", seatId=" + seatId + ", scheduleId=" + scheduleId
-				+ ", movieId=" + movieId + "]";
+		return "Ingresso [código=" + id + ", nome do cliente=" + clientName + ", data=" + formattedDate + ", número de telefone do cliente=" + phoneNumber
+				+ ", preço=" + price + ", meia entrada=" + halfPrice + ", código do assento=" + seatId + ", código do horário=" + scheduleId
+				+ ", código do filme=" + movieId + "]";
 	}
 }

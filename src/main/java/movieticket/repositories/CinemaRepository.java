@@ -26,7 +26,7 @@ public class CinemaRepository {
 	    return Optional.ofNullable(list.stream()
 	            .filter(cinema -> cinema.getId().equals(id))
 	            .findFirst()
-	            .orElseThrow(() -> new ResourceNotFoundException("Cinema with Id " + id + " not found.")));
+	            .orElseThrow(() -> new ResourceNotFoundException("Cinema com Id " + id + " não encontrado.")));
 	}
 	
 	public void insert(Cinema cinema) {
@@ -54,7 +54,7 @@ public class CinemaRepository {
         }
 
         if (!isUpdated) {
-            throw new ResourceNotFoundException("Cinema with Id " + updatedCinema.getId() + " not found.");
+            throw new ResourceNotFoundException("Cinema com Id " + updatedCinema.getId() + " não encontrado.");
         }
         save(list); // salva a lista novamente
     }
@@ -64,7 +64,7 @@ public class CinemaRepository {
         boolean isDeleted = list.removeIf(cinema -> cinema.getId().equals(id)); // verifica a existência do id e o deleta
 
         if (!isDeleted) {
-            throw new ResourceNotFoundException("Cinema with Id " + id + " not found.");
+            throw new ResourceNotFoundException("Cinema com Id " + id + " não encontrado.");
         }
         save(list);
     }
@@ -79,7 +79,7 @@ public class CinemaRepository {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
     }
 
@@ -96,7 +96,7 @@ public class CinemaRepository {
                 list.add(cinema);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Falha ao abrir o arquivo: " + file);
         }
         return list;
     }
